@@ -1,0 +1,187 @@
+---
+title: "test 2"
+author: "Wenshan Qu (wq2160)"
+date: "12/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(maps)
+library(dplyr)
+library(highcharter)
+library(viridis)
+library(forecast)
+library(treemap)
+
+library(rjson)
+library(plotly)
+```
+
+```{r}
+nyc_shooting = read_csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
+```
+
+```{r}
+## Use 10032 as case, how to general most dangerous month, for shiny
+shoot_10032 = 
+  nyc_shooting %>% 
+  filter(zipcode == "10032") %>% 
+  mutate(
+    month = as.factor(month)
+  ) %>%
+  dplyr::count(month) %>% 
+  filter(n == max(n)) %>% 
+  knitr::kable(align = "c")
+```
+
+```{r}
+nyc_shooting %>% 
+  filter(incident_key == "230276664") %>% 
+  pull(latitude)
+```
+
+## Maps
+
+```{r}
+map_data("city")
+map_data = 
+  map_data(maps::map(), region = "usa", exact = FALSE) %>% 
+  filter(subregion == "New York")
+
+ggplot(crimesm, aes(map_id = state)) +
+  geom_map(aes(fill = value), map = states_map)
+
+maps::map()
+```
+
+```{r}
+data("usgeojson")
+
+url1 = "https://data.beta.nyc/dataset/3bf5fb73-edb5-4b05-bb29-7c95f4a727fc/resource/6df127b1-6d04-4bb7-b983-07402a2c3f90/download/f4129d9aa6dd4281bc98d0f701629b76nyczipcodetabulationareas.geojson"
+nyczipgeojson = rjson::fromJSON(file=url1)
+
+zip_count = 
+  nyc_shooting %>% 
+  dplyr::count(zipcode)
+
+highchart() %>%
+  hc_title(text = "NYC Shooting Density") %>%
+  hc_subtitle(text = "Category: Zipcode") %>%
+  hc_add_series_map(nyczipgeojson, zip_count, 
+    value = "n", 
+    joinBy = c("postalCode", "zipcode"),
+    dataLabels = list(
+      enabled = TRUE,
+      format = "{point.properties.postalcode}"
+    )
+  ) %>% 
+  hc_legend(valueDecimals = 0, valueSuffix = "%") %>%
+  hc_mapNavigation(enabled = TRUE) 
+```
+
+```{r}
+url = 'https://raw.githubusercontent.com/thomashikaru/nycvisualization/master/nyc_neighborhoods.geojson'
+nycgeojson = rjson::fromJSON(file=url)
+
+highchart() %>%
+  hc_add_series_map(nycgeojson, zip_count, name = "zipcode",
+                    value = "n", joinBy = c("woename", "state"),
+                    dataLabels = list(enabled = TRUE,
+                                      format = '{point.properties.postalcode}')) %>%
+  hc_colorAxis(stops = colstops) %>%
+  hc_legend(valueDecimals = 0, valueSuffix = "%") %>%
+  hc_mapNavigation(enabled = TRUE) %>%
+  hc_add_theme(thm)
+
+
+
+
+data("usgeojson")
+
+us = usgeojson
+
+df = 
+  read.csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv") %>% 
+  dplyr::count(zipcode)
+
+g = list(
+  fitbounds = "locations",
+  visible = FALSE
+)
+
+fig = plot_ly() 
+
+fig = 
+  fig %>% 
+  add_trace(
+    type="choroplethmapbox",
+    geojson=nycmap,
+    locations=df$zipcode,
+    z=df$n,
+    colorscale="Viridis",
+    featureidkey="properties.district"
+  )
+
+fig <- fig %>% layout(
+    mapbox=list(
+      style="carto-positron",
+      zoom =9,
+      center=list(lon=-73.7073, lat=45.5517))
+  )
+```
+
+
+
+Memo for plotly in shiny
+```{r}
+renderPlotly({
+  
+  dangerous_month = 
+    nyc_shooting %>% 
+      mutate(
+        month = as.factor(month),
+        month = fct_relevel(month, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+      ) %>% 
+      filter(
+        zipcode == input[["zipcode"]]
+      ) %>% 
+      dplyr::count(month) %>% 
+      arrange(month) %>% 
+      plot_ly(
+        x = ~ month, y = ~ n, type = "bar", color = ~ month, colors = "viridis"
+      ) %>% 
+      layout(
+        title = "Most Dangerous Month in Selected Region", 
+        xaxis = list(title = "Month"), 
+        yaxis = list(title = "Number of Cases"),
+        showlegend = FALSE
+      )
+  
+  dangerous_time = 
+    nyc_time %>% 
+    filter(
+        zipcode == input[["zipcode"]]
+      ) %>% 
+    dplyr::count(hour) %>% 
+    arrange(hour) %>% 
+    plot_ly(
+      x = ~ hour, y = ~ n, type = "bar", color = ~ hour, colors = "viridis"
+    ) %>% 
+    layout(
+      title = "Most Dangerous Hour in A Day", 
+      xaxis = list(title = "Hour"), 
+      yaxis = list(title = "Number of Cases"),
+      showlegend = FALSE
+    )
+
+  fig = subplot(dangerous_month, dangerous_time, nrows = 2) %>% 
+  layout(title = "Most Dangerous Month & Time of Given Zip-code",
+         xaxis = list(zerolinewidth = 2), 
+         yaxis = list(zerolinewidth = 2)
+        )
+  
+  fig
+})
+```
+
