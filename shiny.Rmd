@@ -39,7 +39,7 @@ Shooting Crime Finder
 
 Column {.sidebar}
 -----------------------------------------------------------------------
-Please enter the zip-code of New York City (from 10001 to 11693).
+Find shootings near you
 
 ```{r}
 numericInput("zipcode", "Zipcode:", 10001, min = 10001, max = 11693)
@@ -48,7 +48,7 @@ numericInput("zipcode", "Zipcode:", 10001, min = 10001, max = 11693)
 Column {data-width=600}
 -----------------------------------------------------------------------
 
-### Distribution of Shooting Cases
+### NYC Shooting Incidents Map
 
 ```{r}
 renderLeaflet({
@@ -81,7 +81,7 @@ risk_plot
 Column {data-width=400}
 -----------------------------------------------------------------------
 
-### Most Dangerous Month ... ?
+### Month with the highest incident rate
 
 ```{r}
 renderPlotly({
