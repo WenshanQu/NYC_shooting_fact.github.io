@@ -1,0 +1,256 @@
+---
+title: "Data_Visualization"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: hide
+  html_notebook:
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(plotly)
+library(dplyr)
+library(viridis)
+library(gganimate)
+library(ggmap)
+library(png)
+library(gifski)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+knitr::opts_chunk$set(
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "90%",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
+)
+
+options(
+  ggplot2.continuous.color = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_color_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+
+```{r import data, include = FALSE}
+history_df = read.csv('./data/historic.csv')
+
+year_to_date_df = read.csv('./data/year_to_date.csv') %>% 
+  rename(Lon_Lat = New.Georeferenced.Column)
+```
+
+```{r data cleaning, include = FALSE}
+Shooting_df = bind_rows(history_df, year_to_date_df) %>% 
+  janitor::clean_names() %>% 
+  separate(occur_date, c("month","day","year")) %>% 
+  separate(occur_time, c("hour","minute","second")) %>% 
+  mutate(
+    year = as.numeric(year), 
+    month = as.numeric(month),
+    day = as.numeric(day),
+    hour = as.numeric(hour),
+    minute = as.numeric(minute)
+    ) %>% 
+  select(-second)
+```
+
+# Bar Chart on race and sex
+
+From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, Male victims outweigh Female victims in all races.
+
+The bar chart of sex and race distribution of Perpetrators is similar to that of Victims. We can see most Perpetrators in NYC shooting cases from 2006 until now are male in Black. Broadly, Male Perpetrators outweigh Female Perpetrators in all races.
+
+```{r}
+race_sex_vicdf = Shooting_df %>%
+  subset(vic_sex == "M" | vic_sex == "F") %>% 
+  group_by(vic_sex,vic_race) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = vic_sex, values_from = count) %>% 
+  subset(vic_race != 'UNKNOWN')
+
+race_sex_perpdf = Shooting_df %>%
+  subset(perp_sex == "M" | perp_sex == "F") %>% 
+  group_by(perp_sex,perp_race) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = perp_sex, values_from = count) %>% 
+  subset(perp_race != 'UNKNOWN')
+
+
+fig1 <-  plot_ly(race_sex_vicdf, x = ~vic_race, y = ~F, type = 'bar', name = 'Female Victim', alpha = 0.7) %>% 
+  add_trace(y = ~M, name = 'Male Victim') %>% 
+  layout(yaxis = list(title = 'Count'), barmode = 'stack') %>% 
+  layout(
+         xaxis = list(title = ""))
+
+fig2 <- plot_ly(race_sex_perpdf, x = ~perp_race, y = ~F, type = 'bar', name = 'Female Perpetrator', alpha = 0.7) %>% 
+  add_trace(y = ~M, name = 'Male Perpetrator') %>% 
+  layout(yaxis = list(title = 'Count'), barmode = 'stack') %>% 
+  layout(
+         xaxis = list(title = ""))
+
+
+fig <- subplot(fig1, fig2, shareY = TRUE) %>% 
+  layout(title = 'Race and Sex Distribution') %>% 
+  layout(showlegend = TRUE, legend = list(font = list(size = 8))) %>% 
+  layout(annotations = list(
+    list(x = 0.2 , y = 1.02, text = "Victims", showarrow = F, xref = 'paper', yref = 'paper'),
+     list(x = 0.85 , y = 1.02, text = "Perpetrators", showarrow = F, xref = 'paper', yref = 'paper'))
+)
+fig
+
+```
+
+
+
+
+# Shooting Cases by Borough
+
+The Borough bar chart shows that Brooklyn area has the most shooting cases(more than 10k) and Staten Island has the least shooting cases(less than 1k) in NYC.
+
+```{r Borough}
+boro_df = Shooting_df %>%
+  group_by(boro) %>% 
+  summarise(count = n())
+
+boro_bar = boro_df %>% 
+  mutate(boro = fct_reorder(boro, count)) %>% 
+  plot_ly(x = ~boro, y = ~count, color = ~boro, type = "bar", colors = "viridis", alpha = 0.8) %>% 
+    layout(
+      title = "Shooting cases by Borough",
+      xaxis = list(title = "Borough")
+      )
+boro_bar
+```
+
+
+
+
+# Shooting Cases by location (Common)
+
+Cases with unrecorded location are dropped. Locations where shootings happened less than 10 times from 2006 until now are dropped.The bar chart only analyzes common locations that exist shooting cases those years. We can see from the chart that public houses, apartment buildings and private houses are top 3 locations that shooting cases may happen.
+
+```{r location}
+location_df = Shooting_df %>%
+  mutate_all(list(~na_if(.,""))) %>%
+  drop_na(location_desc) %>% 
+  group_by(location_desc) %>% 
+  summarise(count = n()) %>% 
+  subset(count >= 10)
+
+location_bar = location_df %>% 
+  mutate(location_desc = fct_reorder(location_desc, count)) %>% 
+  plot_ly(x = ~location_desc, y = ~count, color = ~location_desc, type = "bar", colors = "viridis", alpha = 0.8) %>% 
+    layout(
+      title = "Shooting cases by location (common)",
+      xaxis = list(title = "location")
+      )
+location_bar
+```
+
+
+
+# Shooting Cases Trend before 2021 by Borough
+
+The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of sepetember. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergency of COVID-19.
+
+```{r Shooting Cases Trend before 2020, fig.align='center'}
+year_trend_df_2020 = Shooting_df %>%
+  group_by(year, boro) %>%
+  mutate(
+    boro = factor(boro)
+  ) %>% 
+  summarise(count = n()) %>% 
+  subset(year != '2021')
+
+trend_plot = ggplot(year_trend_df_2020, aes(x = year, y = count, col = factor(boro))) + 
+  geom_line(size = 1) + 
+  geom_point(size = 2) + 
+  labs(title = "Shooting Cases Trend before 2021",
+       subtitle = 'Year: {as.integer(frame_along)}', 
+       y = "Total cases per year") +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 12)) +
+  scale_x_continuous(breaks = seq(from = 2006, to = 2020, by = 1)) +
+  transition_reveal(year) 
+
+trend_plot
+```
+
+
+# Shooting density map over hours 
+
+The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. Frome the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
+
+```{r Shooting density map}
+map_df = Shooting_df %>%
+  summarise(
+    lat_max = ceiling(max(latitude)),
+    lat_min = min(latitude),
+    lon_max = max(longitude),
+    lon_min = min(longitude)
+  )
+
+map_nyc = get_map(
+  location = c(
+    top = pull(map_df, lat_max),
+    bottom = pull(map_df, lat_min),
+    right = pull(map_df, lon_max),
+    left = pull(map_df, lon_min)
+  )
+)
+
+map_hour_df = Shooting_df %>% 
+  dplyr::select(boro, hour, minute, latitude,longitude)
+  
+map_hour = map_hour_df %>% 
+  mutate(text_label = str_c("Borough: ", boro, " Time: ",hour,":", minute)) %>% 
+  plot_ly() %>% 
+  add_markers(
+    x = ~ longitude,
+    y = ~ latitude,
+    text = ~ text_label,
+    alpha = 0.08,
+    frame = ~ hour,
+    mode = "marker",
+    color = ~boro,
+    colors = viridis::viridis(3,option = "C")
+  ) %>%
+  layout(
+    images = list(
+      source = raster2uri(as.raster(map_nyc)),
+      xref = "x",
+      yref = "y",
+      y = 40.5,
+      x = -74.25,
+      sizey = 0.5,
+      sizex = 0.55,
+      sizing = "stretch",
+      xanchor = "left",
+      yanchor = "bottom",
+      opacity = 0.4,
+      layer = "below"
+    )
+  ) %>%
+  layout(showlegend = TRUE, legend = list(font = list(size = 8))) %>% 
+  animation_opts(
+    transition = 0,
+    frame = 500)
+map_hour
+```
+
+
+
+
+
+
