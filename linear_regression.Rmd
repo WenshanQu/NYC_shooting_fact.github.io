@@ -1,0 +1,53 @@
+---
+title: "Time review"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r data import, message=FALSE}
+nyc_shooting = read_csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
+```
+
+```{r LR, message=FALSE}
+# prepare dataframe
+lr_df = nyc_shooting %>% 
+  select(-location_desc, -x_coord_cd, -y_coord_cd, -latitude, -longitude, -lon_lat, -new_georeferenced_column, -zipcode) %>% 
+  mutate(
+    month = as.factor(recode(month, "January" = 1, "February" = 2, "March" = 3, "April" = 4, "May" = 5, "June" = 6, "July" = 7, "August" = 8, "September" = 9, "October" = 10, "November" = 11, "December" = 12)),
+    month_date = str_c(month, "-", day)
+  )
+
+# check missing data for perp_
+sum(is.na(lr_df$perp_age_group))
+```
+
+```{r year_month, message=FALSE}
+year_month_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    month = as.numeric(month),
+    year = as.factor(year)
+    )
+year_month_df %>% 
+  ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
+  geom_line() + scale_x_continuous(breaks = 1:12)
+```
+
+```{r year_month2, message=FALSE}
+perp_age_df = lr_df %>% 
+  filter(!is.na(perp_age_group)) %>% 
+  group_by(perp_age_group, perp_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_age_group = as.factor(perp_age_group)
+  )
+
+perp_age_df %>% 
+  ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity')
+
+```
