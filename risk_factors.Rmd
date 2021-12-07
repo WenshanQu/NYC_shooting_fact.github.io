@@ -10,13 +10,11 @@ library(viridis)
 library(plotly)
 library(modelr)
 
-
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
 	fig.width = 6, 
   fig.height = 8,
-  out.width = "90%",
 	message = F,
   echo = T,
   warning = F,
@@ -43,8 +41,6 @@ nyc_time =
     hour = as.factor(hour)
   )
 ```
-
-## Regression Analysis
 
 ### Dataset Demonsatration
 
@@ -129,6 +125,7 @@ fit_df1 = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp
 fit_df1
 ```
 
+Our regression model included year, month, borough, perpetrator's sex and race, and victim's sex and race as the predictors. The regression results year, month, borough, perpetrator's sex, and victim's sex are significant predictor variable for the number of shooting in NYC. Among the month variable, May, June, July, August, September, October, and December have lower number of shooting than January.And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.The next step is to use stepwise regression in backward direction to build our regression model.
 
 ### backward stepwise regression
 
@@ -136,14 +133,32 @@ fit_df1
 fit_df_result =
 lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
 
-step(fit_df_result, direction = 'backward')
+step_df =
+  step(fit_df_result, direction = 'backward') 
+
+summary(step_df) %>% 
+    broom::tidy() %>% 
+  mutate(
+    term = str_replace(term, "year", "Year:"),
+    term = str_replace(term, "month", "Month:"),
+    term = str_replace(term, "boro", "Borough:"),
+    term = str_replace(term, "statistical_murder_flag", "Muder Flag:"),
+    term = str_replace(term, "perp_sex", "Perpetrator sex:"),
+    term = str_replace(term, "perp_race", "Perpetrator race:"),
+    term = str_replace(term, "vic_sex", "Victim sex:"),
+    term = str_replace(term, "vic_race", "Victim race:")
+  ) %>% 
+  knitr::kable(digits = 3)
+
+
 ```
 
+The backward stepwise regression chose the regression model with minimum AIC value. However, the stepwise regression did not omit any predictor, which indicates that the current regression model is sufficient to explain the outcome - number of shooing in NYC.
 
 ### Multiple Linear Regression diagnose
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-summary(mlr_lm)
+summary(fit_df_result)
 ```
 
 
@@ -152,6 +167,11 @@ mlr_lm %>%
   modelr::add_residuals(fit_df_result) %>% 
   ggplot(aes(x = year, y = resid)) +
   geom_point() 
+
+mlr_lm %>% 
+  modelr::add_residuals(fit_df_result) %>% 
+  ggplot(aes(x = boro, y = resid)) +
+  geom_violin() 
 
 mlr_lm %>% 
   modelr::add_residuals(fit_df_result) %>% 
@@ -164,6 +184,7 @@ mlr_lm %>%
   geom_density()
 ```
 
+The residuals plot of year and borough did not show any distribution pattern which indicated the good fit of model. However, the residual density plot indicated some outliers. 
 
 ## Cross Validation between different regression models
 
@@ -184,8 +205,10 @@ cv_RMSE =
   cv_df %>% 
   mutate(
     mod_df1 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race, data = .x)),
-    mod_df2 = map(.x = train, ~lm(number_shoot ~ month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race, data = .x)),
-    mod_df3 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race + boro*vic_race, data = .x))
+    
+    mod_df2 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex, data = .x)),
+    
+    mod_df3 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + boro*vic_sex + boro*perp_sex, data = .x))
   ) %>% 
   mutate(
     rmse_df1 = map2_dbl(.x = mod_df1, .y = test, ~rmse(model = .x, data = .y)),
@@ -208,6 +231,9 @@ cv_RMSE %>%
   geom_boxplot()
 ```
 
+Our cross validation include three different models. The first model includes all the predictors. The second model includes only the significant predictors. the third model includes interaction of borough and sex.
+
+The cross validation section, the root mean square deviations were calculated for all the three models. the RMSE plot shows that RMSE of all model are similar. And the first model have the lowest RMSE, which indicates the first model may be the best model to explain the outcome - number of shooting in NYC.
 
 Here's the link back to [Homepage](index.html) page.
 
