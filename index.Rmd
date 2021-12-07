@@ -1,5 +1,5 @@
 ---
-title: "New York CIty Shooting Fact"
+title: "New York City Shooting Fact"
 output: 
   html_document:
     toc: true
