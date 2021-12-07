@@ -127,7 +127,11 @@ xlab = c("2017/2016", "2018/2017", "2019/2018", "2020/2019", "2021/2020")
 yoy_df %>% 
   ggplot(aes(x = y_o_y, y = ratio, color = month, group = month)) +
   geom_line() +
-  scale_x_discrete(labels = xlab)
-
+  scale_x_discrete(labels = xlab) +
+  labs(
+    title = "Year over Year Case Growth Rate",
+    x = "year over year",
+    y = "growth rate"
+  )
 ```
 
