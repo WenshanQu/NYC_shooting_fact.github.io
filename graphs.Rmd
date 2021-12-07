@@ -1,17 +1,19 @@
 ---
 title: "Time review"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
-```{r data import, message=FALSE}
+```{r data import, message=FALSE, warning=FALSE}
 nyc_shooting = read_csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
 ```
 
-```{r LR, message=FALSE}
+```{r LR, message=FALSE, warning=FALSE}
 # prepare dataframe
 lr_df = nyc_shooting %>% 
   select(-location_desc, -x_coord_cd, -y_coord_cd, -latitude, -longitude, -lon_lat, -new_georeferenced_column, -zipcode) %>% 
@@ -19,12 +21,9 @@ lr_df = nyc_shooting %>%
     month = as.factor(recode(month, "January" = 1, "February" = 2, "March" = 3, "April" = 4, "May" = 5, "June" = 6, "July" = 7, "August" = 8, "September" = 9, "October" = 10, "November" = 11, "December" = 12)),
     month_date = str_c(month, "-", day)
   )
-
-# check missing data for perp_
-sum(is.na(lr_df$perp_age_group))
 ```
 
-```{r year_month, message=FALSE}
+```{r year_month, message=FALSE, warning=FALSE}
 year_month_df = lr_df %>% 
   group_by(year, month) %>% 
   summarise(n_freq = n()) %>% 
@@ -34,10 +33,17 @@ year_month_df = lr_df %>%
     )
 year_month_df %>% 
   ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
-  geom_line() + scale_x_continuous(breaks = 1:12)
+  geom_line() + scale_x_continuous(breaks = 1:12) +
+  labs(
+    title = "Monthly shooting cases in NYC",
+    x = "month",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.02)
+```
 
+```{r month_hour, message=FALSE, warning=FALSE}
 month_hour_df = lr_df %>% 
-  separate(occur_time, into=c("hour", "min", "sec"), sep = ":") %>% 
+  separate(occur_time, into = c("hour", "min", "sec"), sep = ":") %>% 
   group_by(month, hour) %>% 
   summarise(n_freq = n()) %>% 
   mutate(
@@ -46,10 +52,16 @@ month_hour_df = lr_df %>%
     )
 month_hour_df %>% 
   ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
-  geom_line() + scale_x_continuous(breaks = 0:23)
+  geom_line() + scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = "Shooting cases in each hour in NYC",
+    x = "hour",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.1)
 ```
 
-```{r age_race, message=FALSE}
+
+```{r perp_age_race, message=FALSE, warning=FALSE}
 perp_age_df = lr_df %>% 
   filter(!is.na(perp_age_group)) %>% 
   group_by(perp_age_group, perp_race) %>% 
@@ -60,8 +72,15 @@ perp_age_df = lr_df %>%
 
 perp_age_df %>% 
   ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
-  geom_bar(position = "dodge", stat = 'identity')
+  geom_bar(position = "dodge", stat = 'identity') +
+  labs(
+    title = "Perpetrator's age and race",
+    x = "age group",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.0025)
+```
 
+```{r vic_age_race, message=FALSE, warning=FALSE}
 vic_age_df = lr_df %>% 
   filter(!is.na(vic_age_group)) %>% 
   group_by(vic_age_group, vic_race) %>% 
@@ -72,10 +91,16 @@ vic_age_df = lr_df %>%
 
 vic_age_df %>% 
   ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
-  geom_bar(position = "dodge", stat = 'identity')
+  geom_bar(position = "dodge", stat = 'identity') +
+  labs(
+    title = "Victim's age and race",
+    x = "age group",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.00125)
 ```
 
-```{r sex_year, message=FALSE}
+
+```{r perp_sex_year, message=FALSE, warning=FALSE}
 perp_sex_df = lr_df %>% 
   filter(!is.na(perp_sex)) %>% 
   group_by(perp_sex, year) %>% 
@@ -85,8 +110,16 @@ perp_sex_df = lr_df %>%
   )
 
 perp_sex_df %>% 
-  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = "stack", aes(order = desc(perp_sex)))
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = "stack", aes(order = desc(perp_sex))) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = "Perpetrator's gender",
+    x = "occurrence year of case",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.0025)
+```
 
+```{r vic_sex_year, message=FALSE, warning=FALSE}
 vic_sex_df = lr_df %>% 
   filter(!is.na(vic_sex)) %>% 
   group_by(vic_sex, year) %>% 
@@ -96,10 +129,16 @@ vic_sex_df = lr_df %>%
   )
 
 vic_sex_df %>% 
-  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex)))
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex))) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = "Victim's gender",
+    x = "occurrence year of case",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.00125)
 ```
 
-```{r YonYgrowth, message=FALSE}
+```{r YonYgrowth, message=FALSE, warning=FALSE}
 yoy_df = lr_df %>% 
   group_by(year, month) %>% 
   summarise(n_freq = n()) %>% 
@@ -133,5 +172,49 @@ yoy_df %>%
     x = "year over year",
     y = "growth rate"
   )
+```
+
+```{r weather, message=FALSE, warning=FALSE}
+nyc_weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728"),
+    var = "all", 
+    date_min = "2016-01-01",
+    date_max = "2021-09-30") %>%
+  mutate(
+    tmin = tmin / 10,
+    tmax = tmax / 10,
+    tavg = (tmin + tmax) / 2,
+    ymd = date
+    ) %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-") %>% 
+  mutate(month_date = str_c(month, "-", day)) %>% 
+  select(ymd, year, month_date, tavg)
+
+nyc_weather_df %>% 
+  ggplot(aes(x = ymd, y = tavg)) +
+  geom_point() +
+  labs(
+    title = "Temperature Records in NYC",
+    x = "date",
+    y = "temperature average"
+  ) + coord_fixed(ratio = 8)
+```
+
+```{r daily_shooting, message=FALSE, warning=FALSE}
+lr_w_df = lr_df %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    ymd = as.Date(str_c(year, "-", month, "-", day))
+  )
+lr_w_df %>% 
+  ggplot(aes(x = ymd, y = n_freq)) +
+  geom_point() +
+  labs(
+    title = "Daily shooting cases in NYC",
+    x = "date",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 15)
 ```
 

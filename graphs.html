@@ -30,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -217,6 +218,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -271,6 +275,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Time review</h1>
@@ -285,11 +297,7 @@ lr_df = nyc_shooting %&gt;%
   mutate(
     month = as.factor(recode(month, &quot;January&quot; = 1, &quot;February&quot; = 2, &quot;March&quot; = 3, &quot;April&quot; = 4, &quot;May&quot; = 5, &quot;June&quot; = 6, &quot;July&quot; = 7, &quot;August&quot; = 8, &quot;September&quot; = 9, &quot;October&quot; = 10, &quot;November&quot; = 11, &quot;December&quot; = 12)),
     month_date = str_c(month, &quot;-&quot;, day)
-  )
-
-# check missing data for perp_
-sum(is.na(lr_df$perp_age_group))</code></pre>
-<pre><code>## [1] 3672</code></pre>
+  )</code></pre>
 <pre class="r"><code>year_month_df = lr_df %&gt;% 
   group_by(year, month) %&gt;% 
   summarise(n_freq = n()) %&gt;% 
@@ -299,10 +307,15 @@ sum(is.na(lr_df$perp_age_group))</code></pre>
     )
 year_month_df %&gt;% 
   ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
-  geom_line() + scale_x_continuous(breaks = 1:12)</code></pre>
+  geom_line() + scale_x_continuous(breaks = 1:12) +
+  labs(
+    title = &quot;Monthly shooting cases in NYC&quot;,
+    x = &quot;month&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.02)</code></pre>
 <p><img src="graphs_files/figure-html/year_month-1.png" width="672" /></p>
 <pre class="r"><code>month_hour_df = lr_df %&gt;% 
-  separate(occur_time, into=c(&quot;hour&quot;, &quot;min&quot;, &quot;sec&quot;), sep = &quot;:&quot;) %&gt;% 
+  separate(occur_time, into = c(&quot;hour&quot;, &quot;min&quot;, &quot;sec&quot;), sep = &quot;:&quot;) %&gt;% 
   group_by(month, hour) %&gt;% 
   summarise(n_freq = n()) %&gt;% 
   mutate(
@@ -311,8 +324,13 @@ year_month_df %&gt;%
     )
 month_hour_df %&gt;% 
   ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
-  geom_line() + scale_x_continuous(breaks = 0:23)</code></pre>
-<p><img src="graphs_files/figure-html/year_month-2.png" width="672" /></p>
+  geom_line() + scale_x_continuous(breaks = 0:23) +
+  labs(
+    title = &quot;Shooting cases in each hour in NYC&quot;,
+    x = &quot;hour&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.1)</code></pre>
+<p><img src="graphs_files/figure-html/month_hour-1.png" width="672" /></p>
 <pre class="r"><code>perp_age_df = lr_df %&gt;% 
   filter(!is.na(perp_age_group)) %&gt;% 
   group_by(perp_age_group, perp_race) %&gt;% 
@@ -323,8 +341,13 @@ month_hour_df %&gt;%
 
 perp_age_df %&gt;% 
   ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
-  geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;)</code></pre>
-<p><img src="graphs_files/figure-html/age_race-1.png" width="672" /></p>
+  geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;) +
+  labs(
+    title = &quot;Perpetrator&#39;s age and race&quot;,
+    x = &quot;age group&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.0025)</code></pre>
+<p><img src="graphs_files/figure-html/perp_age_race-1.png" width="672" /></p>
 <pre class="r"><code>vic_age_df = lr_df %&gt;% 
   filter(!is.na(vic_age_group)) %&gt;% 
   group_by(vic_age_group, vic_race) %&gt;% 
@@ -335,8 +358,13 @@ perp_age_df %&gt;%
 
 vic_age_df %&gt;% 
   ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
-  geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;)</code></pre>
-<p><img src="graphs_files/figure-html/age_race-2.png" width="672" /></p>
+  geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;) +
+  labs(
+    title = &quot;Victim&#39;s age and race&quot;,
+    x = &quot;age group&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.00125)</code></pre>
+<p><img src="graphs_files/figure-html/vic_age_race-1.png" width="672" /></p>
 <pre class="r"><code>perp_sex_df = lr_df %&gt;% 
   filter(!is.na(perp_sex)) %&gt;% 
   group_by(perp_sex, year) %&gt;% 
@@ -346,9 +374,14 @@ vic_age_df %&gt;%
   )
 
 perp_sex_df %&gt;% 
-  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(perp_sex)))</code></pre>
-<pre><code>## Warning: Ignoring unknown aesthetics: order</code></pre>
-<p><img src="graphs_files/figure-html/sex_year-1.png" width="672" /></p>
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(perp_sex))) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = &quot;Perpetrator&#39;s gender&quot;,
+    x = &quot;occurrence year of case&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.0025)</code></pre>
+<p><img src="graphs_files/figure-html/perp_sex_year-1.png" width="672" /></p>
 <pre class="r"><code>vic_sex_df = lr_df %&gt;% 
   filter(!is.na(vic_sex)) %&gt;% 
   group_by(vic_sex, year) %&gt;% 
@@ -358,9 +391,14 @@ perp_sex_df %&gt;%
   )
 
 vic_sex_df %&gt;% 
-  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(vic_sex)))</code></pre>
-<pre><code>## Warning: Ignoring unknown aesthetics: order</code></pre>
-<p><img src="graphs_files/figure-html/sex_year-2.png" width="672" /></p>
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(vic_sex))) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = &quot;Victim&#39;s gender&quot;,
+    x = &quot;occurrence year of case&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 0.00125)</code></pre>
+<p><img src="graphs_files/figure-html/vic_sex_year-1.png" width="672" /></p>
 <pre class="r"><code>yoy_df = lr_df %&gt;% 
   group_by(year, month) %&gt;% 
   summarise(n_freq = n()) %&gt;% 
@@ -394,8 +432,47 @@ yoy_df %&gt;%
     x = &quot;year over year&quot;,
     y = &quot;growth rate&quot;
   )</code></pre>
-<pre><code>## Warning: Removed 3 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="graphs_files/figure-html/YonYgrowth-1.png" width="672" /></p>
+<pre class="r"><code>nyc_weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c(&quot;USW00094728&quot;),
+    var = &quot;all&quot;, 
+    date_min = &quot;2016-01-01&quot;,
+    date_max = &quot;2021-09-30&quot;) %&gt;%
+  mutate(
+    tmin = tmin / 10,
+    tmax = tmax / 10,
+    tavg = (tmin + tmax) / 2,
+    ymd = date
+    ) %&gt;% 
+  separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;-&quot;) %&gt;% 
+  mutate(month_date = str_c(month, &quot;-&quot;, day)) %&gt;% 
+  select(ymd, year, month_date, tavg)
+
+nyc_weather_df %&gt;% 
+  ggplot(aes(x = ymd, y = tavg)) +
+  geom_point() +
+  labs(
+    title = &quot;Temperature Records in NYC&quot;,
+    x = &quot;date&quot;,
+    y = &quot;temperature average&quot;
+  ) + coord_fixed(ratio = 8)</code></pre>
+<p><img src="graphs_files/figure-html/weather-1.png" width="672" /></p>
+<pre class="r"><code>lr_w_df = lr_df %&gt;% 
+  group_by(year, month, day) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  mutate(
+    ymd = as.Date(str_c(year, &quot;-&quot;, month, &quot;-&quot;, day))
+  )
+lr_w_df %&gt;% 
+  ggplot(aes(x = ymd, y = n_freq)) +
+  geom_point() +
+  labs(
+    title = &quot;Daily shooting cases in NYC&quot;,
+    x = &quot;date&quot;,
+    y = &quot;number of shooting cases&quot;
+  ) + coord_fixed(ratio = 15)</code></pre>
+<p><img src="graphs_files/figure-html/daily_shooting-1.png" width="672" /></p>
 
 
 
@@ -430,6 +507,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
