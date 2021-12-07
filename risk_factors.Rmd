@@ -1,7 +1,5 @@
 ---
-title: "risk_factors"
-author: "Yu He"
-date: "12/5/2021"
+title: "Regression Analysis"
 output: github_document
 ---
 
@@ -16,9 +14,13 @@ library(modelr)
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
-	fig.width = 8, 
-  fig.height = 6,
-  out.width = "90%"
+	fig.width = 6, 
+  fig.height = 8,
+  out.width = "90%",
+	message = F,
+  echo = T,
+  warning = F,
+  cache = F
 )
 options(
   ggplot2.continuous.colour = "viridis",
@@ -42,10 +44,11 @@ nyc_time =
   )
 ```
 
-
 ## Regression Analysis
 
-The NYPD Shooting Data was collected from the 'NYC Open Data'. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:
+### Dataset Demonsatration
+
+The NYPD Shooting Data was collected from the [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8). The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:
 
   * 'year'. year of shooting incident
   * 'month'. month of the shooting incident
@@ -61,7 +64,7 @@ The NYPD Shooting Data was collected from the 'NYC Open Data'. The dataset inclu
   * 'vic_race'. victim's race description
   * 'zipcode'. zipcode of the shooting incident
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, import data, echo=FALSE, message=FALSE, warning=FALSE}
 
 nyc_fit_lm =
   nyc_time %>% 
@@ -129,7 +132,7 @@ fit_df1
 
 ### backward stepwise regression
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 fit_df_result =
 lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
 
@@ -156,9 +159,10 @@ mlr_lm %>%
   geom_density()
   
 mlr_lm %>% 
-  modelr::add_predictions(fit_df_result)
+  modelr::add_predictions(fit_df_result) %>% 
+    ggplot(aes(x = pred)) +
+  geom_density()
 ```
-
 
 
 ## Cross Validation between different regression models
@@ -191,7 +195,7 @@ cv_RMSE =
 ```
 
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 cv_RMSE %>% 
   select(.id, starts_with("rmse")) %>% 
     pivot_longer(
@@ -205,7 +209,7 @@ cv_RMSE %>%
 ```
 
 
-
+Here's the link back to [Homepage](index.html) page.
 
 
 

@@ -283,7 +283,9 @@ $(document).ready(function () {
 
 <div id="regression-analysis" class="section level2">
 <h2>Regression Analysis</h2>
-<p>The NYPD Shooting Data was collected from the ‘NYC Open Data’. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:</p>
+<div id="dataset-demonsatration" class="section level3">
+<h3>Dataset Demonsatration</h3>
+<p>The NYPD Shooting Data was collected from the <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8">NYC Open Data</a>. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:</p>
 <ul>
 <li>‘year’. year of shooting incident</li>
 <li>‘month’. month of the shooting incident</li>
@@ -300,12 +302,13 @@ $(document).ready(function () {
 <li>‘zipcode’. zipcode of the shooting incident</li>
 </ul>
 </div>
+</div>
 <div id="multiple-linear-regression-model" class="section level2">
 <h2>Multiple linear regression model</h2>
 <div id="box-cox-transformation" class="section level3">
 <h3>Box-Cox transformation</h3>
 <p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable ‘location_desc’ includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y transformation is applied.</p>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-1-1.png" width="90%" /></p>
 </div>
 <div id="regression-analysis-results" class="section level3">
 <h3>Regression analysis results</h3>
@@ -661,10 +664,6 @@ $(document).ready(function () {
 </div>
 <div id="backward-stepwise-regression" class="section level3">
 <h3>backward stepwise regression</h3>
-<pre class="r"><code>fit_df_result =
-lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
-
-step(fit_df_result, direction = &#39;backward&#39;)</code></pre>
 <pre><code>## Start:  AIC=-41162.41
 ## number_shoot ~ year + month + boro + statistical_murder_flag + 
 ##     perp_sex + perp_race + vic_sex + vic_race
@@ -768,39 +767,13 @@ step(fit_df_result, direction = &#39;backward&#39;)</code></pre>
 ##  UNKNOWN                       :  48   3rd Qu.:1.00000  
 ##  WHITE                         : 503   Max.   :1.00000  
 ##  WHITE HISPANIC                :2517</code></pre>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-6-1.png" width="90%" /><img src="risk_factors_files/figure-html/unnamed-chunk-6-2.png" width="90%" /></p>
-<pre><code>## # A tibble: 12,646 x 12
-## # Groups:   month, year, boro, statistical_murder_flag, perp_age_group,
-## #   vic_age_group, perp_sex, perp_race, vic_sex [11,255]
-##    month   year  boro  statistical_murder~ perp_age_group vic_age_group perp_sex
-##    &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;               &lt;chr&gt;          &lt;chr&gt;         &lt;fct&gt;   
-##  1 January 2006  BRONX FALSE               &lt;18            &lt;18           M       
-##  2 January 2006  BRONX FALSE               18-24          &lt;18           M       
-##  3 January 2006  BRONX FALSE               18-24          18-24         M       
-##  4 January 2006  BRONX FALSE               18-24          18-24         M       
-##  5 January 2006  BRONX FALSE               18-24          18-24         M       
-##  6 January 2006  BRONX FALSE               18-24          18-24         M       
-##  7 January 2006  BRONX FALSE               18-24          25-44         M       
-##  8 January 2006  BRONX FALSE               25-44          18-24         M       
-##  9 January 2006  BRONX FALSE               25-44          18-24         M       
-## 10 January 2006  BRONX FALSE               25-44          25-44         M       
-## # ... with 12,636 more rows, and 5 more variables: perp_race &lt;fct&gt;,
-## #   vic_sex &lt;fct&gt;, vic_race &lt;fct&gt;, number_shoot &lt;dbl&gt;, pred &lt;dbl&gt;</code></pre>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-5-1.png" width="90%" /><img src="risk_factors_files/figure-html/unnamed-chunk-5-2.png" width="90%" /><img src="risk_factors_files/figure-html/unnamed-chunk-5-3.png" width="90%" /></p>
 </div>
 </div>
 <div id="cross-validation-between-different-regression-models" class="section level2">
 <h2>Cross Validation between different regression models</h2>
-<pre class="r"><code>cv_RMSE %&gt;% 
-  select(.id, starts_with(&quot;rmse&quot;)) %&gt;% 
-    pivot_longer(
-    rmse_df1:rmse_df3,
-    names_to = &quot;model&quot;, 
-    values_to = &quot;rmse&quot;,
-    names_prefix = &quot;rmse_&quot;
-  ) %&gt;% 
-  ggplot(aes(x = model, y = rmse)) + 
-  geom_boxplot()</code></pre>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-8-1.png" width="90%" /></p>
+<p>Here’s the link back to <a href="index.html">Homepage</a> page.</p>
 </div>
 
 
