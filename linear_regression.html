@@ -358,6 +358,36 @@ vic_sex_df %&gt;%
   ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(vic_sex)))</code></pre>
 <pre><code>## Warning: Ignoring unknown aesthetics: order</code></pre>
 <p><img src="linear_regression_files/figure-html/sex_year-2.png" width="672" /></p>
+<pre class="r"><code>yoy_df = lr_df %&gt;% 
+  group_by(year, month) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  pivot_wider(
+    names_from = &quot;year&quot;,
+    values_from = &quot;n_freq&quot;
+  ) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  mutate(
+    x1 = x2017 / x2016,
+    x2 = x2018 / x2017,
+    x3 = x2019 / x2018,
+    x4 = x2020 / x2019,
+    x5 = x2021 / x2020
+  ) %&gt;% 
+  select(-x2016, -x2017, -x2018, -x2019, -x2020, -x2021) %&gt;% 
+  pivot_longer(
+    x1:x5,
+    names_to = &quot;y_o_y&quot;,
+    values_to = &quot;ratio&quot;
+  )
+
+xlab = c(&quot;2017/2016&quot;, &quot;2018/2017&quot;, &quot;2019/2018&quot;, &quot;2020/2019&quot;, &quot;2021/2020&quot;)
+
+yoy_df %&gt;% 
+  ggplot(aes(x = y_o_y, y = ratio, color = month, group = month)) +
+  geom_line() +
+  scale_x_discrete(labels = xlab)</code></pre>
+<pre><code>## Warning: Removed 3 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="linear_regression_files/figure-html/YonYgrowth-1.png" width="672" /></p>
 
 
 

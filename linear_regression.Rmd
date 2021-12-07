@@ -99,3 +99,35 @@ vic_sex_df %>%
   ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex)))
 ```
 
+```{r YonYgrowth, message=FALSE}
+yoy_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = "n_freq"
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    x1 = x2017 / x2016,
+    x2 = x2018 / x2017,
+    x3 = x2019 / x2018,
+    x4 = x2020 / x2019,
+    x5 = x2021 / x2020
+  ) %>% 
+  select(-x2016, -x2017, -x2018, -x2019, -x2020, -x2021) %>% 
+  pivot_longer(
+    x1:x5,
+    names_to = "y_o_y",
+    values_to = "ratio"
+  )
+
+xlab = c("2017/2016", "2018/2017", "2019/2018", "2020/2019", "2021/2020")
+
+yoy_df %>% 
+  ggplot(aes(x = y_o_y, y = ratio, color = month, group = month)) +
+  geom_line() +
+  scale_x_discrete(labels = xlab)
+
+```
+
