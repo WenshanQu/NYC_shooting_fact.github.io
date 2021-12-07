@@ -35,9 +35,21 @@ year_month_df = lr_df %>%
 year_month_df %>% 
   ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
   geom_line() + scale_x_continuous(breaks = 1:12)
+
+month_hour_df = lr_df %>% 
+  separate(occur_time, into=c("hour", "min", "sec"), sep = ":") %>% 
+  group_by(month, hour) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    hour = as.numeric(hour),
+    month = as.factor(month)
+    )
+month_hour_df %>% 
+  ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
+  geom_line() + scale_x_continuous(breaks = 0:23)
 ```
 
-```{r year_month2, message=FALSE}
+```{r age_race, message=FALSE}
 perp_age_df = lr_df %>% 
   filter(!is.na(perp_age_group)) %>% 
   group_by(perp_age_group, perp_race) %>% 
@@ -50,4 +62,40 @@ perp_age_df %>%
   ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
   geom_bar(position = "dodge", stat = 'identity')
 
+vic_age_df = lr_df %>% 
+  filter(!is.na(vic_age_group)) %>% 
+  group_by(vic_age_group, vic_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_age_group = as.factor(vic_age_group)
+  )
+
+vic_age_df %>% 
+  ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity')
 ```
+
+```{r sex_year, message=FALSE}
+perp_sex_df = lr_df %>% 
+  filter(!is.na(perp_sex)) %>% 
+  group_by(perp_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_sex = as.factor(perp_sex)
+  )
+
+perp_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = "stack", aes(order = desc(perp_sex)))
+
+vic_sex_df = lr_df %>% 
+  filter(!is.na(vic_sex)) %>% 
+  group_by(vic_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_sex = as.factor(vic_sex)
+  )
+
+vic_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex)))
+```
+

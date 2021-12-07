@@ -298,6 +298,18 @@ year_month_df %&gt;%
   ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
   geom_line() + scale_x_continuous(breaks = 1:12)</code></pre>
 <p><img src="linear_regression_files/figure-html/year_month-1.png" width="672" /></p>
+<pre class="r"><code>month_hour_df = lr_df %&gt;% 
+  separate(occur_time, into=c(&quot;hour&quot;, &quot;min&quot;, &quot;sec&quot;), sep = &quot;:&quot;) %&gt;% 
+  group_by(month, hour) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  mutate(
+    hour = as.numeric(hour),
+    month = as.factor(month)
+    )
+month_hour_df %&gt;% 
+  ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
+  geom_line() + scale_x_continuous(breaks = 0:23)</code></pre>
+<p><img src="linear_regression_files/figure-html/year_month-2.png" width="672" /></p>
 <pre class="r"><code>perp_age_df = lr_df %&gt;% 
   filter(!is.na(perp_age_group)) %&gt;% 
   group_by(perp_age_group, perp_race) %&gt;% 
@@ -309,7 +321,43 @@ year_month_df %&gt;%
 perp_age_df %&gt;% 
   ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
   geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;)</code></pre>
-<p><img src="linear_regression_files/figure-html/year_month2-1.png" width="672" /></p>
+<p><img src="linear_regression_files/figure-html/age_race-1.png" width="672" /></p>
+<pre class="r"><code>vic_age_df = lr_df %&gt;% 
+  filter(!is.na(vic_age_group)) %&gt;% 
+  group_by(vic_age_group, vic_race) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  mutate(
+    vic_age_group = as.factor(vic_age_group)
+  )
+
+vic_age_df %&gt;% 
+  ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
+  geom_bar(position = &quot;dodge&quot;, stat = &#39;identity&#39;)</code></pre>
+<p><img src="linear_regression_files/figure-html/age_race-2.png" width="672" /></p>
+<pre class="r"><code>perp_sex_df = lr_df %&gt;% 
+  filter(!is.na(perp_sex)) %&gt;% 
+  group_by(perp_sex, year) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  mutate(
+    perp_sex = as.factor(perp_sex)
+  )
+
+perp_sex_df %&gt;% 
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(perp_sex)))</code></pre>
+<pre><code>## Warning: Ignoring unknown aesthetics: order</code></pre>
+<p><img src="linear_regression_files/figure-html/sex_year-1.png" width="672" /></p>
+<pre class="r"><code>vic_sex_df = lr_df %&gt;% 
+  filter(!is.na(vic_sex)) %&gt;% 
+  group_by(vic_sex, year) %&gt;% 
+  summarise(n_freq = n()) %&gt;% 
+  mutate(
+    vic_sex = as.factor(vic_sex)
+  )
+
+vic_sex_df %&gt;% 
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = &quot;stack&quot;, aes(order = desc(vic_sex)))</code></pre>
+<pre><code>## Warning: Ignoring unknown aesthetics: order</code></pre>
+<p><img src="linear_regression_files/figure-html/sex_year-2.png" width="672" /></p>
 
 
 
