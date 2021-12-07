@@ -1,0 +1,230 @@
+---
+title: "risk_factors"
+author: "Yu He"
+date: "12/5/2021"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(modelr)
+
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+```
+
+
+```{r data import, echo=FALSE, message=FALSE, warning=FALSE}
+nyc_shooting = read_csv("./comp_data/Full NYC Shooting Data (2006-2021).csv")
+
+nyc_time = 
+  nyc_shooting %>% 
+  separate(occur_time, into = c("hour", "minute", "second"), sep = ":") %>% 
+  mutate(
+    hour = as.factor(hour)
+  )
+```
+
+
+## Regression Analysis
+
+The NYPD Shooting Data was collected from the 'NYC Open Data'. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:
+
+  * 'year'. year of shooting incident
+  * 'month'. month of the shooting incident
+  * 'day'. day of the shooting incident 
+  * 'boro'. borough where the shooting incident occurred
+  * 'location_desc'. location of the shooting incident
+  * 'statistical_murder_flag'. Shooting resulted in the victim’s death which would be counted as a murder
+  * 'perp_age_group'. perpetrator's age within a category
+  * 'perp_sex'. perpetrator's sex description
+  * 'perp_race'. perpetrator's race description
+  * 'vic_age_group'. victim's age within a category
+  * 'vic_sex'. victim's sex description
+  * 'vic_race'. victim's race description
+  * 'zipcode'. zipcode of the shooting incident
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+nyc_fit_lm =
+  nyc_time %>% 
+  select(month, day, year, boro, statistical_murder_flag, perp_age_group, vic_age_group, perp_sex, perp_race, vic_sex, vic_race) %>%
+  mutate(
+    month = as.factor(month), 
+    day = as.factor(day), 
+    year = as.factor(year),
+    boro = as.factor(boro), 
+    statistical_murder_flag = as.factor(statistical_murder_flag),
+    perp_sex = as.factor(perp_sex),
+    perp_race = as.factor(perp_race),
+    vic_sex = as.factor(vic_sex),
+    vic_race = as.factor(vic_race),
+    month = fct_relevel(month, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+  ) %>% 
+  group_by(month, year, boro, statistical_murder_flag, perp_age_group, vic_age_group, perp_sex, perp_race, vic_sex, vic_race) %>% 
+  summarize(
+    number_shoot = n()
+  ) %>% 
+  drop_na()
+```
+
+## Multiple linear regression model
+
+### Box-Cox transformation
+
+The box-cox method is applied in the model to determine the transformation of outcome variable. The variable 'location_desc' includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y transformation is applied.
+
+
+```{r, cache=TRUE, echo=FALSE, message=FALSE}
+
+mlr_fit = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = nyc_fit_lm)
+
+MASS::boxcox(mlr_fit)
+
+```
+
+### Regression analysis results
+
+```{r, cache=TRUE, echo=FALSE, message=FALSE}
+mlr_lm = 
+  nyc_fit_lm %>% 
+  mutate(
+    number_shoot = 1 / number_shoot
+  )
+
+fit_df1 = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) %>% 
+  broom::tidy() %>% 
+  mutate(
+    term = str_replace(term, "year", "Year:"),
+    term = str_replace(term, "month", "Month:"),
+    term = str_replace(term, "boro", "Borough:"),
+    term = str_replace(term, "statistical_murder_flag", "Muder Flag:"),
+    term = str_replace(term, "perp_sex", "Perpetrator sex:"),
+    term = str_replace(term, "perp_race", "Perpetrator race:"),
+    term = str_replace(term, "vic_sex", "Victim sex:"),
+    term = str_replace(term, "vic_race", "Victim race:")
+  ) %>% 
+  knitr::kable(digits = 3)
+
+fit_df1
+```
+
+
+### backward stepwise regression
+
+```{r}
+fit_df_result =
+lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
+
+step(fit_df_result, direction = 'backward')
+```
+
+
+### Multiple Linear Regression diagnose
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+summary(mlr_lm)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+mlr_lm %>% 
+  modelr::add_residuals(fit_df_result) %>% 
+  ggplot(aes(x = year, y = resid)) +
+  geom_point() 
+
+mlr_lm %>% 
+  modelr::add_residuals(fit_df_result) %>% 
+  ggplot(aes(x = resid)) +
+  geom_density()
+  
+mlr_lm %>% 
+  modelr::add_predictions(fit_df_result)
+```
+
+
+
+## Cross Validation between different regression models
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1)
+
+cv_df = 
+  crossv_mc(nyc_fit_lm, 100) %>% 
+  mutate(
+    train = map(train, as_tibble),
+    test = map(test, as_tibble)
+  )
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+cv_RMSE =
+  cv_df %>% 
+  mutate(
+    mod_df1 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race, data = .x)),
+    mod_df2 = map(.x = train, ~lm(number_shoot ~ month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race, data = .x)),
+    mod_df3 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race + boro*vic_race, data = .x))
+  ) %>% 
+  mutate(
+    rmse_df1 = map2_dbl(.x = mod_df1, .y = test, ~rmse(model = .x, data = .y)),
+    rmse_df2 = map2_dbl(.x = mod_df2, .y = test, ~rmse(model = .x, data = .y)),
+    rmse_df3 = map2_dbl(.x = mod_df3, .y = test, ~rmse(model = .x, data = .y))
+  )
+```
+
+
+```{r}
+cv_RMSE %>% 
+  select(.id, starts_with("rmse")) %>% 
+    pivot_longer(
+    rmse_df1:rmse_df3,
+    names_to = "model", 
+    values_to = "rmse",
+    names_prefix = "rmse_"
+  ) %>% 
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_boxplot()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

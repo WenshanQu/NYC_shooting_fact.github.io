@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Yu He" />
+
+
+<title>risk_factors</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="shiny.html">shiny</a>
+</li>
+<li>
+  <a href="mailto:&lt;heyu0424@hotmail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/WenshanQu/NYC_shooting_fact.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">risk_factors</h1>
+<h4 class="author">Yu He</h4>
+<h4 class="date">12/5/2021</h4>
+
+</div>
+
+
+<div id="regression-analysis" class="section level2">
+<h2>Regression Analysis</h2>
+<p>The NYPD Shooting Data was collected from the ‘NYC Open Data’. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:</p>
+<ul>
+<li>‘year’. year of shooting incident</li>
+<li>‘month’. month of the shooting incident</li>
+<li>‘day’. day of the shooting incident</li>
+<li>‘boro’. borough where the shooting incident occurred</li>
+<li>‘location_desc’. location of the shooting incident</li>
+<li>‘statistical_murder_flag’. Shooting resulted in the victim’s death which would be counted as a murder</li>
+<li>‘perp_age_group’. perpetrator’s age within a category</li>
+<li>‘perp_sex’. perpetrator’s sex description</li>
+<li>‘perp_race’. perpetrator’s race description</li>
+<li>‘vic_age_group’. victim’s age within a category</li>
+<li>‘vic_sex’. victim’s sex description</li>
+<li>‘vic_race’. victim’s race description</li>
+<li>‘zipcode’. zipcode of the shooting incident</li>
+</ul>
+</div>
+<div id="multiple-linear-regression-model" class="section level2">
+<h2>Multiple linear regression model</h2>
+<div id="box-cox-transformation" class="section level3">
+<h3>Box-Cox transformation</h3>
+<p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable ‘location_desc’ includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y transformation is applied.</p>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-2-1.png" width="90%" /></p>
+</div>
+<div id="regression-analysis-results" class="section level3">
+<h3>Regression analysis results</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.226</td>
+<td align="right">0.158</td>
+<td align="right">7.767</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2007</td>
+<td align="right">0.035</td>
+<td align="right">0.008</td>
+<td align="right">4.486</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2008</td>
+<td align="right">0.013</td>
+<td align="right">0.008</td>
+<td align="right">1.616</td>
+<td align="right">0.106</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2009</td>
+<td align="right">0.001</td>
+<td align="right">0.008</td>
+<td align="right">0.122</td>
+<td align="right">0.903</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2010</td>
+<td align="right">0.045</td>
+<td align="right">0.008</td>
+<td align="right">5.386</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2011</td>
+<td align="right">0.053</td>
+<td align="right">0.009</td>
+<td align="right">6.015</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2012</td>
+<td align="right">0.049</td>
+<td align="right">0.009</td>
+<td align="right">5.254</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2013</td>
+<td align="right">0.066</td>
+<td align="right">0.010</td>
+<td align="right">6.809</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2014</td>
+<td align="right">0.049</td>
+<td align="right">0.010</td>
+<td align="right">5.108</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2015</td>
+<td align="right">0.048</td>
+<td align="right">0.009</td>
+<td align="right">5.070</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2016</td>
+<td align="right">0.055</td>
+<td align="right">0.010</td>
+<td align="right">5.504</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2017</td>
+<td align="right">0.072</td>
+<td align="right">0.010</td>
+<td align="right">6.919</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2018</td>
+<td align="right">0.063</td>
+<td align="right">0.011</td>
+<td align="right">6.006</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2019</td>
+<td align="right">0.087</td>
+<td align="right">0.010</td>
+<td align="right">8.375</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Year:2020</td>
+<td align="right">0.043</td>
+<td align="right">0.009</td>
+<td align="right">4.736</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Year:2021</td>
+<td align="right">0.041</td>
+<td align="right">0.010</td>
+<td align="right">4.216</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:February</td>
+<td align="right">0.021</td>
+<td align="right">0.010</td>
+<td align="right">2.198</td>
+<td align="right">0.028</td>
+</tr>
+<tr class="even">
+<td align="left">Month:March</td>
+<td align="right">0.005</td>
+<td align="right">0.009</td>
+<td align="right">0.508</td>
+<td align="right">0.611</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:April</td>
+<td align="right">-0.003</td>
+<td align="right">0.009</td>
+<td align="right">-0.287</td>
+<td align="right">0.774</td>
+</tr>
+<tr class="even">
+<td align="left">Month:May</td>
+<td align="right">-0.009</td>
+<td align="right">0.009</td>
+<td align="right">-1.079</td>
+<td align="right">0.281</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:June</td>
+<td align="right">-0.029</td>
+<td align="right">0.009</td>
+<td align="right">-3.399</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td align="left">Month:July</td>
+<td align="right">-0.029</td>
+<td align="right">0.008</td>
+<td align="right">-3.404</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:August</td>
+<td align="right">-0.031</td>
+<td align="right">0.008</td>
+<td align="right">-3.653</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Month:September</td>
+<td align="right">-0.016</td>
+<td align="right">0.009</td>
+<td align="right">-1.888</td>
+<td align="right">0.059</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:October</td>
+<td align="right">-0.009</td>
+<td align="right">0.009</td>
+<td align="right">-1.063</td>
+<td align="right">0.288</td>
+</tr>
+<tr class="even">
+<td align="left">Month:November</td>
+<td align="right">0.004</td>
+<td align="right">0.009</td>
+<td align="right">0.466</td>
+<td align="right">0.641</td>
+</tr>
+<tr class="odd">
+<td align="left">Month:December</td>
+<td align="right">-0.008</td>
+<td align="right">0.009</td>
+<td align="right">-0.832</td>
+<td align="right">0.405</td>
+</tr>
+<tr class="even">
+<td align="left">Borough:BROOKLYN</td>
+<td align="right">-0.050</td>
+<td align="right">0.005</td>
+<td align="right">-11.161</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Borough:MANHATTAN</td>
+<td align="right">0.033</td>
+<td align="right">0.005</td>
+<td align="right">6.104</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Borough:QUEENS</td>
+<td align="right">0.015</td>
+<td align="right">0.005</td>
+<td align="right">2.815</td>
+<td align="right">0.005</td>
+</tr>
+<tr class="odd">
+<td align="left">Borough:STATEN ISLAND</td>
+<td align="right">0.074</td>
+<td align="right">0.009</td>
+<td align="right">8.270</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Muder Flag:TRUE</td>
+<td align="right">0.056</td>
+<td align="right">0.004</td>
+<td align="right">13.126</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator sex:M</td>
+<td align="right">-0.077</td>
+<td align="right">0.011</td>
+<td align="right">-7.234</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator sex:U</td>
+<td align="right">-0.178</td>
+<td align="right">0.016</td>
+<td align="right">-11.104</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator race:ASIAN / PACIFIC ISLANDER</td>
+<td align="right">-0.055</td>
+<td align="right">0.140</td>
+<td align="right">-0.394</td>
+<td align="right">0.694</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator race:BLACK</td>
+<td align="right">-0.117</td>
+<td align="right">0.139</td>
+<td align="right">-0.842</td>
+<td align="right">0.400</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator race:BLACK HISPANIC</td>
+<td align="right">-0.043</td>
+<td align="right">0.139</td>
+<td align="right">-0.310</td>
+<td align="right">0.756</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator race:UNKNOWN</td>
+<td align="right">-0.034</td>
+<td align="right">0.139</td>
+<td align="right">-0.242</td>
+<td align="right">0.809</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator race:WHITE</td>
+<td align="right">-0.087</td>
+<td align="right">0.140</td>
+<td align="right">-0.624</td>
+<td align="right">0.533</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator race:WHITE HISPANIC</td>
+<td align="right">-0.058</td>
+<td align="right">0.139</td>
+<td align="right">-0.421</td>
+<td align="right">0.674</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim sex:M</td>
+<td align="right">-0.095</td>
+<td align="right">0.005</td>
+<td align="right">-18.192</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Victim sex:U</td>
+<td align="right">-0.030</td>
+<td align="right">0.070</td>
+<td align="right">-0.425</td>
+<td align="right">0.671</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim race:ASIAN / PACIFIC ISLANDER</td>
+<td align="right">-0.020</td>
+<td align="right">0.075</td>
+<td align="right">-0.265</td>
+<td align="right">0.791</td>
+</tr>
+<tr class="even">
+<td align="left">Victim race:BLACK</td>
+<td align="right">-0.128</td>
+<td align="right">0.074</td>
+<td align="right">-1.727</td>
+<td align="right">0.084</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim race:BLACK HISPANIC</td>
+<td align="right">-0.030</td>
+<td align="right">0.074</td>
+<td align="right">-0.401</td>
+<td align="right">0.689</td>
+</tr>
+<tr class="even">
+<td align="left">Victim race:UNKNOWN</td>
+<td align="right">-0.003</td>
+<td align="right">0.080</td>
+<td align="right">-0.033</td>
+<td align="right">0.974</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim race:WHITE</td>
+<td align="right">-0.031</td>
+<td align="right">0.075</td>
+<td align="right">-0.407</td>
+<td align="right">0.684</td>
+</tr>
+<tr class="even">
+<td align="left">Victim race:WHITE HISPANIC</td>
+<td align="right">-0.048</td>
+<td align="right">0.074</td>
+<td align="right">-0.645</td>
+<td align="right">0.519</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="backward-stepwise-regression" class="section level3">
+<h3>backward stepwise regression</h3>
+<pre class="r"><code>fit_df_result =
+lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
+
+step(fit_df_result, direction = &#39;backward&#39;)</code></pre>
+<pre><code>## Start:  AIC=-41162.41
+## number_shoot ~ year + month + boro + statistical_murder_flag + 
+##     perp_sex + perp_race + vic_sex + vic_race
+## 
+##                           Df Sum of Sq    RSS    AIC
+## &lt;none&gt;                                 484.22 -41162
+## - month                   11    2.7532 486.97 -41113
+## - perp_sex                 2    4.7390 488.95 -41043
+## - year                    15    6.9645 491.18 -41012
+## - statistical_murder_flag  1    6.6222 490.84 -40993
+## - perp_race                6    9.7584 493.97 -40922
+## - vic_sex                  2   12.7473 496.96 -40838
+## - boro                     4   15.2279 499.44 -40779
+## - vic_race                 6   20.9959 505.21 -40638</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = number_shoot ~ year + month + boro + statistical_murder_flag + 
+##     perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm)
+## 
+## Coefficients:
+##                       (Intercept)                           year2007  
+##                         1.2262078                          0.0348428  
+##                          year2008                           year2009  
+##                         0.0125014                          0.0009724  
+##                          year2010                           year2011  
+##                         0.0446740                          0.0527293  
+##                          year2012                           year2013  
+##                         0.0490162                          0.0662468  
+##                          year2014                           year2015  
+##                         0.0494474                          0.0479661  
+##                          year2016                           year2017  
+##                         0.0549412                          0.0715502  
+##                          year2018                           year2019  
+##                         0.0630729                          0.0870240  
+##                          year2020                           year2021  
+##                         0.0433503                          0.0411906  
+##                     monthFebruary                         monthMarch  
+##                         0.0213689                          0.0047129  
+##                        monthApril                           monthMay  
+##                        -0.0025799                         -0.0092405  
+##                         monthJune                          monthJuly  
+##                        -0.0290994                         -0.0286696  
+##                       monthAugust                     monthSeptember  
+##                        -0.0307366                         -0.0164833  
+##                      monthOctober                      monthNovember  
+##                        -0.0094738                          0.0042710  
+##                     monthDecember                       boroBROOKLYN  
+##                        -0.0076875                         -0.0503850  
+##                     boroMANHATTAN                         boroQUEENS  
+##                         0.0330639                          0.0152834  
+##                 boroSTATEN ISLAND        statistical_murder_flagTRUE  
+##                         0.0744201                          0.0556428  
+##                         perp_sexM                          perp_sexU  
+##                        -0.0766452                         -0.1781447  
+## perp_raceASIAN / PACIFIC ISLANDER                     perp_raceBLACK  
+##                        -0.0551459                         -0.1169194  
+##           perp_raceBLACK HISPANIC                   perp_raceUNKNOWN  
+##                        -0.0431230                         -0.0336672  
+##                    perp_raceWHITE            perp_raceWHITE HISPANIC  
+##                        -0.0870149                         -0.0584750  
+##                          vic_sexM                           vic_sexU  
+##                        -0.0950415                         -0.0296688  
+##  vic_raceASIAN / PACIFIC ISLANDER                      vic_raceBLACK  
+##                        -0.0199821                         -0.1282827  
+##            vic_raceBLACK HISPANIC                    vic_raceUNKNOWN  
+##                        -0.0298119                         -0.0026588  
+##                     vic_raceWHITE             vic_raceWHITE HISPANIC  
+##                        -0.0305139                         -0.0479599</code></pre>
+</div>
+<div id="multiple-linear-regression-diagnose" class="section level3">
+<h3>Multiple Linear Regression diagnose</h3>
+<pre><code>##        month           year                 boro      statistical_murder_flag
+##  August   :1339   2006   :1343   BRONX        :4083   FALSE:9809             
+##  July     :1337   2008   :1247   BROOKLYN     :4000   TRUE :2837             
+##  June     :1232   2007   :1231   MANHATTAN    :1960                          
+##  May      :1231   2009   :1129   QUEENS       :2044                          
+##  September:1130   2010   : 982   STATEN ISLAND: 559                          
+##  October  :1037   2011   : 824                                               
+##  (Other)  :5340   (Other):5890                                               
+##  perp_age_group     vic_age_group      perp_sex 
+##  Length:12646       Length:12646       F:  356  
+##  Class :character   Class :character   M:11367  
+##  Mode  :character   Mode  :character   U:  923  
+##                                                 
+##                                                 
+##                                                 
+##                                                 
+##                           perp_race    vic_sex  
+##  AMERICAN INDIAN/ALASKAN NATIVE:   2   F: 1634  
+##  ASIAN / PACIFIC ISLANDER      : 133   M:11003  
+##  BLACK                         :7823   U:    9  
+##  BLACK HISPANIC                :1144            
+##  UNKNOWN                       :1235            
+##  WHITE                         : 267            
+##  WHITE HISPANIC                :2042            
+##                            vic_race     number_shoot    
+##  AMERICAN INDIAN/ALASKAN NATIVE:   7   Min.   :0.08333  
+##  ASIAN / PACIFIC ISLANDER      : 250   1st Qu.:1.00000  
+##  BLACK                         :7767   Median :1.00000  
+##  BLACK HISPANIC                :1554   Mean   :0.91060  
+##  UNKNOWN                       :  48   3rd Qu.:1.00000  
+##  WHITE                         : 503   Max.   :1.00000  
+##  WHITE HISPANIC                :2517</code></pre>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-6-1.png" width="90%" /><img src="risk_factors_files/figure-html/unnamed-chunk-6-2.png" width="90%" /></p>
+<pre><code>## # A tibble: 12,646 x 12
+## # Groups:   month, year, boro, statistical_murder_flag, perp_age_group,
+## #   vic_age_group, perp_sex, perp_race, vic_sex [11,255]
+##    month   year  boro  statistical_murder~ perp_age_group vic_age_group perp_sex
+##    &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;               &lt;chr&gt;          &lt;chr&gt;         &lt;fct&gt;   
+##  1 January 2006  BRONX FALSE               &lt;18            &lt;18           M       
+##  2 January 2006  BRONX FALSE               18-24          &lt;18           M       
+##  3 January 2006  BRONX FALSE               18-24          18-24         M       
+##  4 January 2006  BRONX FALSE               18-24          18-24         M       
+##  5 January 2006  BRONX FALSE               18-24          18-24         M       
+##  6 January 2006  BRONX FALSE               18-24          18-24         M       
+##  7 January 2006  BRONX FALSE               18-24          25-44         M       
+##  8 January 2006  BRONX FALSE               25-44          18-24         M       
+##  9 January 2006  BRONX FALSE               25-44          18-24         M       
+## 10 January 2006  BRONX FALSE               25-44          25-44         M       
+## # ... with 12,636 more rows, and 5 more variables: perp_race &lt;fct&gt;,
+## #   vic_sex &lt;fct&gt;, vic_race &lt;fct&gt;, number_shoot &lt;dbl&gt;, pred &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div id="cross-validation-between-different-regression-models" class="section level2">
+<h2>Cross Validation between different regression models</h2>
+<pre class="r"><code>cv_RMSE %&gt;% 
+  select(.id, starts_with(&quot;rmse&quot;)) %&gt;% 
+    pivot_longer(
+    rmse_df1:rmse_df3,
+    names_to = &quot;model&quot;, 
+    values_to = &quot;rmse&quot;,
+    names_prefix = &quot;rmse_&quot;
+  ) %&gt;% 
+  ggplot(aes(x = model, y = rmse)) + 
+  geom_boxplot()</code></pre>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-9-1.png" width="90%" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
