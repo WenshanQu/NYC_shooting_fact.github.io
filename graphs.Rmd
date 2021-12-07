@@ -1,0 +1,137 @@
+---
+title: "Time review"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r data import, message=FALSE}
+nyc_shooting = read_csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
+```
+
+```{r LR, message=FALSE}
+# prepare dataframe
+lr_df = nyc_shooting %>% 
+  select(-location_desc, -x_coord_cd, -y_coord_cd, -latitude, -longitude, -lon_lat, -new_georeferenced_column, -zipcode) %>% 
+  mutate(
+    month = as.factor(recode(month, "January" = 1, "February" = 2, "March" = 3, "April" = 4, "May" = 5, "June" = 6, "July" = 7, "August" = 8, "September" = 9, "October" = 10, "November" = 11, "December" = 12)),
+    month_date = str_c(month, "-", day)
+  )
+
+# check missing data for perp_
+sum(is.na(lr_df$perp_age_group))
+```
+
+```{r year_month, message=FALSE}
+year_month_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    month = as.numeric(month),
+    year = as.factor(year)
+    )
+year_month_df %>% 
+  ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
+  geom_line() + scale_x_continuous(breaks = 1:12)
+
+month_hour_df = lr_df %>% 
+  separate(occur_time, into=c("hour", "min", "sec"), sep = ":") %>% 
+  group_by(month, hour) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    hour = as.numeric(hour),
+    month = as.factor(month)
+    )
+month_hour_df %>% 
+  ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
+  geom_line() + scale_x_continuous(breaks = 0:23)
+```
+
+```{r age_race, message=FALSE}
+perp_age_df = lr_df %>% 
+  filter(!is.na(perp_age_group)) %>% 
+  group_by(perp_age_group, perp_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_age_group = as.factor(perp_age_group)
+  )
+
+perp_age_df %>% 
+  ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity')
+
+vic_age_df = lr_df %>% 
+  filter(!is.na(vic_age_group)) %>% 
+  group_by(vic_age_group, vic_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_age_group = as.factor(vic_age_group)
+  )
+
+vic_age_df %>% 
+  ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity')
+```
+
+```{r sex_year, message=FALSE}
+perp_sex_df = lr_df %>% 
+  filter(!is.na(perp_sex)) %>% 
+  group_by(perp_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_sex = as.factor(perp_sex)
+  )
+
+perp_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = "stack", aes(order = desc(perp_sex)))
+
+vic_sex_df = lr_df %>% 
+  filter(!is.na(vic_sex)) %>% 
+  group_by(vic_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_sex = as.factor(vic_sex)
+  )
+
+vic_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex)))
+```
+
+```{r YonYgrowth, message=FALSE}
+yoy_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = "n_freq"
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    x1 = x2017 / x2016,
+    x2 = x2018 / x2017,
+    x3 = x2019 / x2018,
+    x4 = x2020 / x2019,
+    x5 = x2021 / x2020
+  ) %>% 
+  select(-x2016, -x2017, -x2018, -x2019, -x2020, -x2021) %>% 
+  pivot_longer(
+    x1:x5,
+    names_to = "y_o_y",
+    values_to = "ratio"
+  )
+
+xlab = c("2017/2016", "2018/2017", "2019/2018", "2020/2019", "2021/2020")
+
+yoy_df %>% 
+  ggplot(aes(x = y_o_y, y = ratio, color = month, group = month)) +
+  geom_line() +
+  scale_x_discrete(labels = xlab) +
+  labs(
+    title = "Year over Year Case Growth Rate",
+    x = "year over year",
+    y = "growth rate"
+  )
+```
+
