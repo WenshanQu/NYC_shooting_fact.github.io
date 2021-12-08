@@ -1,0 +1,168 @@
+---
+title: "One-way ANOVA"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: hide
+  html_notebook:
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(viridis)
+library(plotly)
+library(modelr)
+library(gtsummary)
+
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 6, 
+  fig.height = 8,
+  out.width = "90%",
+	message = F,
+  echo = T,
+  warning = F,
+  cache = F
+)
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+```
+
+
+```{r data import, echo=FALSE, message=FALSE, warning=FALSE}
+nyc_shooting = read_csv("./comp_data/Full NYC Shooting Data (2006-2021).csv")
+
+nyc_time = 
+  nyc_shooting %>% 
+  separate(occur_time, into = c("hour", "minute", "second"), sep = ":") %>% 
+  mutate(
+    hour = as.factor(hour)
+  )
+```
+
+```{r, import data, echo=FALSE, message=FALSE, warning=FALSE}
+nyc_fit_lm =
+  nyc_time %>% 
+  select(month, day, year, boro, statistical_murder_flag, perp_age_group, vic_age_group, perp_sex, perp_race, vic_sex, vic_race) %>%
+  mutate(
+    month = as.factor(month), 
+    day = as.factor(day), 
+    year = as.factor(year),
+    boro = as.factor(boro), 
+    statistical_murder_flag = as.factor(statistical_murder_flag),
+    perp_sex = as.factor(perp_sex),
+    perp_race = as.factor(perp_race),
+    vic_sex = as.factor(vic_sex),
+    vic_race = as.factor(vic_race),
+    month = fct_relevel(month, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+  ) %>% 
+  group_by(month, year, boro, statistical_murder_flag, perp_age_group, vic_age_group, perp_sex, perp_race, vic_sex, vic_race) %>% 
+  summarize(
+    number_shoot = n()
+  ) %>% 
+  drop_na()
+```
+
+```{r function showing}
+showing = function(x){
+  x %>% 
+  broom::tidy() %>%
+  mutate(
+    p.value = format(p.value, scientific = TRUE, digits = 3)
+  ) %>% 
+  select(term, p.value) %>% 
+  rows_delete(tibble(term = "Residuals")) %>% 
+  rename(variable = term) %>% 
+  knitr::kable()
+}
+```
+
+# Significant variables
+
+## Year
+```{r year}
+res_year = aov(number_shoot ~ factor(year), data = nyc_fit_lm)
+showing(res_year)
+```
+
+The p-value of the year variable is smaller than 0.05, thus we reject the null hypothesis and regard the year as statistically significant.
+
+## Month
+
+```{r month}
+res_month = aov(number_shoot ~ factor(month), data = nyc_fit_lm)
+showing(res_month)
+```
+The p-value of the month variable is smaller than 0.05, thus we reject the null hypothesis and regard the month as statistically significant.
+
+## Borough
+
+```{r boro}
+nyc_boro = nyc_fit_lm %>% 
+  rename(borough = boro)
+res_boro = aov(number_shoot ~ factor(borough), data = nyc_boro)
+showing(res_boro)
+```
+
+The p-value of the borough variable is smaller than 0.05, thus we reject the null hypothesis and regard the borough as statistically significant.
+
+## Statistical_murder_flag
+
+```{r Statistical_murder_flag}
+res_smf = aov(number_shoot ~ factor(statistical_murder_flag), data = nyc_fit_lm)
+showing(res_smf)
+```
+
+The p-value of the Statistical_murder_flag variable is smaller than 0.05, thus we reject the null hypothesis and regard the Statistical_murder_flag as statistically significant.
+
+## Perp_sex
+
+```{r perp_sex}
+res_perpsex = aov(number_shoot ~ factor(perp_sex), data = nyc_fit_lm)
+showing(res_perpsex)
+```
+
+The p-value of the sex of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of perpetrator as statistically significant.
+
+## Perp_race
+
+```{r perp_race}
+res_perprace = aov(number_shoot ~ factor(perp_race), data = nyc_fit_lm)
+showing(res_perprace)
+```
+
+The p-value of the race of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of perpetrator as statistically significant.
+
+## Vic_sex
+
+```{r vit_sex}
+res_vicsex = aov(number_shoot ~ factor(vic_sex), data = nyc_fit_lm)
+showing(res_vicsex)
+```
+
+The p-value of the sex of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of victims as statistically significant.
+
+## Vic_race
+
+```{r vic_race}
+res_vicrace = aov(number_shoot ~ factor(vic_race), data = nyc_fit_lm)
+showing(res_vicrace)
+```
+
+The p-value of the race of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of victims as statistically significant.
+
