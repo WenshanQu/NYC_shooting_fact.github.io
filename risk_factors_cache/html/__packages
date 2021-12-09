@@ -13,3 +13,6 @@ viridisLite
 viridis
 plotly
 modelr
+leaflet
+RColorBrewer
+corrplot

@@ -247,10 +247,13 @@ $(document).ready(function () {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="risk_factors.html">Regression Analysis</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
-  <a href="shiny.html">shiny</a>
+  <a href="shiny.html">Shooting Facts in NYC</a>
 </li>
 <li>
   <a href="mailto:&lt;heyu0424@hotmail.com&gt;">
@@ -282,27 +285,27 @@ $(document).ready(function () {
 <h3>Dataset Demonsatration</h3>
 <p>The NYPD Shooting Data was collected from the <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8">NYC Open Data</a>. The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:</p>
 <ul>
-<li>‘year’. year of shooting incident</li>
-<li>‘month’. month of the shooting incident</li>
-<li>‘day’. day of the shooting incident</li>
-<li>‘boro’. borough where the shooting incident occurred</li>
-<li>‘location_desc’. location of the shooting incident</li>
-<li>‘statistical_murder_flag’. Shooting resulted in the victim’s death which would be counted as a murder</li>
-<li>‘perp_age_group’. perpetrator’s age within a category</li>
-<li>‘perp_sex’. perpetrator’s sex description</li>
-<li>‘perp_race’. perpetrator’s race description</li>
-<li>‘vic_age_group’. victim’s age within a category</li>
-<li>‘vic_sex’. victim’s sex description</li>
-<li>‘vic_race’. victim’s race description</li>
-<li>‘zipcode’. zipcode of the shooting incident</li>
+<li><code>year</code>. year of shooting incident</li>
+<li><code>month</code>. month of the shooting incident</li>
+<li><code>day</code>. day of the shooting incident</li>
+<li><code>boro</code>. borough where the shooting incident occurred</li>
+<li><code>location_desc</code>. location of the shooting incident</li>
+<li><code>statistical_murder_flag</code>. Shooting resulted in the victim’s death which would be counted as a murder</li>
+<li><code>perp_age_group</code>. perpetrator’s age within a category</li>
+<li><code>perp_sex</code>. perpetrator’s sex description</li>
+<li><code>perp_race</code>. perpetrator’s race description</li>
+<li><code>vic_age_group</code>. victim’s age within a category</li>
+<li><code>vic_sex</code>. victim’s sex description</li>
+<li><code>vic_race</code>. victim’s race description</li>
+<li><code>zipcode</code>. zipcode of the shooting incident</li>
 </ul>
 </div>
 <div id="multiple-linear-regression-model" class="section level2">
 <h2>Multiple linear regression model</h2>
 <div id="box-cox-transformation" class="section level3">
 <h3>Box-Cox transformation</h3>
-<p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable ‘location_desc’ includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y transformation is applied.</p>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-1-1.png" width="576" /></p>
+<p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable <code>location_desc</code> includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y^2 transformation is applied.</p>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-1-1.png" width="80%" /></p>
 </div>
 <div id="regression-analysis-results" class="section level3">
 <h3>Regression analysis results</h3>
@@ -319,360 +322,433 @@ $(document).ready(function () {
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">1.226</td>
-<td align="right">0.158</td>
-<td align="right">7.767</td>
+<td align="right">1.407</td>
+<td align="right">0.214</td>
+<td align="right">6.585</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2007</td>
-<td align="right">0.035</td>
-<td align="right">0.008</td>
-<td align="right">4.486</td>
+<td align="right">0.049</td>
+<td align="right">0.011</td>
+<td align="right">4.660</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2008</td>
-<td align="right">0.013</td>
-<td align="right">0.008</td>
-<td align="right">1.616</td>
-<td align="right">0.106</td>
+<td align="right">0.015</td>
+<td align="right">0.010</td>
+<td align="right">1.388</td>
+<td align="right">0.165</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2009</td>
-<td align="right">0.001</td>
-<td align="right">0.008</td>
-<td align="right">0.122</td>
-<td align="right">0.903</td>
+<td align="right">0.004</td>
+<td align="right">0.011</td>
+<td align="right">0.415</td>
+<td align="right">0.678</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2010</td>
-<td align="right">0.045</td>
-<td align="right">0.008</td>
-<td align="right">5.386</td>
+<td align="right">0.061</td>
+<td align="right">0.011</td>
+<td align="right">5.415</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2011</td>
-<td align="right">0.053</td>
-<td align="right">0.009</td>
-<td align="right">6.015</td>
+<td align="right">0.061</td>
+<td align="right">0.012</td>
+<td align="right">5.106</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2012</td>
-<td align="right">0.049</td>
-<td align="right">0.009</td>
-<td align="right">5.254</td>
+<td align="right">0.064</td>
+<td align="right">0.013</td>
+<td align="right">4.995</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2013</td>
-<td align="right">0.066</td>
-<td align="right">0.010</td>
-<td align="right">6.809</td>
+<td align="right">0.089</td>
+<td align="right">0.013</td>
+<td align="right">6.706</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2014</td>
-<td align="right">0.049</td>
-<td align="right">0.010</td>
-<td align="right">5.108</td>
+<td align="right">0.061</td>
+<td align="right">0.013</td>
+<td align="right">4.605</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2015</td>
-<td align="right">0.048</td>
-<td align="right">0.009</td>
-<td align="right">5.070</td>
+<td align="right">0.063</td>
+<td align="right">0.013</td>
+<td align="right">4.855</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2016</td>
-<td align="right">0.055</td>
-<td align="right">0.010</td>
-<td align="right">5.504</td>
+<td align="right">0.074</td>
+<td align="right">0.014</td>
+<td align="right">5.398</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2017</td>
-<td align="right">0.072</td>
-<td align="right">0.010</td>
-<td align="right">6.919</td>
+<td align="right">0.096</td>
+<td align="right">0.014</td>
+<td align="right">6.763</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2018</td>
-<td align="right">0.063</td>
-<td align="right">0.011</td>
-<td align="right">6.006</td>
+<td align="right">0.081</td>
+<td align="right">0.014</td>
+<td align="right">5.611</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2019</td>
-<td align="right">0.087</td>
-<td align="right">0.010</td>
-<td align="right">8.375</td>
+<td align="right">0.113</td>
+<td align="right">0.014</td>
+<td align="right">7.913</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2020</td>
-<td align="right">0.043</td>
-<td align="right">0.009</td>
-<td align="right">4.736</td>
+<td align="right">0.055</td>
+<td align="right">0.013</td>
+<td align="right">4.333</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2021</td>
-<td align="right">0.041</td>
-<td align="right">0.010</td>
-<td align="right">4.216</td>
+<td align="right">0.052</td>
+<td align="right">0.013</td>
+<td align="right">3.887</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:February</td>
-<td align="right">0.021</td>
-<td align="right">0.010</td>
-<td align="right">2.198</td>
 <td align="right">0.028</td>
+<td align="right">0.013</td>
+<td align="right">2.105</td>
+<td align="right">0.035</td>
 </tr>
 <tr class="even">
 <td align="left">Month:March</td>
-<td align="right">0.005</td>
-<td align="right">0.009</td>
-<td align="right">0.508</td>
-<td align="right">0.611</td>
+<td align="right">0.006</td>
+<td align="right">0.013</td>
+<td align="right">0.517</td>
+<td align="right">0.605</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:April</td>
-<td align="right">-0.003</td>
-<td align="right">0.009</td>
-<td align="right">-0.287</td>
-<td align="right">0.774</td>
+<td align="right">-0.002</td>
+<td align="right">0.012</td>
+<td align="right">-0.193</td>
+<td align="right">0.847</td>
 </tr>
 <tr class="even">
 <td align="left">Month:May</td>
-<td align="right">-0.009</td>
-<td align="right">0.009</td>
-<td align="right">-1.079</td>
-<td align="right">0.281</td>
+<td align="right">-0.015</td>
+<td align="right">0.012</td>
+<td align="right">-1.292</td>
+<td align="right">0.196</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:June</td>
-<td align="right">-0.029</td>
-<td align="right">0.009</td>
-<td align="right">-3.399</td>
-<td align="right">0.001</td>
+<td align="right">-0.035</td>
+<td align="right">0.012</td>
+<td align="right">-3.057</td>
+<td align="right">0.002</td>
 </tr>
 <tr class="even">
 <td align="left">Month:July</td>
-<td align="right">-0.029</td>
-<td align="right">0.008</td>
-<td align="right">-3.404</td>
+<td align="right">-0.039</td>
+<td align="right">0.011</td>
+<td align="right">-3.386</td>
 <td align="right">0.001</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:August</td>
-<td align="right">-0.031</td>
-<td align="right">0.008</td>
-<td align="right">-3.653</td>
-<td align="right">0.000</td>
+<td align="right">-0.039</td>
+<td align="right">0.011</td>
+<td align="right">-3.401</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td align="left">Month:September</td>
-<td align="right">-0.016</td>
-<td align="right">0.009</td>
-<td align="right">-1.888</td>
-<td align="right">0.059</td>
+<td align="right">-0.020</td>
+<td align="right">0.012</td>
+<td align="right">-1.685</td>
+<td align="right">0.092</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:October</td>
-<td align="right">-0.009</td>
-<td align="right">0.009</td>
-<td align="right">-1.063</td>
-<td align="right">0.288</td>
+<td align="right">-0.017</td>
+<td align="right">0.012</td>
+<td align="right">-1.379</td>
+<td align="right">0.168</td>
 </tr>
 <tr class="even">
 <td align="left">Month:November</td>
-<td align="right">0.004</td>
-<td align="right">0.009</td>
-<td align="right">0.466</td>
-<td align="right">0.641</td>
+<td align="right">0.003</td>
+<td align="right">0.012</td>
+<td align="right">0.234</td>
+<td align="right">0.815</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:December</td>
-<td align="right">-0.008</td>
-<td align="right">0.009</td>
-<td align="right">-0.832</td>
-<td align="right">0.405</td>
+<td align="right">-0.012</td>
+<td align="right">0.012</td>
+<td align="right">-0.994</td>
+<td align="right">0.320</td>
 </tr>
 <tr class="even">
 <td align="left">Borough:BROOKLYN</td>
-<td align="right">-0.050</td>
-<td align="right">0.005</td>
-<td align="right">-11.161</td>
+<td align="right">-0.065</td>
+<td align="right">0.006</td>
+<td align="right">-10.586</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Borough:MANHATTAN</td>
-<td align="right">0.033</td>
-<td align="right">0.005</td>
-<td align="right">6.104</td>
+<td align="right">0.047</td>
+<td align="right">0.007</td>
+<td align="right">6.376</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Borough:QUEENS</td>
-<td align="right">0.015</td>
-<td align="right">0.005</td>
-<td align="right">2.815</td>
-<td align="right">0.005</td>
+<td align="right">0.029</td>
+<td align="right">0.007</td>
+<td align="right">3.912</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Borough:STATEN ISLAND</td>
-<td align="right">0.074</td>
-<td align="right">0.009</td>
-<td align="right">8.270</td>
+<td align="right">0.110</td>
+<td align="right">0.012</td>
+<td align="right">9.063</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Muder Flag:TRUE</td>
-<td align="right">0.056</td>
-<td align="right">0.004</td>
-<td align="right">13.126</td>
+<td align="right">0.076</td>
+<td align="right">0.006</td>
+<td align="right">13.065</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
-<td align="left">Perpetrator sex:M</td>
-<td align="right">-0.077</td>
+<td align="left">Perpetrator age group:18-24</td>
+<td align="right">-0.087</td>
+<td align="right">0.008</td>
+<td align="right">-10.386</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator age group:25-44</td>
+<td align="right">-0.078</td>
+<td align="right">0.009</td>
+<td align="right">-8.982</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator age group:45-64</td>
+<td align="right">-0.010</td>
+<td align="right">0.014</td>
+<td align="right">-0.672</td>
+<td align="right">0.502</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator age group:65+</td>
+<td align="right">-0.089</td>
+<td align="right">0.037</td>
+<td align="right">-2.403</td>
+<td align="right">0.016</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator age group:UNKNOWN</td>
+<td align="right">-0.093</td>
 <td align="right">0.011</td>
-<td align="right">-7.234</td>
+<td align="right">-8.280</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:18-24</td>
+<td align="right">-0.081</td>
+<td align="right">0.008</td>
+<td align="right">-10.440</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim age group:25-44</td>
+<td align="right">-0.078</td>
+<td align="right">0.008</td>
+<td align="right">-9.973</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:45-64</td>
+<td align="right">0.024</td>
+<td align="right">0.011</td>
+<td align="right">2.236</td>
+<td align="right">0.025</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim age group:65+</td>
+<td align="right">0.018</td>
+<td align="right">0.025</td>
+<td align="right">0.730</td>
+<td align="right">0.465</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:UNKNOWN</td>
+<td align="right">0.015</td>
+<td align="right">0.038</td>
+<td align="right">0.397</td>
+<td align="right">0.692</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator sex:M</td>
+<td align="right">-0.111</td>
+<td align="right">0.014</td>
+<td align="right">-7.724</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator sex:U</td>
-<td align="right">-0.178</td>
-<td align="right">0.016</td>
-<td align="right">-11.104</td>
+<td align="right">-0.238</td>
+<td align="right">0.022</td>
+<td align="right">-10.821</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:ASIAN / PACIFIC ISLANDER</td>
-<td align="right">-0.055</td>
-<td align="right">0.140</td>
-<td align="right">-0.394</td>
-<td align="right">0.694</td>
+<td align="right">-0.047</td>
+<td align="right">0.189</td>
+<td align="right">-0.247</td>
+<td align="right">0.805</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:BLACK</td>
-<td align="right">-0.117</td>
-<td align="right">0.139</td>
-<td align="right">-0.842</td>
-<td align="right">0.400</td>
+<td align="right">-0.139</td>
+<td align="right">0.188</td>
+<td align="right">-0.739</td>
+<td align="right">0.460</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:BLACK HISPANIC</td>
-<td align="right">-0.043</td>
-<td align="right">0.139</td>
-<td align="right">-0.310</td>
-<td align="right">0.756</td>
+<td align="right">-0.032</td>
+<td align="right">0.188</td>
+<td align="right">-0.169</td>
+<td align="right">0.866</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:UNKNOWN</td>
-<td align="right">-0.034</td>
-<td align="right">0.139</td>
-<td align="right">-0.242</td>
-<td align="right">0.809</td>
+<td align="right">-0.009</td>
+<td align="right">0.188</td>
+<td align="right">-0.050</td>
+<td align="right">0.960</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:WHITE</td>
-<td align="right">-0.087</td>
-<td align="right">0.140</td>
-<td align="right">-0.624</td>
-<td align="right">0.533</td>
+<td align="right">-0.105</td>
+<td align="right">0.189</td>
+<td align="right">-0.557</td>
+<td align="right">0.578</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:WHITE HISPANIC</td>
-<td align="right">-0.058</td>
-<td align="right">0.139</td>
-<td align="right">-0.421</td>
-<td align="right">0.674</td>
+<td align="right">-0.054</td>
+<td align="right">0.188</td>
+<td align="right">-0.286</td>
+<td align="right">0.775</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim sex:M</td>
-<td align="right">-0.095</td>
-<td align="right">0.005</td>
-<td align="right">-18.192</td>
+<td align="right">-0.116</td>
+<td align="right">0.007</td>
+<td align="right">-16.299</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Victim sex:U</td>
-<td align="right">-0.030</td>
-<td align="right">0.070</td>
-<td align="right">-0.425</td>
-<td align="right">0.671</td>
+<td align="right">-0.048</td>
+<td align="right">0.096</td>
+<td align="right">-0.497</td>
+<td align="right">0.619</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:ASIAN / PACIFIC ISLANDER</td>
-<td align="right">-0.020</td>
-<td align="right">0.075</td>
-<td align="right">-0.265</td>
-<td align="right">0.791</td>
+<td align="right">-0.026</td>
+<td align="right">0.102</td>
+<td align="right">-0.259</td>
+<td align="right">0.796</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:BLACK</td>
-<td align="right">-0.128</td>
-<td align="right">0.074</td>
-<td align="right">-1.727</td>
-<td align="right">0.084</td>
+<td align="right">-0.176</td>
+<td align="right">0.100</td>
+<td align="right">-1.754</td>
+<td align="right">0.080</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:BLACK HISPANIC</td>
-<td align="right">-0.030</td>
-<td align="right">0.074</td>
-<td align="right">-0.401</td>
-<td align="right">0.689</td>
+<td align="right">-0.037</td>
+<td align="right">0.101</td>
+<td align="right">-0.370</td>
+<td align="right">0.711</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:UNKNOWN</td>
-<td align="right">-0.003</td>
-<td align="right">0.080</td>
-<td align="right">-0.033</td>
-<td align="right">0.974</td>
+<td align="right">-0.015</td>
+<td align="right">0.109</td>
+<td align="right">-0.142</td>
+<td align="right">0.887</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:WHITE</td>
-<td align="right">-0.031</td>
-<td align="right">0.075</td>
-<td align="right">-0.407</td>
-<td align="right">0.684</td>
+<td align="right">-0.051</td>
+<td align="right">0.101</td>
+<td align="right">-0.502</td>
+<td align="right">0.616</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:WHITE HISPANIC</td>
-<td align="right">-0.048</td>
-<td align="right">0.074</td>
-<td align="right">-0.645</td>
-<td align="right">0.519</td>
+<td align="right">-0.062</td>
+<td align="right">0.101</td>
+<td align="right">-0.618</td>
+<td align="right">0.536</td>
 </tr>
 </tbody>
 </table>
-<p>Our regression model included year, month, borough, perpetrator’s sex and race, and victim’s sex and race as the predictors. The regression results year, month, borough, perpetrator’s sex, and victim’s sex are significant predictor variable for the number of shooting in NYC. Among the month variable, May, June, July, August, September, October, and December have lower number of shooting than January.And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.The next step is to use stepwise regression in backward direction to build our regression model.</p>
+<p>Our regression model included year, month, borough, perpetrator’s age group, sex and race, and victim’s age group, sex and race as the predictors. The regression results <code>year</code>, <code>borough</code>, <code>perpetrator's sex and age group</code>, and <code>victim's sex and age group</code> are significant predictor variable for the number of shooting in NYC. Among the month variable, May, June, July, August, September, October, and December have lower number of shooting than January.And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.Among perpetrators, age under 18 have more number of shooting than other age groups. Among victims, 45-64 years old and 65+ years old have more number of shooting that age under 18 group.The next step is to use stepwise regression in backward direction to build our regression model.</p>
 </div>
 <div id="backward-stepwise-regression" class="section level3">
 <h3>backward stepwise regression</h3>
-<pre><code>## Start:  AIC=-41162.41
+<pre><code>## Start:  AIC=-33522.97
 ## number_shoot ~ year + month + boro + statistical_murder_flag + 
-##     perp_sex + perp_race + vic_sex + vic_race
+##     perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + 
+##     vic_race
 ## 
 ##                           Df Sum of Sq    RSS    AIC
-## &lt;none&gt;                                 484.22 -41162
-## - month                   11    2.7532 486.97 -41113
-## - perp_sex                 2    4.7390 488.95 -41043
-## - year                    15    6.9645 491.18 -41012
-## - statistical_murder_flag  1    6.6222 490.84 -40993
-## - perp_race                6    9.7584 493.97 -40922
-## - vic_sex                  2   12.7473 496.96 -40838
-## - boro                     4   15.2279 499.44 -40779
-## - vic_race                 6   20.9959 505.21 -40638</code></pre>
+## &lt;none&gt;                                 883.75 -33523
+## - month                   11     4.409 888.16 -33482
+## - perp_sex                 2     8.286 892.04 -33409
+## - year                    15    10.861 894.62 -33399
+## - perp_age_group           5    10.269 894.02 -33387
+## - statistical_murder_flag  1    11.987 895.74 -33355
+## - vic_age_group            5    17.508 901.26 -33285
+## - vic_sex                  2    18.685 902.44 -33262
+## - perp_race                6    21.002 904.76 -33238
+## - boro                     4    28.682 912.44 -33127
+## - vic_race                 6    40.486 924.24 -32969</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -686,418 +762,512 @@ $(document).ready(function () {
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">1.226</td>
-<td align="right">0.158</td>
-<td align="right">7.767</td>
+<td align="right">1.407</td>
+<td align="right">0.214</td>
+<td align="right">6.585</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2007</td>
-<td align="right">0.035</td>
-<td align="right">0.008</td>
-<td align="right">4.486</td>
+<td align="right">0.049</td>
+<td align="right">0.011</td>
+<td align="right">4.660</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2008</td>
-<td align="right">0.013</td>
-<td align="right">0.008</td>
-<td align="right">1.616</td>
-<td align="right">0.106</td>
+<td align="right">0.015</td>
+<td align="right">0.010</td>
+<td align="right">1.388</td>
+<td align="right">0.165</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2009</td>
-<td align="right">0.001</td>
-<td align="right">0.008</td>
-<td align="right">0.122</td>
-<td align="right">0.903</td>
+<td align="right">0.004</td>
+<td align="right">0.011</td>
+<td align="right">0.415</td>
+<td align="right">0.678</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2010</td>
-<td align="right">0.045</td>
-<td align="right">0.008</td>
-<td align="right">5.386</td>
+<td align="right">0.061</td>
+<td align="right">0.011</td>
+<td align="right">5.415</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2011</td>
-<td align="right">0.053</td>
-<td align="right">0.009</td>
-<td align="right">6.015</td>
+<td align="right">0.061</td>
+<td align="right">0.012</td>
+<td align="right">5.106</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2012</td>
-<td align="right">0.049</td>
-<td align="right">0.009</td>
-<td align="right">5.254</td>
+<td align="right">0.064</td>
+<td align="right">0.013</td>
+<td align="right">4.995</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2013</td>
-<td align="right">0.066</td>
-<td align="right">0.010</td>
-<td align="right">6.809</td>
+<td align="right">0.089</td>
+<td align="right">0.013</td>
+<td align="right">6.706</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2014</td>
-<td align="right">0.049</td>
-<td align="right">0.010</td>
-<td align="right">5.108</td>
+<td align="right">0.061</td>
+<td align="right">0.013</td>
+<td align="right">4.605</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2015</td>
-<td align="right">0.048</td>
-<td align="right">0.009</td>
-<td align="right">5.070</td>
+<td align="right">0.063</td>
+<td align="right">0.013</td>
+<td align="right">4.855</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2016</td>
-<td align="right">0.055</td>
-<td align="right">0.010</td>
-<td align="right">5.504</td>
+<td align="right">0.074</td>
+<td align="right">0.014</td>
+<td align="right">5.398</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2017</td>
-<td align="right">0.072</td>
-<td align="right">0.010</td>
-<td align="right">6.919</td>
+<td align="right">0.096</td>
+<td align="right">0.014</td>
+<td align="right">6.763</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2018</td>
-<td align="right">0.063</td>
-<td align="right">0.011</td>
-<td align="right">6.006</td>
+<td align="right">0.081</td>
+<td align="right">0.014</td>
+<td align="right">5.611</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2019</td>
-<td align="right">0.087</td>
-<td align="right">0.010</td>
-<td align="right">8.375</td>
+<td align="right">0.113</td>
+<td align="right">0.014</td>
+<td align="right">7.913</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Year:2020</td>
-<td align="right">0.043</td>
-<td align="right">0.009</td>
-<td align="right">4.736</td>
+<td align="right">0.055</td>
+<td align="right">0.013</td>
+<td align="right">4.333</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Year:2021</td>
-<td align="right">0.041</td>
-<td align="right">0.010</td>
-<td align="right">4.216</td>
+<td align="right">0.052</td>
+<td align="right">0.013</td>
+<td align="right">3.887</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:February</td>
-<td align="right">0.021</td>
-<td align="right">0.010</td>
-<td align="right">2.198</td>
 <td align="right">0.028</td>
+<td align="right">0.013</td>
+<td align="right">2.105</td>
+<td align="right">0.035</td>
 </tr>
 <tr class="even">
 <td align="left">Month:March</td>
-<td align="right">0.005</td>
-<td align="right">0.009</td>
-<td align="right">0.508</td>
-<td align="right">0.611</td>
+<td align="right">0.006</td>
+<td align="right">0.013</td>
+<td align="right">0.517</td>
+<td align="right">0.605</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:April</td>
-<td align="right">-0.003</td>
-<td align="right">0.009</td>
-<td align="right">-0.287</td>
-<td align="right">0.774</td>
+<td align="right">-0.002</td>
+<td align="right">0.012</td>
+<td align="right">-0.193</td>
+<td align="right">0.847</td>
 </tr>
 <tr class="even">
 <td align="left">Month:May</td>
-<td align="right">-0.009</td>
-<td align="right">0.009</td>
-<td align="right">-1.079</td>
-<td align="right">0.281</td>
+<td align="right">-0.015</td>
+<td align="right">0.012</td>
+<td align="right">-1.292</td>
+<td align="right">0.196</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:June</td>
-<td align="right">-0.029</td>
-<td align="right">0.009</td>
-<td align="right">-3.399</td>
-<td align="right">0.001</td>
+<td align="right">-0.035</td>
+<td align="right">0.012</td>
+<td align="right">-3.057</td>
+<td align="right">0.002</td>
 </tr>
 <tr class="even">
 <td align="left">Month:July</td>
-<td align="right">-0.029</td>
-<td align="right">0.008</td>
-<td align="right">-3.404</td>
+<td align="right">-0.039</td>
+<td align="right">0.011</td>
+<td align="right">-3.386</td>
 <td align="right">0.001</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:August</td>
-<td align="right">-0.031</td>
-<td align="right">0.008</td>
-<td align="right">-3.653</td>
-<td align="right">0.000</td>
+<td align="right">-0.039</td>
+<td align="right">0.011</td>
+<td align="right">-3.401</td>
+<td align="right">0.001</td>
 </tr>
 <tr class="even">
 <td align="left">Month:September</td>
-<td align="right">-0.016</td>
-<td align="right">0.009</td>
-<td align="right">-1.888</td>
-<td align="right">0.059</td>
+<td align="right">-0.020</td>
+<td align="right">0.012</td>
+<td align="right">-1.685</td>
+<td align="right">0.092</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:October</td>
-<td align="right">-0.009</td>
-<td align="right">0.009</td>
-<td align="right">-1.063</td>
-<td align="right">0.288</td>
+<td align="right">-0.017</td>
+<td align="right">0.012</td>
+<td align="right">-1.379</td>
+<td align="right">0.168</td>
 </tr>
 <tr class="even">
 <td align="left">Month:November</td>
-<td align="right">0.004</td>
-<td align="right">0.009</td>
-<td align="right">0.466</td>
-<td align="right">0.641</td>
+<td align="right">0.003</td>
+<td align="right">0.012</td>
+<td align="right">0.234</td>
+<td align="right">0.815</td>
 </tr>
 <tr class="odd">
 <td align="left">Month:December</td>
-<td align="right">-0.008</td>
-<td align="right">0.009</td>
-<td align="right">-0.832</td>
-<td align="right">0.405</td>
+<td align="right">-0.012</td>
+<td align="right">0.012</td>
+<td align="right">-0.994</td>
+<td align="right">0.320</td>
 </tr>
 <tr class="even">
 <td align="left">Borough:BROOKLYN</td>
-<td align="right">-0.050</td>
-<td align="right">0.005</td>
-<td align="right">-11.161</td>
+<td align="right">-0.065</td>
+<td align="right">0.006</td>
+<td align="right">-10.586</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Borough:MANHATTAN</td>
-<td align="right">0.033</td>
-<td align="right">0.005</td>
-<td align="right">6.104</td>
+<td align="right">0.047</td>
+<td align="right">0.007</td>
+<td align="right">6.376</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Borough:QUEENS</td>
-<td align="right">0.015</td>
-<td align="right">0.005</td>
-<td align="right">2.815</td>
-<td align="right">0.005</td>
+<td align="right">0.029</td>
+<td align="right">0.007</td>
+<td align="right">3.912</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Borough:STATEN ISLAND</td>
-<td align="right">0.074</td>
-<td align="right">0.009</td>
-<td align="right">8.270</td>
+<td align="right">0.110</td>
+<td align="right">0.012</td>
+<td align="right">9.063</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Muder Flag:TRUE</td>
-<td align="right">0.056</td>
-<td align="right">0.004</td>
-<td align="right">13.126</td>
+<td align="right">0.076</td>
+<td align="right">0.006</td>
+<td align="right">13.065</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
-<td align="left">Perpetrator sex:M</td>
-<td align="right">-0.077</td>
+<td align="left">Perpetrator age group:18-24</td>
+<td align="right">-0.087</td>
+<td align="right">0.008</td>
+<td align="right">-10.386</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator age group:25-44</td>
+<td align="right">-0.078</td>
+<td align="right">0.009</td>
+<td align="right">-8.982</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator age group:45-64</td>
+<td align="right">-0.010</td>
+<td align="right">0.014</td>
+<td align="right">-0.672</td>
+<td align="right">0.502</td>
+</tr>
+<tr class="even">
+<td align="left">Perpetrator age group:65+</td>
+<td align="right">-0.089</td>
+<td align="right">0.037</td>
+<td align="right">-2.403</td>
+<td align="right">0.016</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator age group:UNKNOWN</td>
+<td align="right">-0.093</td>
 <td align="right">0.011</td>
-<td align="right">-7.234</td>
+<td align="right">-8.280</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:18-24</td>
+<td align="right">-0.081</td>
+<td align="right">0.008</td>
+<td align="right">-10.440</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim age group:25-44</td>
+<td align="right">-0.078</td>
+<td align="right">0.008</td>
+<td align="right">-9.973</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:45-64</td>
+<td align="right">0.024</td>
+<td align="right">0.011</td>
+<td align="right">2.236</td>
+<td align="right">0.025</td>
+</tr>
+<tr class="odd">
+<td align="left">Victim age group:65+</td>
+<td align="right">0.018</td>
+<td align="right">0.025</td>
+<td align="right">0.730</td>
+<td align="right">0.465</td>
+</tr>
+<tr class="even">
+<td align="left">Victim age group:UNKNOWN</td>
+<td align="right">0.015</td>
+<td align="right">0.038</td>
+<td align="right">0.397</td>
+<td align="right">0.692</td>
+</tr>
+<tr class="odd">
+<td align="left">Perpetrator sex:M</td>
+<td align="right">-0.111</td>
+<td align="right">0.014</td>
+<td align="right">-7.724</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator sex:U</td>
-<td align="right">-0.178</td>
-<td align="right">0.016</td>
-<td align="right">-11.104</td>
+<td align="right">-0.238</td>
+<td align="right">0.022</td>
+<td align="right">-10.821</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:ASIAN / PACIFIC ISLANDER</td>
-<td align="right">-0.055</td>
-<td align="right">0.140</td>
-<td align="right">-0.394</td>
-<td align="right">0.694</td>
+<td align="right">-0.047</td>
+<td align="right">0.189</td>
+<td align="right">-0.247</td>
+<td align="right">0.805</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:BLACK</td>
-<td align="right">-0.117</td>
-<td align="right">0.139</td>
-<td align="right">-0.842</td>
-<td align="right">0.400</td>
+<td align="right">-0.139</td>
+<td align="right">0.188</td>
+<td align="right">-0.739</td>
+<td align="right">0.460</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:BLACK HISPANIC</td>
-<td align="right">-0.043</td>
-<td align="right">0.139</td>
-<td align="right">-0.310</td>
-<td align="right">0.756</td>
+<td align="right">-0.032</td>
+<td align="right">0.188</td>
+<td align="right">-0.169</td>
+<td align="right">0.866</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:UNKNOWN</td>
-<td align="right">-0.034</td>
-<td align="right">0.139</td>
-<td align="right">-0.242</td>
-<td align="right">0.809</td>
+<td align="right">-0.009</td>
+<td align="right">0.188</td>
+<td align="right">-0.050</td>
+<td align="right">0.960</td>
 </tr>
 <tr class="odd">
 <td align="left">Perpetrator race:WHITE</td>
-<td align="right">-0.087</td>
-<td align="right">0.140</td>
-<td align="right">-0.624</td>
-<td align="right">0.533</td>
+<td align="right">-0.105</td>
+<td align="right">0.189</td>
+<td align="right">-0.557</td>
+<td align="right">0.578</td>
 </tr>
 <tr class="even">
 <td align="left">Perpetrator race:WHITE HISPANIC</td>
-<td align="right">-0.058</td>
-<td align="right">0.139</td>
-<td align="right">-0.421</td>
-<td align="right">0.674</td>
+<td align="right">-0.054</td>
+<td align="right">0.188</td>
+<td align="right">-0.286</td>
+<td align="right">0.775</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim sex:M</td>
-<td align="right">-0.095</td>
-<td align="right">0.005</td>
-<td align="right">-18.192</td>
+<td align="right">-0.116</td>
+<td align="right">0.007</td>
+<td align="right">-16.299</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">Victim sex:U</td>
-<td align="right">-0.030</td>
-<td align="right">0.070</td>
-<td align="right">-0.425</td>
-<td align="right">0.671</td>
+<td align="right">-0.048</td>
+<td align="right">0.096</td>
+<td align="right">-0.497</td>
+<td align="right">0.619</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:ASIAN / PACIFIC ISLANDER</td>
-<td align="right">-0.020</td>
-<td align="right">0.075</td>
-<td align="right">-0.265</td>
-<td align="right">0.791</td>
+<td align="right">-0.026</td>
+<td align="right">0.102</td>
+<td align="right">-0.259</td>
+<td align="right">0.796</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:BLACK</td>
-<td align="right">-0.128</td>
-<td align="right">0.074</td>
-<td align="right">-1.727</td>
-<td align="right">0.084</td>
+<td align="right">-0.176</td>
+<td align="right">0.100</td>
+<td align="right">-1.754</td>
+<td align="right">0.080</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:BLACK HISPANIC</td>
-<td align="right">-0.030</td>
-<td align="right">0.074</td>
-<td align="right">-0.401</td>
-<td align="right">0.689</td>
+<td align="right">-0.037</td>
+<td align="right">0.101</td>
+<td align="right">-0.370</td>
+<td align="right">0.711</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:UNKNOWN</td>
-<td align="right">-0.003</td>
-<td align="right">0.080</td>
-<td align="right">-0.033</td>
-<td align="right">0.974</td>
+<td align="right">-0.015</td>
+<td align="right">0.109</td>
+<td align="right">-0.142</td>
+<td align="right">0.887</td>
 </tr>
 <tr class="odd">
 <td align="left">Victim race:WHITE</td>
-<td align="right">-0.031</td>
-<td align="right">0.075</td>
-<td align="right">-0.407</td>
-<td align="right">0.684</td>
+<td align="right">-0.051</td>
+<td align="right">0.101</td>
+<td align="right">-0.502</td>
+<td align="right">0.616</td>
 </tr>
 <tr class="even">
 <td align="left">Victim race:WHITE HISPANIC</td>
-<td align="right">-0.048</td>
-<td align="right">0.074</td>
-<td align="right">-0.645</td>
-<td align="right">0.519</td>
+<td align="right">-0.062</td>
+<td align="right">0.101</td>
+<td align="right">-0.618</td>
+<td align="right">0.536</td>
 </tr>
 </tbody>
 </table>
 <p>The backward stepwise regression chose the regression model with minimum AIC value. However, the stepwise regression did not omit any predictor, which indicates that the current regression model is sufficient to explain the outcome - number of shooing in NYC.</p>
+</div>
+<div id="correlation-matrix" class="section level3">
+<h3>Correlation Matrix</h3>
+<pre class="r"><code>cor_data = 
+  cor(cbind(number_shoot = pull(mlr_lm, number_shoot),
+             
+  model.matrix(number_shoot ~ year + month + boro + statistical_murder_flag + perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm)[,-1])
+  )
+
+cor_data %&gt;% 
+  corrplot(method = &quot;color&quot;, addCoef.col = &quot;black&quot;, tl.col = &quot;black&quot;, tl.srt = 45, tl.cex = 0.5, insig = &quot;blank&quot;, number.cex = 0.1,diag = FALSE)</code></pre>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-4-1.png" width="80%" /></p>
+<p>The correlation analysis of NYC shooting data shows that the unknown sex and race of perpetrator is highly collinearited. And most of other variables are acceptable.</p>
 </div>
 <div id="multiple-linear-regression-diagnose" class="section level3">
 <h3>Multiple Linear Regression diagnose</h3>
 <pre><code>## 
 ## Call:
 ## lm(formula = number_shoot ~ year + month + boro + statistical_murder_flag + 
-##     perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm)
+##     perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + 
+##     vic_race, data = mlr_lm)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -0.69726 -0.03078  0.05856  0.12567  0.35808 
+## -0.92978 -0.05159  0.08218  0.17605  0.49877 
 ## 
 ## Coefficients:
-##                                     Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)                        1.2262078  0.1578656   7.767 8.63e-15 ***
-## year2007                           0.0348428  0.0077674   4.486 7.33e-06 ***
-## year2008                           0.0125014  0.0077366   1.616 0.106146    
-## year2009                           0.0009724  0.0079689   0.122 0.902885    
-## year2010                           0.0446740  0.0082950   5.386 7.35e-08 ***
-## year2011                           0.0527293  0.0087660   6.015 1.85e-09 ***
-## year2012                           0.0490162  0.0093294   5.254 1.51e-07 ***
-## year2013                           0.0662468  0.0097290   6.809 1.03e-11 ***
-## year2014                           0.0494474  0.0096808   5.108 3.31e-07 ***
-## year2015                           0.0479661  0.0094613   5.070 4.04e-07 ***
-## year2016                           0.0549412  0.0099820   5.504 3.78e-08 ***
-## year2017                           0.0715502  0.0103411   6.919 4.77e-12 ***
-## year2018                           0.0630729  0.0105022   6.006 1.96e-09 ***
-## year2019                           0.0870240  0.0103911   8.375  &lt; 2e-16 ***
-## year2020                           0.0433503  0.0091543   4.736 2.21e-06 ***
-## year2021                           0.0411906  0.0097702   4.216 2.50e-05 ***
-## monthFebruary                      0.0213689  0.0097223   2.198 0.027973 *  
-## monthMarch                         0.0047129  0.0092724   0.508 0.611274    
-## monthApril                        -0.0025799  0.0089907  -0.287 0.774157    
-## monthMay                          -0.0092405  0.0085635  -1.079 0.280580    
-## monthJune                         -0.0290994  0.0085608  -3.399 0.000678 ***
-## monthJuly                         -0.0286696  0.0084229  -3.404 0.000667 ***
-## monthAugust                       -0.0307366  0.0084143  -3.653 0.000260 ***
-## monthSeptember                    -0.0164833  0.0087297  -1.888 0.059025 .  
-## monthOctober                      -0.0094738  0.0089116  -1.063 0.287762    
-## monthNovember                      0.0042710  0.0091630   0.466 0.641141    
-## monthDecember                     -0.0076875  0.0092362  -0.832 0.405243    
-## boroBROOKLYN                      -0.0503850  0.0045144 -11.161  &lt; 2e-16 ***
-## boroMANHATTAN                      0.0330639  0.0054168   6.104 1.07e-09 ***
-## boroQUEENS                         0.0152834  0.0054286   2.815 0.004880 ** 
-## boroSTATEN ISLAND                  0.0744201  0.0089991   8.270  &lt; 2e-16 ***
-## statistical_murder_flagTRUE        0.0556428  0.0042391  13.126  &lt; 2e-16 ***
-## perp_sexM                         -0.0766452  0.0105947  -7.234 4.95e-13 ***
-## perp_sexU                         -0.1781447  0.0160435 -11.104  &lt; 2e-16 ***
-## perp_raceASIAN / PACIFIC ISLANDER -0.0551459  0.1399945  -0.394 0.693651    
-## perp_raceBLACK                    -0.1169194  0.1389091  -0.842 0.399973    
-## perp_raceBLACK HISPANIC           -0.0431230  0.1390342  -0.310 0.756444    
-## perp_raceUNKNOWN                  -0.0336672  0.1392922  -0.242 0.809015    
-## perp_raceWHITE                    -0.0870149  0.1395317  -0.624 0.532888    
-## perp_raceWHITE HISPANIC           -0.0584750  0.1389725  -0.421 0.673932    
-## vic_sexM                          -0.0950415  0.0052244 -18.192  &lt; 2e-16 ***
-## vic_sexU                          -0.0296688  0.0697315  -0.425 0.670500    
-## vic_raceASIAN / PACIFIC ISLANDER  -0.0199821  0.0753583  -0.265 0.790889    
-## vic_raceBLACK                     -0.1282827  0.0742964  -1.727 0.084258 .  
-## vic_raceBLACK HISPANIC            -0.0298119  0.0744343  -0.401 0.688786    
-## vic_raceUNKNOWN                   -0.0026588  0.0801353  -0.033 0.973533    
-## vic_raceWHITE                     -0.0305139  0.0748959  -0.407 0.683708    
-## vic_raceWHITE HISPANIC            -0.0479599  0.0743821  -0.645 0.519083    
+##                                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                        1.406603   0.213614   6.585 4.74e-11 ***
+## year2007                           0.048944   0.010503   4.660 3.20e-06 ***
+## year2008                           0.014533   0.010473   1.388 0.165231    
+## year2009                           0.004493   0.010816   0.415 0.677875    
+## year2010                           0.060889   0.011244   5.415 6.23e-08 ***
+## year2011                           0.061287   0.012002   5.106 3.33e-07 ***
+## year2012                           0.063999   0.012813   4.995 5.96e-07 ***
+## year2013                           0.089494   0.013346   6.706 2.09e-11 ***
+## year2014                           0.061202   0.013290   4.605 4.16e-06 ***
+## year2015                           0.063086   0.012993   4.855 1.22e-06 ***
+## year2016                           0.073959   0.013701   5.398 6.86e-08 ***
+## year2017                           0.095977   0.014192   6.763 1.41e-11 ***
+## year2018                           0.080799   0.014401   5.611 2.06e-08 ***
+## year2019                           0.113096   0.014292   7.913 2.72e-15 ***
+## year2020                           0.054713   0.012628   4.333 1.48e-05 ***
+## year2021                           0.052150   0.013417   3.887 0.000102 ***
+## monthFebruary                      0.027681   0.013153   2.105 0.035347 *  
+## monthMarch                         0.006494   0.012553   0.517 0.604912    
+## monthApril                        -0.002345   0.012164  -0.193 0.847118    
+## monthMay                          -0.014973   0.011585  -1.292 0.196212    
+## monthJune                         -0.035405   0.011583  -3.057 0.002242 ** 
+## monthJuly                         -0.038586   0.011396  -3.386 0.000712 ***
+## monthAugust                       -0.038710   0.011381  -3.401 0.000673 ***
+## monthSeptember                    -0.019894   0.011805  -1.685 0.091971 .  
+## monthOctober                      -0.016617   0.012054  -1.379 0.168063    
+## monthNovember                      0.002905   0.012399   0.234 0.814748    
+## monthDecember                     -0.012422   0.012491  -0.994 0.319999    
+## boroBROOKLYN                      -0.064692   0.006111 -10.586  &lt; 2e-16 ***
+## boroMANHATTAN                      0.046723   0.007328   6.376 1.88e-10 ***
+## boroQUEENS                         0.028754   0.007351   3.912 9.22e-05 ***
+## boroSTATEN ISLAND                  0.110384   0.012180   9.063  &lt; 2e-16 ***
+## statistical_murder_flagTRUE        0.076203   0.005833  13.065  &lt; 2e-16 ***
+## perp_age_group18-24               -0.087198   0.008396 -10.386  &lt; 2e-16 ***
+## perp_age_group25-44               -0.078128   0.008698  -8.982  &lt; 2e-16 ***
+## perp_age_group45-64               -0.009583   0.014262  -0.672 0.501654    
+## perp_age_group65+                 -0.088533   0.036841  -2.403 0.016270 *  
+## perp_age_groupUNKNOWN             -0.092956   0.011227  -8.280  &lt; 2e-16 ***
+## vic_age_group18-24                -0.081471   0.007804 -10.440  &lt; 2e-16 ***
+## vic_age_group25-44                -0.078179   0.007839  -9.973  &lt; 2e-16 ***
+## vic_age_group45-64                 0.024202   0.010822   2.236 0.025341 *  
+## vic_age_group65+                   0.018436   0.025256   0.730 0.465427    
+## vic_age_groupUNKNOWN               0.015175   0.038266   0.397 0.691702    
+## perp_sexM                         -0.110736   0.014337  -7.724 1.21e-14 ***
+## perp_sexU                         -0.237753   0.021972 -10.821  &lt; 2e-16 ***
+## perp_raceASIAN / PACIFIC ISLANDER -0.046742   0.189275  -0.247 0.804948    
+## perp_raceBLACK                    -0.138725   0.187806  -0.739 0.460125    
+## perp_raceBLACK HISPANIC           -0.031729   0.187976  -0.169 0.865960    
+## perp_raceUNKNOWN                  -0.009432   0.188381  -0.050 0.960068    
+## perp_raceWHITE                    -0.105051   0.188667  -0.557 0.577669    
+## perp_raceWHITE HISPANIC           -0.053821   0.187893  -0.286 0.774543    
+## vic_sexM                          -0.116341   0.007138 -16.299  &lt; 2e-16 ***
+## vic_sexU                          -0.047737   0.095972  -0.497 0.618914    
+## vic_raceASIAN / PACIFIC ISLANDER  -0.026410   0.101902  -0.259 0.795505    
+## vic_raceBLACK                     -0.176157   0.100457  -1.754 0.079532 .  
+## vic_raceBLACK HISPANIC            -0.037284   0.100644  -0.370 0.711051    
+## vic_raceUNKNOWN                   -0.015496   0.108754  -0.142 0.886694    
+## vic_raceWHITE                     -0.050819   0.101298  -0.502 0.615903    
+## vic_raceWHITE HISPANIC            -0.062197   0.100574  -0.618 0.536311    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.1961 on 12598 degrees of freedom
-## Multiple R-squared:  0.1703, Adjusted R-squared:  0.1672 
-## F-statistic:    55 on 47 and 12598 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-5-1.png" width="576" /><img src="risk_factors_files/figure-html/unnamed-chunk-5-2.png" width="576" /><img src="risk_factors_files/figure-html/unnamed-chunk-5-3.png" width="576" /><img src="risk_factors_files/figure-html/unnamed-chunk-5-4.png" width="576" /></p>
+## Residual standard error: 0.265 on 12585 degrees of freedom
+## Multiple R-squared:  0.1945, Adjusted R-squared:  0.1908 
+## F-statistic:  53.3 on 57 and 12585 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-6-1.png" width="80%" /><img src="risk_factors_files/figure-html/unnamed-chunk-6-2.png" width="80%" /><img src="risk_factors_files/figure-html/unnamed-chunk-6-3.png" width="80%" /><img src="risk_factors_files/figure-html/unnamed-chunk-6-4.png" width="80%" /></p>
 <p>The residuals plot of year and borough did not show any distribution pattern which indicated the good fit of model. However, the residual density plot indicated some outliers.</p>
 </div>
 </div>
 <div id="cross-validation-between-different-regression-models" class="section level2">
 <h2>Cross Validation between different regression models</h2>
-<p><img src="risk_factors_files/figure-html/unnamed-chunk-8-1.png" width="576" /></p>
+<p><img src="risk_factors_files/figure-html/unnamed-chunk-9-1.png" width="80%" /></p>
 <p>Our cross validation include three different models. The first model includes all the predictors. The second model includes only the significant predictors. the third model includes interaction of borough and sex.</p>
 <p>The cross validation section, the root mean square deviations were calculated for all the three models. the RMSE plot shows that RMSE of all model are similar. And the first model have the lowest RMSE, which indicates the first model may be the best model to explain the outcome - number of shooting in NYC.</p>
 <p>Here’s the link back to <a href="index.html">Homepage</a> page.</p>

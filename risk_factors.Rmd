@@ -9,16 +9,20 @@ library(tidyverse)
 library(viridis)
 library(plotly)
 library(modelr)
+library(leaflet)
+library(RColorBrewer)
+library(corrplot)
 
 knitr::opts_chunk$set(
 	echo = TRUE,
 	warning = FALSE,
-	fig.width = 6, 
-  fig.height = 8,
+	fig.width = 9, 
+  fig.height = 9,
 	message = F,
   echo = T,
   warning = F,
-  cache = F
+  cache = F,
+	out.width = "80%"
 )
 options(
   ggplot2.continuous.colour = "viridis",
@@ -46,19 +50,19 @@ nyc_time =
 
 The NYPD Shooting Data was collected from the [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8). The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:
 
-  * 'year'. year of shooting incident
-  * 'month'. month of the shooting incident
-  * 'day'. day of the shooting incident 
-  * 'boro'. borough where the shooting incident occurred
-  * 'location_desc'. location of the shooting incident
-  * 'statistical_murder_flag'. Shooting resulted in the victim’s death which would be counted as a murder
-  * 'perp_age_group'. perpetrator's age within a category
-  * 'perp_sex'. perpetrator's sex description
-  * 'perp_race'. perpetrator's race description
-  * 'vic_age_group'. victim's age within a category
-  * 'vic_sex'. victim's sex description
-  * 'vic_race'. victim's race description
-  * 'zipcode'. zipcode of the shooting incident
+  * `year`. year of shooting incident
+  * `month`. month of the shooting incident
+  * `day`. day of the shooting incident 
+  * `boro`. borough where the shooting incident occurred
+  * `location_desc`. location of the shooting incident
+  * `statistical_murder_flag`. Shooting resulted in the victim’s death which would be counted as a murder
+  * `perp_age_group`. perpetrator's age within a category
+  * `perp_sex`. perpetrator's sex description
+  * `perp_race`. perpetrator's race description
+  * `vic_age_group`. victim's age within a category
+  * `vic_sex`. victim's sex description
+  * `vic_race`. victim's race description
+  * `zipcode`. zipcode of the shooting incident
 
 ```{r, import data, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -75,7 +79,12 @@ nyc_fit_lm =
     perp_race = as.factor(perp_race),
     vic_sex = as.factor(vic_sex),
     vic_race = as.factor(vic_race),
+    perp_age_group = as.factor(perp_age_group),
+    vic_age_group = as.factor(vic_age_group),
     month = fct_relevel(month, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+  ) %>% 
+  filter(
+    !(perp_age_group %in% c("1020", "224", "940"))
   ) %>% 
   group_by(month, year, boro, statistical_murder_flag, perp_age_group, vic_age_group, perp_sex, perp_race, vic_sex, vic_race) %>% 
   summarize(
@@ -88,12 +97,12 @@ nyc_fit_lm =
 
 ### Box-Cox transformation
 
-The box-cox method is applied in the model to determine the transformation of outcome variable. The variable 'location_desc' includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y transformation is applied.
+The box-cox method is applied in the model to determine the transformation of outcome variable. The variable `location_desc` includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y^2 transformation is applied.
 
 
 ```{r, cache=TRUE, echo=FALSE, message=FALSE}
 
-mlr_fit = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = nyc_fit_lm)
+mlr_fit = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + vic_race, data = nyc_fit_lm)
 
 MASS::boxcox(mlr_fit)
 
@@ -105,10 +114,10 @@ MASS::boxcox(mlr_fit)
 mlr_lm = 
   nyc_fit_lm %>% 
   mutate(
-    number_shoot = 1 / number_shoot
+    number_shoot = 1 / number_shoot^2
   )
 
-fit_df1 = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) %>% 
+fit_df1 = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) %>% 
   broom::tidy() %>% 
   mutate(
     term = str_replace(term, "year", "Year:"),
@@ -118,20 +127,22 @@ fit_df1 = lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp
     term = str_replace(term, "perp_sex", "Perpetrator sex:"),
     term = str_replace(term, "perp_race", "Perpetrator race:"),
     term = str_replace(term, "vic_sex", "Victim sex:"),
-    term = str_replace(term, "vic_race", "Victim race:")
+    term = str_replace(term, "vic_race", "Victim race:"),
+    term = str_replace(term, "perp_age_group", "Perpetrator age group:"),
+    term = str_replace(term, "vic_age_group", "Victim age group:")
   ) %>% 
   knitr::kable(digits = 3)
 
 fit_df1
 ```
 
-Our regression model included year, month, borough, perpetrator's sex and race, and victim's sex and race as the predictors. The regression results year, month, borough, perpetrator's sex, and victim's sex are significant predictor variable for the number of shooting in NYC. Among the month variable, May, June, July, August, September, October, and December have lower number of shooting than January.And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.The next step is to use stepwise regression in backward direction to build our regression model.
+Our regression model included year, month, borough, perpetrator's age group, sex and race, and victim's age group, sex and race as the predictors. The regression results `year`, `borough`, `perpetrator's sex and age group`, and `victim's sex and age group` are significant predictor variable for the number of shooting in NYC. Among the month variable, May, June, July, August, September, October, and December have lower number of shooting than January.And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.Among perpetrators, age under 18 have more number of shooting than other age groups. Among victims, 45-64 years old and 65+ years old have more number of shooting that age under 18 group.The next step is to use stepwise regression in backward direction to build our regression model.
 
 ### backward stepwise regression
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 fit_df_result =
-lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
+lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm) 
 
 step_df =
   step(fit_df_result, direction = 'backward') 
@@ -146,7 +157,9 @@ summary(step_df) %>%
     term = str_replace(term, "perp_sex", "Perpetrator sex:"),
     term = str_replace(term, "perp_race", "Perpetrator race:"),
     term = str_replace(term, "vic_sex", "Victim sex:"),
-    term = str_replace(term, "vic_race", "Victim race:")
+    term = str_replace(term, "vic_race", "Victim race:"),
+    term = str_replace(term, "perp_age_group", "Perpetrator age group:"),
+    term = str_replace(term, "vic_age_group", "Victim age group:")
   ) %>% 
   knitr::kable(digits = 3)
 
@@ -154,6 +167,21 @@ summary(step_df) %>%
 ```
 
 The backward stepwise regression chose the regression model with minimum AIC value. However, the stepwise regression did not omit any predictor, which indicates that the current regression model is sufficient to explain the outcome - number of shooing in NYC.
+
+### Correlation Matrix
+
+```{r}
+cor_data = 
+  cor(cbind(number_shoot = pull(mlr_lm, number_shoot),
+             
+  model.matrix(number_shoot ~ year + month + boro + statistical_murder_flag + perp_age_group + vic_age_group + perp_sex + perp_race + vic_sex + vic_race, data = mlr_lm)[,-1])
+  )
+
+cor_data %>% 
+  corrplot(method = "color", addCoef.col = "black", tl.col = "black", tl.srt = 45, tl.cex = 0.5, insig = "blank", number.cex = 0.1,diag = FALSE)
+```
+
+The correlation analysis of NYC shooting data shows that the unknown sex and race of perpetrator is highly collinearited. And most of other variables are acceptable. 
 
 ### Multiple Linear Regression diagnose
 
@@ -204,11 +232,11 @@ cv_df =
 cv_RMSE =
   cv_df %>% 
   mutate(
-    mod_df1 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + vic_race, data = .x)),
+    mod_df1 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + vic_age_group + perp_sex + vic_sex + vic_race, data = .x)),
     
-    mod_df2 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex, data = .x)),
+    mod_df2 = map(.x = train, ~lm(number_shoot ~ year + boro + statistical_murder_flag + vic_age_group + perp_sex + vic_sex, data = .x)),
     
-    mod_df3 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + perp_sex + vic_sex + boro*vic_sex + boro*perp_sex, data = .x))
+    mod_df3 = map(.x = train, ~lm(number_shoot ~ year + month + boro + statistical_murder_flag + vic_age_group + perp_sex + vic_sex + boro*vic_sex + boro*perp_sex, data = .x))
   ) %>% 
   mutate(
     rmse_df1 = map2_dbl(.x = mod_df1, .y = test, ~rmse(model = .x, data = .y)),
