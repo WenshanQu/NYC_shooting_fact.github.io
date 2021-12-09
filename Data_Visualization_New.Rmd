@@ -1,5 +1,5 @@
 ---
-title: "Data_Visualization"
+title: "Data Visualization"
 output:
   html_document:
     toc: true
@@ -65,7 +65,7 @@ Shooting_df = bind_rows(history_df, year_to_date_df) %>%
   select(-second)
 ```
 
-# Bar Chart on race and sex
+## Bar Chart on race and sex
 
 From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, Male victims outweigh Female victims in all races.
 
@@ -114,9 +114,9 @@ fig
 
 
 
-# Shooting Cases by Borough
+## Shooting Cases by Borough
 
-The Borough bar chart shows that Brooklyn area has the most shooting cases(more than 10k) and Staten Island has the least shooting cases(less than 1k) in NYC.
+The Borough bar chart shows that Brooklyn area has the most shooting cases(more than 10k) and Staten Island has the least shooting cases(less than 1k) in NYC from 2006 until now.
 
 ```{r Borough}
 boro_df = Shooting_df %>%
@@ -136,7 +136,7 @@ boro_bar
 
 
 
-# Shooting Cases by location (Common)
+## Shooting Cases by location (Common)
 
 Cases with unrecorded location are dropped. Locations where shootings happened less than 10 times from 2006 until now are dropped.The bar chart only analyzes common locations that exist shooting cases those years. We can see from the chart that public houses, apartment buildings and private houses are top 3 locations that shooting cases may happen.
 
@@ -160,9 +160,9 @@ location_bar
 
 
 
-# Shooting Cases Trend before 2021 by Borough
+## Shooting Cases Trend before 2021 by Borough
 
-The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of sepetember. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergency of COVID-19.
+The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of sepetember. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
 
 ```{r Shooting Cases Trend before 2020, fig.align='center'}
 year_trend_df_2020 = Shooting_df %>%
@@ -190,7 +190,7 @@ trend_plot
 
 # Shooting density map over hours 
 
-The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. Frome the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
+The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. From the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
 
 ```{r Shooting density map}
 map_df = Shooting_df %>%
@@ -220,7 +220,7 @@ map_hour = map_hour_df %>%
     x = ~ longitude,
     y = ~ latitude,
     text = ~ text_label,
-    alpha = 0.08,
+    size = I(1),
     frame = ~ hour,
     mode = "marker",
     color = ~boro,
@@ -231,14 +231,14 @@ map_hour = map_hour_df %>%
       source = raster2uri(as.raster(map_nyc)),
       xref = "x",
       yref = "y",
-      y = 40.5,
+      y = 40.51,
       x = -74.25,
       sizey = 0.5,
       sizex = 0.55,
       sizing = "stretch",
       xanchor = "left",
       yanchor = "bottom",
-      opacity = 0.4,
+      opacity = 0.6,
       layer = "below"
     )
   ) %>%
