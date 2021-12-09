@@ -11,7 +11,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
-
+The ANOVA test is based on the cleaned data from regression step, dedicated to show the association between variables and the outcome.
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
@@ -92,7 +92,6 @@ showing = function(x){
 }
 ```
 
-# Significant variables
 
 ## Year
 ```{r year}
@@ -166,3 +165,20 @@ showing(res_vicrace)
 
 The p-value of the race of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of victims as statistically significant.
 
+## Perp_age_group
+
+```{r Perp_age_group}
+res_perp_age_group = aov(number_shoot ~ factor(perp_age_group), data = nyc_fit_lm)
+showing(res_perp_age_group)
+```
+
+The p-value of the perp_age_group variable is smaller than 0.05, thus we reject the null hypothesis and regard the perp_age_group as statistically significant.
+
+## Vic_age_group
+
+```{r Vic_age_group}
+res_vic_age_group = aov(number_shoot ~ factor(vic_age_group), data = nyc_fit_lm)
+showing(res_vic_age_group)
+```
+
+The p-value of the vic_age_group variable is smaller than 0.05, thus we reject the null hypothesis and regard the vic_age_group as statistically significant.
