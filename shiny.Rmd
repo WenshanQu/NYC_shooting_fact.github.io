@@ -39,10 +39,14 @@ Shooting Crime Finder
 
 Column {.sidebar}
 -----------------------------------------------------------------------
-Find shootings near you
+### Find Shootings Near You
+
+Interested in the life safety in New York City? Use our Shiny App to get ideas about the safe area and time with your zip-code! Our database includes over 20,000 data points on shooting incident cases in NYC from 2006 to 2021 (data source: NYPD). 
+
+Please enter your zip-code of New York City (from 10001 to 11693) to get the distribution of shooting incidents, the safest month in a year, and the safest time in a day in your area.
 
 ```{r}
-numericInput("zipcode", "Zipcode:", 10001, min = 10001, max = 11693)
+numericInput("zipcode", label = h4("Zipcode:"), 10032, min = 10001, max = 11693)
 ```
 
 Column {data-width=600}
@@ -81,7 +85,7 @@ risk_plot
 Column {data-width=400}
 -----------------------------------------------------------------------
 
-### Month with the highest incident rate
+### The Safest Month in A Year?
 
 ```{r}
 renderPlotly({
@@ -101,7 +105,7 @@ renderPlotly({
         x = ~ month, y = ~ n, type = "bar", color = ~ month, colors = "viridis"
       ) %>% 
       layout(
-        title = "Most Dangerous Month in Selected Region", 
+        title = "Safest Month in Your Area", 
         xaxis = list(title = "Month"), 
         yaxis = list(title = "Number of Cases"),
         showlegend = FALSE
@@ -112,7 +116,7 @@ renderPlotly({
 })
 ```
 
-### Most Dangerous Time in A Day ... ?
+### The Safest Time in A Day?
 
 ```{r}
 renderPlotly({
@@ -128,7 +132,7 @@ renderPlotly({
       x = ~ hour, y = ~ n, type = "bar", color = ~ hour, colors = "viridis"
     ) %>% 
     layout(
-      title = "Most Dangerous Hour in A Day", 
+      title = "Safest Hour in Your Area", 
       xaxis = list(title = "Hour"), 
       yaxis = list(title = "Number of Cases"),
       showlegend = FALSE
@@ -172,10 +176,18 @@ renderHighchart({
     filter(year == input$selected_year) %>% 
     dplyr::count(zipcode)
 
+  
   highchart() %>%
-    hc_title(text = "NYC Shooting Density") %>%
-    hc_subtitle(text = "by Zip-code") %>% 
+    hc_title(
+      text = "NYC Shooting Density",
+      style = list(fontSize = "24px", color = "#000000", fontWeight = "bold")
+    ) %>%
+    hc_subtitle(
+      text = "by Zip-code",
+      style = list(fontSize = "12px", color = "#000000", fontStyle = "italic")
+    ) %>% 
     hc_add_series_map(nyczipgeojson, zip_count, 
+      name = "Number of Shooting Cases:",
       value = "n", 
       joinBy = c("postalCode", "zipcode"),
       dataLabels = list(
@@ -183,14 +195,14 @@ renderHighchart({
         format = "{point.properties.postalcode}"
         )
     ) %>% 
-  hc_legend(
-    valueDecimals = 0, 
-    valueSuffix = "%",
-    align = "right",
-    verticalAlign = "top",
-    layout = "vertical"
-  ) %>%
-  hc_mapNavigation(enabled = TRUE)
+    hc_legend(
+      valueDecimals = 0, 
+      valueSuffix = "%",
+      align = "right",
+      verticalAlign = "top",
+      layout = "vertical"
+    ) %>%
+    hc_mapNavigation(enabled = TRUE)
 
 })
 ```
