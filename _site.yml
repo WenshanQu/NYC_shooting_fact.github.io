@@ -3,7 +3,6 @@ output_dir: "."
 navbar:
   title: "Home"
   left:
-  right:
     - text: "Data Visualization"
       href: Data_Visualization_New.html
     - text: "Data Analysis"
@@ -11,7 +10,7 @@ navbar:
       - text: "Regression Analysis"
         href: risk_factors.html
       - text: "ANOVA Analysis"
-        href: anova.html
+        href: ANOVA.html
     - text: "Shooting Facts in NYC"
       href: https://wenshanqu.shinyapps.io/nyc_shooting_fact/
     - text: "Data"
@@ -19,7 +18,7 @@ navbar:
     - text: "About"
       href: about.html
       
-    right:
+  right:
     - icon: fa-envelope fa-lg
       href: mailto:<heyu0424@hotmail.com>
     - icon: fa-github fa-lg
