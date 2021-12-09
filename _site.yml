@@ -3,9 +3,11 @@ output_dir: "."
 navbar:
   title: "Home"
   right:
+    - text: "Regression Analysis"
+      href: risk_factors.html
     - text: "About"
       href: about.html
-    - text: "shiny"
+    - text: "Shooting Facts in NYC"
       href: shiny.html
     - icon: fa-envelope fa-lg
       href: mailto:<heyu0424@hotmail.com>

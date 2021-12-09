@@ -6,11 +6,25 @@ output:
     toc_float: true
     theme: cerulean
 ---
+##Motivation
 
+### Covid 19 Pandemic impact
 
+Everything experienced in 2020 is unprecedented in the history of New York.
 
+Global public health crisis, hundreds of thousands of deaths, hospitals overwhelmed, economic stagnation, school closures, religious sites closed, society has lost its normal foundation.The [Covid-19 pandemic](https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus) have totally reshaped our known society. Our community is facing multi-lateral challenges such as, [economic impact](https://www.census.gov/library/stories/2021/03/initial-impact-covid-19-on-united-states-economy-more-widespread-than-on-mortality.html), [healthcare crisis](https://www.nytimes.com/2021/12/03/nyregion/covid-cases-surge-upstate-ny.html),
+[violent crimes](https://gothamist.com/news/why-are-shootings-and-murders-rise-nyc), and [supply chain crisis](https://www.ey.com/en_sg/supply-chain/how-covid-19-impacted-supply-chains-and-what-comes-next).Gun violence are now becoming a direct threat to our safety.
+[NYC in Covid-19](https://www.youtube.com/watch?v=rYTNO_WtNys)
 
+### Gun violence is threatning NYC
 
+<img src="photo/gun_violence.jpg" style="width:75%">
+
+[NYC shooting crime during Covid-19](https://www.youtube.com/watch?v=vpBfrKGXQdY)
+
+According to the New York Post, data from the New York City Police Department shows that as of December 7, 2020, there have been 1,433 shootings in New York City, with a total of 1,756 victims of gun violence, almost twice the number in the same period in 2019. The surge in shootings is jeopardizing the rights of the public. We need immediate action to ensure a safe living environment for our community.
+
+If you want to know more about the gun violence in NYC before and during the Covid-19 pandemic, our website can provide useful information.
 
 
 
