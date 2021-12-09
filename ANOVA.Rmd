@@ -93,7 +93,7 @@ showing = function(x){
 ```
 
 
-# Year
+## Year
 ```{r year}
 res_year = aov(number_shoot ~ factor(year), data = nyc_fit_lm)
 showing(res_year)
@@ -101,7 +101,7 @@ showing(res_year)
 
 The p-value of the year variable is smaller than 0.05, thus we reject the null hypothesis and regard the year as statistically significant.
 
-# Month
+## Month
 
 ```{r month}
 res_month = aov(number_shoot ~ factor(month), data = nyc_fit_lm)
@@ -109,7 +109,7 @@ showing(res_month)
 ```
 The p-value of the month variable is smaller than 0.05, thus we reject the null hypothesis and regard the month as statistically significant.
 
-# Borough
+## Borough
 
 ```{r boro}
 nyc_boro = nyc_fit_lm %>% 
@@ -120,7 +120,7 @@ showing(res_boro)
 
 The p-value of the borough variable is smaller than 0.05, thus we reject the null hypothesis and regard the borough as statistically significant.
 
-# Statistical_murder_flag
+## Statistical_murder_flag
 
 ```{r Statistical_murder_flag}
 res_smf = aov(number_shoot ~ factor(statistical_murder_flag), data = nyc_fit_lm)
@@ -129,7 +129,7 @@ showing(res_smf)
 
 The p-value of the Statistical_murder_flag variable is smaller than 0.05, thus we reject the null hypothesis and regard the Statistical_murder_flag as statistically significant.
 
-# Perp_sex
+## Perp_sex
 
 ```{r perp_sex}
 res_perpsex = aov(number_shoot ~ factor(perp_sex), data = nyc_fit_lm)
@@ -138,7 +138,7 @@ showing(res_perpsex)
 
 The p-value of the sex of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of perpetrator as statistically significant.
 
-# Perp_race
+## Perp_race
 
 ```{r perp_race}
 res_perprace = aov(number_shoot ~ factor(perp_race), data = nyc_fit_lm)
@@ -147,7 +147,7 @@ showing(res_perprace)
 
 The p-value of the race of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of perpetrator as statistically significant.
 
-# Vic_sex
+## Vic_sex
 
 ```{r vit_sex}
 res_vicsex = aov(number_shoot ~ factor(vic_sex), data = nyc_fit_lm)
@@ -156,7 +156,7 @@ showing(res_vicsex)
 
 The p-value of the sex of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of victims as statistically significant.
 
-# Vic_race
+## Vic_race
 
 ```{r vic_race}
 res_vicrace = aov(number_shoot ~ factor(vic_race), data = nyc_fit_lm)
@@ -165,7 +165,7 @@ showing(res_vicrace)
 
 The p-value of the race of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of victims as statistically significant.
 
-# Perp_age_group
+## Perp_age_group
 
 ```{r Perp_age_group}
 res_perp_age_group = aov(number_shoot ~ factor(perp_age_group), data = nyc_fit_lm)
@@ -174,7 +174,7 @@ showing(res_perp_age_group)
 
 The p-value of the perp_age_group variable is smaller than 0.05, thus we reject the null hypothesis and regard the perp_age_group as statistically significant.
 
-# Vic_age_group
+## Vic_age_group
 
 ```{r Vic_age_group}
 res_vic_age_group = aov(number_shoot ~ factor(vic_age_group), data = nyc_fit_lm)

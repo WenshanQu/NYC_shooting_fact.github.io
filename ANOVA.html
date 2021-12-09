@@ -400,8 +400,8 @@ div.tocify {
   rename(variable = term) %&gt;% 
   knitr::kable()
 }</code></pre>
-<div id="year" class="section level1">
-<h1>Year</h1>
+<div id="year" class="section level2">
+<h2>Year</h2>
 <pre class="r"><code>res_year = aov(number_shoot ~ factor(year), data = nyc_fit_lm)
 showing(res_year)</code></pre>
 <table>
@@ -420,8 +420,8 @@ showing(res_year)</code></pre>
 </table>
 <p>The p-value of the year variable is smaller than 0.05, thus we reject the null hypothesis and regard the year as statistically significant.</p>
 </div>
-<div id="month" class="section level1">
-<h1>Month</h1>
+<div id="month" class="section level2">
+<h2>Month</h2>
 <pre class="r"><code>res_month = aov(number_shoot ~ factor(month), data = nyc_fit_lm)
 showing(res_month)</code></pre>
 <table>
@@ -440,8 +440,8 @@ showing(res_month)</code></pre>
 </table>
 <p>The p-value of the month variable is smaller than 0.05, thus we reject the null hypothesis and regard the month as statistically significant.</p>
 </div>
-<div id="borough" class="section level1">
-<h1>Borough</h1>
+<div id="borough" class="section level2">
+<h2>Borough</h2>
 <pre class="r"><code>nyc_boro = nyc_fit_lm %&gt;% 
   rename(borough = boro)
 res_boro = aov(number_shoot ~ factor(borough), data = nyc_boro)
@@ -462,8 +462,8 @@ showing(res_boro)</code></pre>
 </table>
 <p>The p-value of the borough variable is smaller than 0.05, thus we reject the null hypothesis and regard the borough as statistically significant.</p>
 </div>
-<div id="statistical_murder_flag" class="section level1">
-<h1>Statistical_murder_flag</h1>
+<div id="statistical_murder_flag" class="section level2">
+<h2>Statistical_murder_flag</h2>
 <pre class="r"><code>res_smf = aov(number_shoot ~ factor(statistical_murder_flag), data = nyc_fit_lm)
 showing(res_smf)</code></pre>
 <table>
@@ -482,8 +482,8 @@ showing(res_smf)</code></pre>
 </table>
 <p>The p-value of the Statistical_murder_flag variable is smaller than 0.05, thus we reject the null hypothesis and regard the Statistical_murder_flag as statistically significant.</p>
 </div>
-<div id="perp_sex" class="section level1">
-<h1>Perp_sex</h1>
+<div id="perp_sex" class="section level2">
+<h2>Perp_sex</h2>
 <pre class="r"><code>res_perpsex = aov(number_shoot ~ factor(perp_sex), data = nyc_fit_lm)
 showing(res_perpsex)</code></pre>
 <table>
@@ -502,8 +502,8 @@ showing(res_perpsex)</code></pre>
 </table>
 <p>The p-value of the sex of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of perpetrator as statistically significant.</p>
 </div>
-<div id="perp_race" class="section level1">
-<h1>Perp_race</h1>
+<div id="perp_race" class="section level2">
+<h2>Perp_race</h2>
 <pre class="r"><code>res_perprace = aov(number_shoot ~ factor(perp_race), data = nyc_fit_lm)
 showing(res_perprace)</code></pre>
 <table>
@@ -522,8 +522,8 @@ showing(res_perprace)</code></pre>
 </table>
 <p>The p-value of the race of perpetrator variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of perpetrator as statistically significant.</p>
 </div>
-<div id="vic_sex" class="section level1">
-<h1>Vic_sex</h1>
+<div id="vic_sex" class="section level2">
+<h2>Vic_sex</h2>
 <pre class="r"><code>res_vicsex = aov(number_shoot ~ factor(vic_sex), data = nyc_fit_lm)
 showing(res_vicsex)</code></pre>
 <table>
@@ -542,8 +542,8 @@ showing(res_vicsex)</code></pre>
 </table>
 <p>The p-value of the sex of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the sex of victims as statistically significant.</p>
 </div>
-<div id="vic_race" class="section level1">
-<h1>Vic_race</h1>
+<div id="vic_race" class="section level2">
+<h2>Vic_race</h2>
 <pre class="r"><code>res_vicrace = aov(number_shoot ~ factor(vic_race), data = nyc_fit_lm)
 showing(res_vicrace)</code></pre>
 <table>
@@ -562,8 +562,8 @@ showing(res_vicrace)</code></pre>
 </table>
 <p>The p-value of the race of victims variable is smaller than 0.05, thus we reject the null hypothesis and regard the race of victims as statistically significant.</p>
 </div>
-<div id="perp_age_group" class="section level1">
-<h1>Perp_age_group</h1>
+<div id="perp_age_group" class="section level2">
+<h2>Perp_age_group</h2>
 <pre class="r"><code>res_perp_age_group = aov(number_shoot ~ factor(perp_age_group), data = nyc_fit_lm)
 showing(res_perp_age_group)</code></pre>
 <table>
@@ -582,8 +582,8 @@ showing(res_perp_age_group)</code></pre>
 </table>
 <p>The p-value of the perp_age_group variable is smaller than 0.05, thus we reject the null hypothesis and regard the perp_age_group as statistically significant.</p>
 </div>
-<div id="vic_age_group" class="section level1">
-<h1>Vic_age_group</h1>
+<div id="vic_age_group" class="section level2">
+<h2>Vic_age_group</h2>
 <pre class="r"><code>res_vic_age_group = aov(number_shoot ~ factor(vic_age_group), data = nyc_fit_lm)
 showing(res_vic_age_group)</code></pre>
 <table>
