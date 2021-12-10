@@ -13,11 +13,15 @@ library(tidyverse)
 
 ### Data Source
 
-Data is downloaded from [NYC Open Data](https://opendata.cityofnewyork.us/).
+Shooting Data is downloaded from [NYC Open Data](https://opendata.cityofnewyork.us/).
 
 * [NYPD Shooting Incident Data (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8)
 
-* [NYPD Shooting Incident Data (Historic)](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8)
+* [NYPD Shooting Incident Data (Historic)](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8) 
+
+Covid Data is downloaded from [_The New York Time_](https://www.nytimes.com/interactive/2021/us/new-york-covid-cases.html).
+
+* [US COVID-19 Cases by Counties(2020-Until now)](https://github.com/nytimes/covid-19-data)
 
 
 
@@ -170,6 +174,6 @@ display_full_df = read_csv("./comp_data/Full NYC Shooting Data (2006-2021).csv")
 ```
 
 
-There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (`NYC Shooting Data (2016-2021) with Zipcode.csv`); and the other one is for Shiny app, including data from 2006 to 2021 (`Full NYC Shooting Data (2006-2021).csv`). The formal one includes `r nrow(display_part_df)` rows, and the latter one includes `r nrow(display_full_df)` rows. There are `r ncol(display_part_df)` columns in both datasets, and the description of variables could be find in our [Linear Regression](risk_factors.html) part.
+There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (`NYC Shooting Data (2016-2021) with Zipcode.csv`) and COVID-19 data from 2020 until now(`us-counties.csv`); and the other one is for Shiny app, including data from 2006 to 2021 (`Full NYC Shooting Data (2006-2021).csv`). The formal one includes `r nrow(display_part_df)` rows, and the latter one includes `r nrow(display_full_df)` rows. There are `r ncol(display_part_df)` columns in both datasets, and the description of variables could be find in our [Linear Regression](risk_factors.html) part.
 
 Note that there are two columns: `lon_lat` and `new_georeferenced_column`, and both of them  denote the GPS information as `point(longitude, latitude)` format. In 2021 raw data provided by NYPD, the GPS point column was named as `lon_lat` and in historic raw data, it was named as `new_georeferenced_column`. Though we don't need, we choose to keep these two columns without modifying them.

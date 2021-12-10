@@ -375,10 +375,14 @@ div.tocify {
 
 <div id="data-source" class="section level3">
 <h3>Data Source</h3>
-<p>Data is downloaded from <a href="https://opendata.cityofnewyork.us/">NYC Open Data</a>.</p>
+<p>Shooting Data is downloaded from <a href="https://opendata.cityofnewyork.us/">NYC Open Data</a>.</p>
 <ul>
 <li><p><a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8">NYPD Shooting Incident Data (Year To Date)</a></p></li>
 <li><p><a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8">NYPD Shooting Incident Data (Historic)</a></p></li>
+</ul>
+<p>Covid Data is downloaded from <a href="https://www.nytimes.com/interactive/2021/us/new-york-covid-cases.html"><em>The New York Time</em></a>.</p>
+<ul>
+<li><a href="https://github.com/nytimes/covid-19-data">US COVID-19 Cases by Counties(2020-Until now)</a></li>
 </ul>
 </div>
 <div id="tidy-data-for-shiny-app" class="section level3">
@@ -518,7 +522,7 @@ write.csv(full_data, &quot;./modified_data/NYC Shooting Data (2020-2021) with Zi
 </div>
 <div id="data-description" class="section level3">
 <h3>Data Description</h3>
-<p>There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (<code>NYC Shooting Data (2016-2021) with Zipcode.csv</code>); and the other one is for Shiny app, including data from 2006 to 2021 (<code>Full NYC Shooting Data (2006-2021).csv</code>). The formal one includes 7582 rows, and the latter one includes 25116 rows. There are 23 columns in both datasets, and the description of variables could be find in our <a href="risk_factors.html">Linear Regression</a> part.</p>
+<p>There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (<code>NYC Shooting Data (2016-2021) with Zipcode.csv</code>) and COVID-19 data from 2020 until now(<code>us-counties.csv</code>); and the other one is for Shiny app, including data from 2006 to 2021 (<code>Full NYC Shooting Data (2006-2021).csv</code>). The formal one includes 7582 rows, and the latter one includes 25116 rows. There are 23 columns in both datasets, and the description of variables could be find in our <a href="risk_factors.html">Linear Regression</a> part.</p>
 <p>Note that there are two columns: <code>lon_lat</code> and <code>new_georeferenced_column</code>, and both of them denote the GPS information as <code>point(longitude, latitude)</code> format. In 2021 raw data provided by NYPD, the GPS point column was named as <code>lon_lat</code> and in historic raw data, it was named as <code>new_georeferenced_column</code>. Though we don’t need, we choose to keep these two columns without modifying them.</p>
 </div>
 

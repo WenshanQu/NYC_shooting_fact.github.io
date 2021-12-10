@@ -83,7 +83,7 @@ lr_df = nyc_shooting %>%
 
 ## Shooting Cases Trend before 2021 by Borough
 
-The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of sepetember. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
+The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of september. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
 
 ```{r Shooting Cases Trend before 2020, fig.align='center'}
 year_trend_df_2020 = Shooting_df %>%
@@ -514,7 +514,7 @@ shooting_covid = merge(covid_19_df, shooting, by = c('year', 'month', 'day'), al
   
 ```
 
-The cumulative chart shows accumulation of both COVID-19 cases and Shooting cases in NYC county from 2020-03-01 until  2021-09-30. In order to make the plot more readable, We divided the COVID-19 cumulative cases by 1000 due to its rapid growth rate compared to shooting cases. The bar chart shows a potential peak shifting fluctuation, instead of co-frequency resonance, which may be due to the delayed effect of Covid-19 on society. Therefore, we go deeper into the relationship between the accumulation of shooting cases and COVID cases.
+The cumulative chart shows accumulation of both COVID-19 cases and Shooting cases in NYC county from 2020-03-01 until  2021-09-30. In order to make the plot more readable, We divided the COVID-19 cumulative cases by 1000 due to its rapid growth rate compared to shooting cases. The bar chart shows a potential peak shifting fluctuation, instead of co-frequency resonance, which may be due to the delayed effect of COVID-19 on society. Therefore, we go deeper into the relationship between the accumulation of shooting cases and COVID cases.
 
 ```{r barplot}
 plot_ly(shooting_covid, x = ~date, y = ~covid_cum_per1000 , type = "bar", alpha = 1, name = "COVID cases(/1000)") %>% 
@@ -529,7 +529,7 @@ plot_ly(shooting_covid, x = ~date, y = ~covid_cum_per1000 , type = "bar", alpha 
 
 ## Linear relation between accumulations
 
-The linear plot clearly shows a steep rise in shooting cases when COVID-19 case accumulated to 200,000 around 2020-05-15 in NYC. The growth rate becomes slower for nearly half a year from around 2020-11-15, and then increases again since 2021-05, but not as rapid as in 2020. Combined with the month and shooting cases analysis before, increase in shooting case during May is common, but especially high growth rate during the begining of epidemic is unusual. What's more, it is noteworthy that the spread of Delta virus also begins in the end of April, 2021.
+The linear plot clearly shows a steep rise in shooting cases when COVID-19 case accumulated to 200,000 on 2020-05-15 around in NYC. The growth rate becomes slower for nearly half a year from 2020-11-15 around, and then increases again since 2021-05, but not as rapid as in 2020. Combined with the month and shooting cases analysis before, increment in shooting cases during May is common, but the extremely high growth rate at the beginning of epidemic is unusual. What's more, it is noteworthy that the spread of Delta virus also begins at the end of April, 2021.
 
 ```{r cum_relation}
 shooting_covid %>% 
