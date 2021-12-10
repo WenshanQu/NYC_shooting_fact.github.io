@@ -1,0 +1,168 @@
+---
+title: "Data Processing"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+  html_notebook:
+    toc: yes
+---
+
+```{r include = FALSE}
+library(tidyverse)
+```
+
+
+### Tidy Data for Shiny App
+
+#### Initial Idea
+
+At the very beginning of our design, we intended to make a interactive map (Shiny App) which could provide information for travelers and residents in New York City about the risky areas and dangerous time on shooting incidents, which could give them helpful instructions on planning their trips. To make this tool as handy as we hope, we should find a "connector" between users and our database. This connector should be: 
+
+1) easy for users to enter in the sidebar (counter-example: longitude and latitude data); 
+
+2) well-known and intuitive (counter-example: precinct divided for NYPD, included in our database); 
+3) a area (instead of a point) that contains enough data points to display (counter-example: an accurate apartment address).
+
+Then, **zip-code** will be an ideal candidate, and our task turns to how to generate zip-code from the GPS point provided in the dataset.
+
+#### Create a Function `latlon2zip`
+
+To create function `latlon2zip`, firstly, we embedded the parameters of `longitude` and `latitude` into the pre-specified url string, and then using the combined url to get the response from the website with the geographical data of JSON format. In this way, we can extract the `zip-code` information from JSON data. Then we iterated these steps into the whole dataframe.
+
+```{r eval = FALSE}
+
+latlon2zip = function(lat, lon) {
+  
+    url = sprintf("http://nominatim.openstreetmap.org/reverse?format=json&lat=%f&lon=%f&zoom=18&addressdetails=1", lat, lon)
+    
+    res = jsonlite::fromJSON(url)
+    
+    zipcode = 
+      res[["address"]][["postcode"]] %>% 
+      noquote() %>% 
+      as.numeric()
+    
+    return(zipcode)
+    
+}
+```
+
+A tough problem we are going to solve in the next part is the running time, because generating one zip-code will take 1s, thus making the process of generating the zip-codes for the whole data set to be quite time-consuming. To optimize the running time, I try to use different packages: `jsonlite::fromJSON()` to replace the `rjson::fromJSON()`, and the running time for one zip-code shrink to 0.5s, which is more acceptable than before. 
+
+#### Generate Zip-code
+
+The most ideal generating process is using the `latlon2zip` function to get all zip-codes for 20,000 data points from 2016 to 2021 at once, while it is unfeasible. The problem we confronted with is that the time R uses to generate one zip-code from one (lat, lon) is 0.5s, and for 20,000 records, running time will be 3h (actually we tried, but R told us "time run out" and collapse...). 
+Then, we decided to generate the zip-code year-by-year, and merge these data set together. 
+Here we just show an example code on how do we generate zip-code for a single year and how do we get the resulting data set. The entire code is too trivial to show here, and could be found in `data_processing.Rmd` file in our [GitHub repo](https://github.com/WenshanQu/NYC_shooting_fact.github.io).
+
+Here is a simply example on how we generating resulting csv file with zipcode:
+
+1. Clean and tidy data for `year_to_date.csv` (2021 data), and `historic.csv` (2016-2020 data).
+
+```{r results='hide', message=FALSE}
+## Clean and Tidy data for 2021 dataset.
+fresh_df = 
+  read_csv("./data/year_to_date.csv") %>% 
+  janitor::clean_names() %>% 
+  separate(occur_date, into = c("month", "day", "year"), sep = "/") %>% 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    month = month.name[month]
+  )
+
+## Clean and Tidy data for 2016-2020 dataset.
+history_full_df = 
+  read_csv("./data/historic.csv") %>% 
+  janitor::clean_names() %>% 
+  separate(occur_date, into = c("month", "day", "year"), sep = "/") %>% 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    month = month.name[month] 
+  )
+```
+
+2) Check `NA` for both data set.
+
+```{r}
+na_situ = map_df(fresh_df, ~sum(is.na(.)))
+na_situ
+na_situ2 = map_df(history_full_df, ~sum(is.na(.)))
+na_situ2
+```
+
+3) Iterating `latlon2zip` for data in `2021` and `2020`, and export csv file respectivly in to the same path.
+
+```{r eval = FALSE}
+## Iterate `latlon2zip` for 2021
+fresh_result = 
+  fresh_df %>% 
+  mutate(
+    zipcode = map2(latitude, longitude, latlon2zip)
+  )
+
+fresh_result = 
+  fresh_result %>% 
+  mutate(
+    zipcode = as.numeric(zipcode)
+  )
+
+## Export dataset 2021
+write.csv(fresh_result, "./data/2021_with_zipcode.csv", row.names = FALSE)
+
+## Iterate `latlon2zip` for 2020
+a_result =
+  history_filter_df %>% 
+  filter(year == "2020") %>% 
+  mutate(
+    zipcode = map2(latitude, longitude, latlon2zip)
+  )
+
+a_result = 
+  a_result %>% 
+  mutate(
+    zipcode = as.numeric(zipcode)
+  )
+
+## Export dataset 2020
+write.csv(a_result, "./data/2020_with_zipcode.csv", row.names = FALSE)  
+```
+
+4) Merge csv files exported from above steps.
+
+```{r eval = FALSE}
+## Load library
+library("dplyr")                                                
+library("plyr")                                                 
+library("readr")
+
+## Merge files
+full_data = 
+  list.files(path = "./data", pattern = "*.csv", full.names = TRUE) %>% 
+  lapply(read_csv) %>%                                           
+  bind_rows   
+
+full_data = 
+  full_data %>% 
+  janitor::clean_names()
+
+## Export merged files
+write.csv(full_data, "./modified_data/NYC Shooting Data (2020-2021) with Zipcode.csv", row.names = FALSE)
+```
+
+### Data Description
+
+```{r include = FALSE, message = FALSE}
+display_part_df = read_csv("./comp_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
+display_full_df = read_csv("./comp_data/Full NYC Shooting Data (2006-2021).csv")
+```
+
+
+There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (`NYC Shooting Data (2016-2021) with Zipcode.csv`); and the other one is for Shiny app, including data from 2006 to 2021 (`Full NYC Shooting Data (2006-2021).csv`). The formal one includes `r nrow(display_part_df)` rows, and the latter one includes `r nrow(display_full_df)` rows. There are `r ncol(display_part_df)` columns in both datasets, and the description of variables could be find in our [Linear Regression](risk_factors.html) part.
+
+Note that there are two columns: `lon_lat` and `new_georeferenced_column`, and both of them  denote the GPS information as `point(longitude, latitude)` format. In 2021 raw data provided by NYPD, the GPS point column was named as `lon_lat` and in historic raw data, it was named as `new_georeferenced_column`. Though we don't need, we choose to keep these two columns without modifying them.

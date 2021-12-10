@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Data Processing</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Data_Visualization_New.html">Data Visualization</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="risk_factors.html">Regression Analysis</a>
+    </li>
+    <li>
+      <a href="ANOVA.html">ANOVA Analysis</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://wenshanqu.shinyapps.io/nyc_shooting_fact/">Shooting Facts in NYC</a>
+</li>
+<li>
+  <a href="data_processing.html">Data</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;heyu0424@hotmail.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/WenshanQu/NYC_shooting_fact.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Processing</h1>
+
+</div>
+
+
+<div id="tidy-data-for-shiny-app" class="section level3">
+<h3>Tidy Data for Shiny App</h3>
+<div id="initial-idea" class="section level4">
+<h4>Initial Idea</h4>
+<p>At the very beginning of our design, we intended to make a interactive map (Shiny App) which could provide information for travelers and residents in New York City about the risky areas and dangerous time on shooting incidents, which could give them helpful instructions on planning their trips. To make this tool as handy as we hope, we should find a “connector” between users and our database. This connector should be:</p>
+<ol style="list-style-type: decimal">
+<li><p>easy for users to enter in the sidebar (counter-example: longitude and latitude data);</p></li>
+<li><p>well-known and intuitive (counter-example: precinct divided for NYPD, included in our database);</p></li>
+<li><p>a area (instead of a point) that contains enough data points to display (counter-example: an accurate apartment address).</p></li>
+</ol>
+<p>Then, <strong>zip-code</strong> will be an ideal candidate, and our task turns to how to generate zip-code from the GPS point provided in the dataset.</p>
+</div>
+<div id="create-a-function-latlon2zip" class="section level4">
+<h4>Create a Function <code>latlon2zip</code></h4>
+<p>To create function <code>latlon2zip</code>, firstly, we embedded the parameters of <code>longitude</code> and <code>latitude</code> into the pre-specified url string, and then using the combined url to get the response from the website with the geographical data of JSON format. In this way, we can extract the <code>zip-code</code> information from JSON data. Then we iterated these steps into the whole dataframe.</p>
+<pre class="r"><code>latlon2zip = function(lat, lon) {
+  
+    url = sprintf(&quot;http://nominatim.openstreetmap.org/reverse?format=json&amp;lat=%f&amp;lon=%f&amp;zoom=18&amp;addressdetails=1&quot;, lat, lon)
+    
+    res = jsonlite::fromJSON(url)
+    
+    zipcode = 
+      res[[&quot;address&quot;]][[&quot;postcode&quot;]] %&gt;% 
+      noquote() %&gt;% 
+      as.numeric()
+    
+    return(zipcode)
+    
+}</code></pre>
+<p>A tough problem we are going to solve in the next part is the running time, because generating one zip-code will take 1s, thus making the process of generating the zip-codes for the whole data set to be quite time-consuming. To optimize the running time, I try to use different packages: <code>jsonlite::fromJSON()</code> to replace the <code>rjson::fromJSON()</code>, and the running time for one zip-code shrink to 0.5s, which is more acceptable than before.</p>
+</div>
+<div id="generate-zip-code" class="section level4">
+<h4>Generate Zip-code</h4>
+<p>The most ideal generating process is using the <code>latlon2zip</code> function to get all zip-codes for 20,000 data points from 2016 to 2021 at once, while it is unfeasible. The problem we confronted with is that the time R uses to generate one zip-code from one (lat, lon) is 0.5s, and for 20,000 records, running time will be 3h (actually we tried, but R told us “time run out” and collapse…). Then, we decided to generate the zip-code year-by-year, and merge these data set together. Here we just show an example code on how do we generate zip-code for a single year and how do we get the resulting data set. The entire code is too trivial to show here, and could be found in <code>data_processing.Rmd</code> file in our <a href="https://github.com/WenshanQu/NYC_shooting_fact.github.io">GitHub repo</a>.</p>
+<p>Here is a simply example on how we generating resulting csv file with zipcode:</p>
+<ol style="list-style-type: decimal">
+<li>Clean and tidy data for <code>year_to_date.csv</code> (2021 data), and <code>historic.csv</code> (2016-2020 data).</li>
+</ol>
+<pre class="r"><code>## Clean and Tidy data for 2021 dataset.
+fresh_df = 
+  read_csv(&quot;./data/year_to_date.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  separate(occur_date, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;), sep = &quot;/&quot;) %&gt;% 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    month = month.name[month]
+  )
+
+## Clean and Tidy data for 2016-2020 dataset.
+history_full_df = 
+  read_csv(&quot;./data/historic.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  separate(occur_date, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;), sep = &quot;/&quot;) %&gt;% 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    month = month.name[month] 
+  )</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Check <code>NA</code> for both data set.</li>
+</ol>
+<pre class="r"><code>na_situ = map_df(fresh_df, ~sum(is.na(.)))
+na_situ</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["incident_key"],"name":[1],"type":["int"],"align":["right"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["day"],"name":[3],"type":["int"],"align":["right"]},{"label":["year"],"name":[4],"type":["int"],"align":["right"]},{"label":["occur_time"],"name":[5],"type":["int"],"align":["right"]},{"label":["boro"],"name":[6],"type":["int"],"align":["right"]},{"label":["precinct"],"name":[7],"type":["int"],"align":["right"]},{"label":["jurisdiction_code"],"name":[8],"type":["int"],"align":["right"]},{"label":["location_desc"],"name":[9],"type":["int"],"align":["right"]},{"label":["statistical_murder_flag"],"name":[10],"type":["int"],"align":["right"]},{"label":["perp_age_group"],"name":[11],"type":["int"],"align":["right"]},{"label":["perp_sex"],"name":[12],"type":["int"],"align":["right"]},{"label":["perp_race"],"name":[13],"type":["int"],"align":["right"]},{"label":["vic_age_group"],"name":[14],"type":["int"],"align":["right"]},{"label":["vic_sex"],"name":[15],"type":["int"],"align":["right"]},{"label":["vic_race"],"name":[16],"type":["int"],"align":["right"]},{"label":["x_coord_cd"],"name":[17],"type":["int"],"align":["right"]},{"label":["y_coord_cd"],"name":[18],"type":["int"],"align":["right"]},{"label":["latitude"],"name":[19],"type":["int"],"align":["right"]},{"label":["longitude"],"name":[20],"type":["int"],"align":["right"]},{"label":["new_georeferenced_column"],"name":[21],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"1","9":"1045","10":"0","11":"811","12":"811","13":"811","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>na_situ2 = map_df(history_full_df, ~sum(is.na(.)))
+na_situ2</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["incident_key"],"name":[1],"type":["int"],"align":["right"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["day"],"name":[3],"type":["int"],"align":["right"]},{"label":["year"],"name":[4],"type":["int"],"align":["right"]},{"label":["occur_time"],"name":[5],"type":["int"],"align":["right"]},{"label":["boro"],"name":[6],"type":["int"],"align":["right"]},{"label":["precinct"],"name":[7],"type":["int"],"align":["right"]},{"label":["jurisdiction_code"],"name":[8],"type":["int"],"align":["right"]},{"label":["location_desc"],"name":[9],"type":["int"],"align":["right"]},{"label":["statistical_murder_flag"],"name":[10],"type":["int"],"align":["right"]},{"label":["perp_age_group"],"name":[11],"type":["int"],"align":["right"]},{"label":["perp_sex"],"name":[12],"type":["int"],"align":["right"]},{"label":["perp_race"],"name":[13],"type":["int"],"align":["right"]},{"label":["vic_age_group"],"name":[14],"type":["int"],"align":["right"]},{"label":["vic_sex"],"name":[15],"type":["int"],"align":["right"]},{"label":["vic_race"],"name":[16],"type":["int"],"align":["right"]},{"label":["x_coord_cd"],"name":[17],"type":["int"],"align":["right"]},{"label":["y_coord_cd"],"name":[18],"type":["int"],"align":["right"]},{"label":["latitude"],"name":[19],"type":["int"],"align":["right"]},{"label":["longitude"],"name":[20],"type":["int"],"align":["right"]},{"label":["lon_lat"],"name":[21],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"2","9":"13581","10":"0","11":"8295","12":"8261","13":"8261","14":"0","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Iterating <code>latlon2zip</code> for data in <code>2021</code> and <code>2020</code>, and export csv file respectivly in to the same path.</li>
+</ol>
+<pre class="r"><code>## Iterate `latlon2zip` for 2021
+fresh_result = 
+  fresh_df %&gt;% 
+  mutate(
+    zipcode = map2(latitude, longitude, latlon2zip)
+  )
+
+fresh_result = 
+  fresh_result %&gt;% 
+  mutate(
+    zipcode = as.numeric(zipcode)
+  )
+
+## Export dataset 2021
+write.csv(fresh_result, &quot;./data/2021_with_zipcode.csv&quot;, row.names = FALSE)
+
+## Iterate `latlon2zip` for 2020
+a_result =
+  history_filter_df %&gt;% 
+  filter(year == &quot;2020&quot;) %&gt;% 
+  mutate(
+    zipcode = map2(latitude, longitude, latlon2zip)
+  )
+
+a_result = 
+  a_result %&gt;% 
+  mutate(
+    zipcode = as.numeric(zipcode)
+  )
+
+## Export dataset 2020
+write.csv(a_result, &quot;./data/2020_with_zipcode.csv&quot;, row.names = FALSE)  </code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Merge csv files exported from above steps.</li>
+</ol>
+<pre class="r"><code>## Load library
+library(&quot;dplyr&quot;)                                                
+library(&quot;plyr&quot;)                                                 
+library(&quot;readr&quot;)
+
+## Merge files
+full_data = 
+  list.files(path = &quot;./data&quot;, pattern = &quot;*.csv&quot;, full.names = TRUE) %&gt;% 
+  lapply(read_csv) %&gt;%                                           
+  bind_rows   
+
+full_data = 
+  full_data %&gt;% 
+  janitor::clean_names()
+
+## Export merged files
+write.csv(full_data, &quot;./modified_data/NYC Shooting Data (2020-2021) with Zipcode.csv&quot;, row.names = FALSE)</code></pre>
+</div>
+</div>
+<div id="data-description" class="section level3">
+<h3>Data Description</h3>
+<p>There are two resulting datasets, one is for data visualization and analysing, including data from 2016 to 2021 (<code>NYC Shooting Data (2016-2021) with Zipcode.csv</code>); and the other one is for Shiny app, including data from 2006 to 2021 (<code>Full NYC Shooting Data (2006-2021).csv</code>). The formal one includes 7582 rows, and the latter one includes 25116 rows. There are 23 columns in both datasets, and the description of variables could be find in our <a href="risk_factors.html">Linear Regression</a> part.</p>
+<p>Note that there are two columns: <code>lon_lat</code> and <code>new_georeferenced_column</code>, and both of them denote the GPS information as <code>point(longitude, latitude)</code> format. In 2021 raw data provided by NYPD, the GPS point column was named as <code>lon_lat</code> and in historic raw data, it was named as <code>new_georeferenced_column</code>. Though we don’t need, we choose to keep these two columns without modifying them.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
