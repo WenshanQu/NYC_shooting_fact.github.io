@@ -1,0 +1,28 @@
+---
+title: "clean data covid"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+clean_COVID = read.csv("./data/us-counties.csv") %>% 
+  subset(state == "New York") %>% 
+  subset(county == "New York City") %>% 
+  separate(date, c("year","month","day")) %>% 
+  select(-fips) %>%  
+  mutate(
+    year = as.numeric(year), 
+    month = as.numeric(month),
+    day = as.numeric(day)
+    )
+subset = clean_COVID %>% 
+  subset(month > 9 & year == 2021)
+
+clean_df = anti_join(clean_COVID,subset)
+
+#write.csv(clean_df, file = "covid_19_nyc.csv")
+```
+
