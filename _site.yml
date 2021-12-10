@@ -15,8 +15,6 @@ navbar:
       href: https://wenshanqu.shinyapps.io/nyc_shooting_fact/
     - text: "Data"
       href: data_processing.html  
-    - text: "About"
-      href: about.html
       
   right:
     - icon: fa-envelope fa-lg
