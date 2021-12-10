@@ -321,8 +321,20 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="Data_Visualization_New.html">Data Visualization</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data Visualization
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Data_Visualization_New.html">Part 1</a>
+    </li>
+    <li>
+      <a href="graphs.html">Part 2</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -376,6 +388,14 @@ div.tocify {
 </div>
 
 
+<div id="data-source" class="section level3">
+<h3>Data Source</h3>
+<p>Data is downloaded from <a href="https://opendata.cityofnewyork.us/">NYC Open Data</a>.</p>
+<ul>
+<li><p><a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8">NYPD Shooting Incident Data (Year To Date)</a></p></li>
+<li><p><a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8">NYPD Shooting Incident Data (Historic)</a></p></li>
+</ul>
+</div>
 <div id="tidy-data-for-shiny-app" class="section level3">
 <h3>Tidy Data for Shiny App</h3>
 <div id="initial-idea" class="section level4">

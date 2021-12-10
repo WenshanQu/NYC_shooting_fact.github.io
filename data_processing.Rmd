@@ -13,6 +13,15 @@ output:
 library(tidyverse)
 ```
 
+### Data Source
+
+Data is downloaded from [NYC Open Data](https://opendata.cityofnewyork.us/).
+
+* [NYPD Shooting Incident Data (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8)
+
+* [NYPD Shooting Incident Data (Historic)](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8)
+
+
 
 ### Tidy Data for Shiny App
 
