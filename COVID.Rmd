@@ -114,7 +114,7 @@ shooting_covid = merge(covid_19_df, shooting, by = c('year', 'month', 'day'), al
 The cumulative chart shows accumulation of both COVID-19 cases and Shooting cases in NYC county from 2020-03-01 until  2021-09-30. In order to make the plot more readable, We divided the COVID-19 cumulative cases by 1000 due to its rapid growth rate compared to shooting cases. The bar chart shows a potential peak shifting fluctuation, instead of co-frequency resonance, which may be due to the delayed effect of Covid-19 on society. Therefore, we go deeper into the relationship between the accumulation of shooting cases and COVID cases.
 ```{r barplot}
 plot_ly(shooting_covid, x = ~date, y = ~covid_cum_per1000 , type = "bar", alpha = 1, name = "COVID cases(/1000)") %>% 
-  add_trace(shooting_covid, x = ~date, y = ~shooting_cum, type = "bar", alpha = 0.6, name = "Shooting case") %>% 
+  add_trace(shooting_covid, x = ~date, y = ~shooting_cum, type = "bar", alpha = 0.7, name = "Shooting case") %>% 
   layout(
     title = "Cumulative bar for Covid and Shooting",
     barmode = "overlap",

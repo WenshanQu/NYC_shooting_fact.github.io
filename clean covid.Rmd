@@ -8,7 +8,7 @@ library(tidyverse)
 ```
 
 ```{r}
-clean_COVID = read.csv("~/downloads/us-counties.csv") %>% 
+clean_COVID = read.csv("./data/us-counties.csv") %>% 
   subset(state == "New York") %>% 
   subset(county == "New York City") %>% 
   separate(date, c("year","month","day")) %>% 
@@ -23,6 +23,6 @@ subset = clean_COVID %>%
 
 clean_df = anti_join(clean_COVID,subset)
 
-write.csv(clean_df, file = "covid_19_nyc.csv")
+#write.csv(clean_df, file = "covid_19_nyc.csv")
 ```
 
