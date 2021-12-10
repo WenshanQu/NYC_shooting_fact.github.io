@@ -11,7 +11,7 @@ navbar:
         href: risk_factors.html
       - text: "ANOVA Analysis"
         href: ANOVA.html
-    - text: "Shooting Facts in NYC"
+    - text: "NYC Shooting Finder"
       href: https://wenshanqu.shinyapps.io/nyc_shooting_fact/
     - text: "Data"
       href: data_processing.html  

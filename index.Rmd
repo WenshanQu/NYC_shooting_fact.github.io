@@ -1,5 +1,5 @@
 ---
-title: "New York City Shooting Fact"
+title: "Shooting Incidents in New York City"
 output: 
   html_document:
     toc: true
@@ -11,9 +11,8 @@ output:
 
 Everything experienced in 2020 is unprecedented in the history of New York.
 
-Global public health crisis, hundreds of thousands of deaths, hospitals overwhelmed, economic stagnation, school closures, religious sites closed, society has lost its normal foundation.The [Covid-19 pandemic](https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus) have totally reshaped our known society. Our community is facing multi-lateral challenges such as, [economic impact](https://www.census.gov/library/stories/2021/03/initial-impact-covid-19-on-united-states-economy-more-widespread-than-on-mortality.html), [healthcare crisis](https://www.nytimes.com/2021/12/03/nyregion/covid-cases-surge-upstate-ny.html),
-[violent crimes](https://gothamist.com/news/why-are-shootings-and-murders-rise-nyc), and [supply chain crisis](https://www.ey.com/en_sg/supply-chain/how-covid-19-impacted-supply-chains-and-what-comes-next).Gun violence are now becoming a direct threat to our safety.
-[NYC in Covid-19](https://www.youtube.com/watch?v=rYTNO_WtNys)
+During the COVID-19 pandemic, with global public health crisis, hundreds of thousands of deaths, hospitals' overwhelming, economic stagnation, school and religious sites closures, society has lost its normal foundation. The [Covid-19 pandemic](https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus) have totally reshaped our known society. Our community is facing multi-lateral challenges such as, [economic impact](https://www.census.gov/library/stories/2021/03/initial-impact-covid-19-on-united-states-economy-more-widespread-than-on-mortality.html), [healthcare crisis](https://www.nytimes.com/2021/12/03/nyregion/covid-cases-surge-upstate-ny.html),
+[violent crimes](https://gothamist.com/news/why-are-shootings-and-murders-rise-nyc), and [supply chain crisis](https://www.ey.com/en_sg/supply-chain/how-covid-19-impacted-supply-chains-and-what-comes-next). Gun violence are now becoming a direct threat to our safety.
 
 ### Gun violence is threatning NYC
 
