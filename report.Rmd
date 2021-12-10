@@ -1,0 +1,91 @@
+---
+title: "New York City Shooting Fact"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: inline
+---
+
+Yu He (yh3430), Wenshan Qu (wq2160), Jiayao Sun (js5962), Yimiao Pang (yp2608), Yunxi Zhang (yz4186)
+
+***
+
+## Motivation
+
+The proliferation of guns and gun violence in the United States have serious consequences. In addition to causing many casualties, it also spawned more violence and crime, reducing public security in American society. According to the Council on Criminal Justice data, there has been a sharp increase in homicides in the United States in 2020. Data from 21 cities showed that compared with the fall of 2019, there were 610 homicides in the same period in 2020, malicious injury cases increased by 15% and 13%, and shooting cases increased by 15% and 16%, respectively. According to the New York Post, data from the New York City Police Department shows that as of December 7, 2020, there have been 1,433 shootings in New York City, with a total of 1,756 victims of gun violence, almost twice the number in the same period in 2019. The surge in shootings is jeopardizing the rights of the public. We need immediate action to reshape our community to provide a safe living environment for our community members.
+
+***
+
+## Questions
+
+* What is a relatively safe time to go outside in a day?
+* How many shooting incidents have occurred in the past few years in the nearby  area?
+* Does the month affect the possibility of shooting incidents?
+* How are the shooting incidents distributed in NYC?
+* How does COVID-19 influence the shooting incidents rate?
+* Is there any way to control the number of shooting incidents in NYC?
+
+***
+
+## Data
+
+###  Data Source
+* The NYPD Shooting Incident Data (Year To Date) - [link](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Year-To-Date-/5ucz-vwe8)
+
+  The dataset is downloaded from _NYC Open Data_. It contains 1531 shooting incidents that occurred in NYC from Jan. 1th 2021 to Sep. 30th 2021. The data was manually extracted every quarter and reviewed by the Office of Management Analysis and Planning. Each observation represents a shooting incident in NYC and includes information about the event, the location, the time of occurrence, and the information related to suspect and victim demographics.
+
+
+* The NYPD Shooting Incident Data (Historic) - [link](https://data.cityofnewyork.us/Public-Safety/NYPD-Shooting-Incident-Data-Historic-/833y-fsy8)
+
+  The dataset is downloaded from _NYC Open Data_. It contains 26.3K shooting incidents that occurred in NYC during the 2006 and 2020 fiscal years. The information contained in this data is the same as the NYPD Shooting Incident Data(Year To Date).
+  
+* The US County-level COVID-19 Data(us-counties) - [link](https://github.com/nytimes/covid-19-data)
+
+  The dataset is downloaded from _The New York Times_.  It contains 1.99M entries and 6 columns with COVID-19 cases and deaths each day from Jan 21, 2020 until now by counties in the US.
+
+### Data Cleaning and Processing
+
+The first step of raw data cleaning combines each year’s data into one file. Then the date variable was separated into year, month, and day variables for later analysis. The missing value and unexpected values were omitted from the dataset.
+
+### Data Description
+
+The NYPD Shooting Data was collected from the NYC Open Data, The dataset includes 1,531 rows and 19 columns. The variables included in the dataset were listed below:
+
+| Variable                                                                                           | Description                                                                                                                                                                            |   |   |   |
+|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|---|---|
+| incident_key                                                                                       | Randomly generated persistent ID for each arrest                                                                                                                                       |   |   |   |
+| occur_date                                                                                         | Exact date of the shooting incident                                                                                                                                                    |   |   |   |
+| occur_time                                                                                         | Exact time of the shooting incident                                                                                                                                                    |   |   |   |
+| boro                                                                                               | Boro where the shooting incident occurred                                                                                                                                              |   |   |   |
+| precinct                                                                                           | Precinct where the shooting incident occurred                                                                                                                                          |   |   |   |
+| jurisdiction_code                                                                                  | Jurisdiction where the shooting incident occurred.     Jurisdiction codes 0(Patrol), 1(Transit) and 2(Housing) represent NYPD whilst codes 3 and more represent non NYPD jurisdictions |   |   |   |
+| Location_desc                                                                                      | Location of the shooting incident                                                                                                                                                      |   |   |   |
+| statistical_murder_flag                                                                            | Shooting resulted in the victim’s death which would be counted as a murder                                                                                                             |   |   |   |
+| perp_age_group                                                                                     | Perpetrator’s age within a category                                                                                                                                                    |   |   |   |
+| perp_sex                                                                                           | Perpetrator’s sex description                                                                                                                                                          |   |   |   |
+| perp_race                                                                                          | Perpetrator’s race description                                                                                                                                                         |   |   |   |
+| vic_age_group                                                                                      | Victim’s age within a category                                                                                                                                                         |   |   |   |
+| vic_sex                                                                                            | Victim’s sex description                                                                                                                                                               |   |   |   |
+| vic_race                                                                                           | Victim’s race description                                                                                                                                                              |   |   |   |
+| x_coord_cd                                                                                         | Midblock X-coordinate for New York State Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS 3104)                                                                     |   |   |   |
+| y_coord_cd                                                                                         | Midblock Y-coordinate for New York State Plane Coordinate System, Long Island Zone, NAD 83, units feet (FIPS 3104)                                                                     |   |   |   |
+| latitude                                                                                           | Latitude coordinate for Global Coordinate System, WGS 1984, decimal degrees (EPSG 4326)                                                                                                |   |   |   |
+| longitude                                                                                          | Longitude coordinate for Global Coordinate System, WGS 1984, decimal degrees (EPSG 4326)                                                                                               |   |   |   |
+| lon_lat                                                                                            | Longitude and Latitude Coordinates for mapping                                                                                                                                         |   |   |   |
+
+## Data Visualization
+
+## Regression
+
+## Shiny App
+We used the _ShinyApp_ and _leaflet_ package to build an interactive map that allows users to find the shooting incidents near them by inputting their zip code (New York City). The program performs visualization of the geographic distribution of shooting incidents in the area. Users can also view the plot of each month and day time of that area to get a relatively safe time to go out. There is also a density map showing the shooting incidents density in NYC in different years.
+
+## Conclusion
+
+## Discussion
+
+
