@@ -7,8 +7,6 @@ output:
     toc_float: true
     df_print: paged
     code_folding: hide
-  html_notebook:
-    toc: yes
 editor_options:
   chunk_output_type: inline
 ---

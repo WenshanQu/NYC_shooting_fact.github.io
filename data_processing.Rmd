@@ -5,8 +5,6 @@ output:
     toc: true
     toc_float: true
     df_print: paged
-  html_notebook:
-    toc: yes
 ---
 
 ```{r include = FALSE}
