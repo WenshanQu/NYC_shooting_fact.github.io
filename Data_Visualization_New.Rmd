@@ -188,7 +188,7 @@ trend_plot
 ```
 
 
-# Shooting density map over hours 
+## Shooting density map over hours 
 
 The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. From the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
 
@@ -220,7 +220,7 @@ map_hour = map_hour_df %>%
     x = ~ longitude,
     y = ~ latitude,
     text = ~ text_label,
-    size = I(1),
+    size = I(2),
     frame = ~ hour,
     mode = "marker",
     color = ~boro,
@@ -238,7 +238,7 @@ map_hour = map_hour_df %>%
       sizing = "stretch",
       xanchor = "left",
       yanchor = "bottom",
-      opacity = 0.6,
+      opacity = 0.8,
       layer = "below"
     )
   ) %>%
