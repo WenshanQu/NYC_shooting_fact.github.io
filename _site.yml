@@ -4,7 +4,11 @@ navbar:
   title: "Home"
   left:
     - text: "Data Visualization"
-      href: Data_Visualization_New.html
+      menu:
+      - text: "Part 1"
+        href: Data_Visualization_New.html
+      - text: "Part 2"
+        href: graphs.html
     - text: "Data Analysis"
       menu:
       - text: "Regression Analysis"
