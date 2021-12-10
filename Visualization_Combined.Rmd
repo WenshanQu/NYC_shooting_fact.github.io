@@ -1,0 +1,502 @@
+---
+title: "Data Visualization"
+output:
+  html_document:
+    toc: true
+    number_sections: true
+    toc_float: true
+    df_print: paged
+    code_folding: hide
+  html_notebook:
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(plotly)
+library(dplyr)
+library(viridis)
+library(gganimate)
+library(ggmap)
+library(png)
+library(gifski)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+knitr::opts_chunk$set(
+  fig.width = 8,
+  fig.height = 6,
+  out.width = "90%",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
+)
+
+options(
+  ggplot2.continuous.color = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_color_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+```
+
+
+```{r import data, include = FALSE}
+history_df = read.csv('./data/historic.csv')
+
+year_to_date_df = read.csv('./data/year_to_date.csv') %>% 
+  rename(Lon_Lat = New.Georeferenced.Column)
+```
+
+```{r data cleaning, include = FALSE}
+Shooting_df = bind_rows(history_df, year_to_date_df) %>% 
+  janitor::clean_names() %>% 
+  separate(occur_date, c("month","day","year")) %>% 
+  separate(occur_time, c("hour","minute","second")) %>% 
+  mutate(
+    year = as.numeric(year), 
+    month = as.numeric(month),
+    day = as.numeric(day),
+    hour = as.numeric(hour),
+    minute = as.numeric(minute)
+    ) %>% 
+  select(-second)
+```
+
+```{r pym_data_import, include=FALSE}
+nyc_shooting = read_csv("./modified_data/NYC Shooting Data (2016-2021) with Zipcode.csv")
+```
+
+```{r pym_LR_data_cleaning, include=FALSE}
+# prepare dataframe
+lr_df = nyc_shooting %>% 
+  select(-location_desc, -x_coord_cd, -y_coord_cd, -latitude, -longitude, -lon_lat, -new_georeferenced_column, -zipcode) %>% 
+  mutate(
+    month = as.factor(recode(month, "January" = 1, "February" = 2, "March" = 3, "April" = 4, "May" = 5, "June" = 6, "July" = 7, "August" = 8, "September" = 9, "October" = 10, "November" = 11, "December" = 12)),
+    month_date = str_c(month, "-", day)
+  )
+```
+
+
+# Borough and Location
+
+## Shooting Cases Trend before 2021 by Borough
+
+The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of sepetember. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
+
+```{r Shooting Cases Trend before 2020, fig.align='center'}
+year_trend_df_2020 = Shooting_df %>%
+  group_by(year, boro) %>%
+  mutate(
+    boro = factor(boro)
+  ) %>% 
+  summarise(count = n()) %>% 
+  subset(year != '2021')
+
+trend_plot = ggplot(year_trend_df_2020, aes(x = year, y = count, col = factor(boro))) + 
+  geom_line(size = 1) + 
+  geom_point(size = 2) + 
+  labs(title = "Shooting Cases Trend before 2021",
+       subtitle = 'Year: {as.integer(frame_along)}', 
+       y = "Total cases per year") +
+  theme(axis.text.x = element_text(angle = 45)) +
+  theme(plot.title = element_text(hjust = 0.5, size = 12)) +
+  scale_x_continuous(breaks = seq(from = 2006, to = 2020, by = 1)) +
+  transition_reveal(year) 
+
+trend_plot
+```
+
+## Shooting Cases by Borough
+
+The Borough bar chart shows that Brooklyn area has the most shooting cases(more than 10k) and Staten Island has the least shooting cases(less than 1k) in NYC from 2006 until now.
+
+```{r Borough}
+boro_df = Shooting_df %>%
+  group_by(boro) %>% 
+  summarise(count = n())
+
+boro_bar = boro_df %>% 
+  mutate(boro = fct_reorder(boro, count)) %>% 
+  plot_ly(x = ~boro, y = ~count, color = ~boro, type = "bar", colors = "viridis", alpha = 0.8) %>% 
+    layout(
+      title = "Shooting cases by Borough",
+      xaxis = list(title = "Borough")
+      )
+boro_bar
+```
+
+## Shooting Cases by location (Common)
+
+Cases with unrecorded location are dropped. Locations where shootings happened less than 10 times from 2006 until now are dropped.The bar chart only analyzes common locations that exist shooting cases those years. We can see from the chart that public houses, apartment buildings and private houses are top 3 locations that shooting cases may happen.
+
+```{r location}
+location_df = Shooting_df %>%
+  mutate_all(list(~na_if(.,""))) %>%
+  drop_na(location_desc) %>% 
+  group_by(location_desc) %>% 
+  summarise(count = n()) %>% 
+  subset(count >= 10)
+
+location_bar = location_df %>% 
+  mutate(location_desc = fct_reorder(location_desc, count)) %>% 
+  plot_ly(x = ~location_desc, y = ~count, color = ~location_desc, type = "bar", colors = "viridis", alpha = 0.8) %>% 
+    layout(
+      title = "Shooting cases by location (common)",
+      xaxis = list(title = "location")
+      )
+location_bar
+```
+
+## Shooting density map over hours 
+
+The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. From the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
+
+```{r Shooting density map}
+map_df = Shooting_df %>%
+  summarise(
+    lat_max = ceiling(max(latitude)),
+    lat_min = min(latitude),
+    lon_max = max(longitude),
+    lon_min = min(longitude)
+  )
+
+map_nyc = get_map(
+  location = c(
+    top = pull(map_df, lat_max),
+    bottom = pull(map_df, lat_min),
+    right = pull(map_df, lon_max),
+    left = pull(map_df, lon_min)
+  )
+)
+
+map_hour_df = Shooting_df %>% 
+  dplyr::select(boro, hour, minute, latitude,longitude)
+  
+map_hour = map_hour_df %>% 
+  mutate(text_label = str_c("Borough: ", boro, " Time: ",hour,":", minute)) %>% 
+  plot_ly() %>% 
+  add_markers(
+    x = ~ longitude,
+    y = ~ latitude,
+    text = ~ text_label,
+    size = I(2),
+    frame = ~ hour,
+    mode = "marker",
+    color = ~boro,
+    colors = viridis::viridis(3,option = "C")
+  ) %>%
+  layout(
+    images = list(
+      source = raster2uri(as.raster(map_nyc)),
+      xref = "x",
+      yref = "y",
+      y = 40.51,
+      x = -74.25,
+      sizey = 0.5,
+      sizex = 0.55,
+      sizing = "stretch",
+      xanchor = "left",
+      yanchor = "bottom",
+      opacity = 0.8,
+      layer = "below"
+    )
+  ) %>%
+  layout(showlegend = TRUE, legend = list(font = list(size = 8))) %>% 
+  animation_opts(
+    transition = 0,
+    frame = 500)
+map_hour
+```
+
+
+# Gender, Race and Age
+
+## Gender Proportions from 2016 to 2021
+
+For both perpetrators and victims, man are more likely to be involved in a shooting case than women. However, this proportion is more significant in the perpetrator group than the victim group. From 2016 to 2021, there is no significant change in the proportion of gender.
+
+```{r perp_sex_year, message=FALSE, warning=FALSE}
+perp_sex_df = lr_df %>% 
+  filter(!is.na(perp_sex)) %>% 
+  group_by(perp_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_sex = as.factor(perp_sex)
+  )
+
+perp_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = perp_sex)) + geom_bar(position = "stack", aes(order = desc(perp_sex)), alpha = 0.5) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = "Perpetrator's gender",
+    x = "occurrence year of case",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.0025)
+```
+
+```{r vic_sex_year, message=FALSE, warning=FALSE}
+vic_sex_df = lr_df %>% 
+  filter(!is.na(vic_sex)) %>% 
+  group_by(vic_sex, year) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_sex = as.factor(vic_sex)
+  )
+
+vic_sex_df %>% 
+  ggplot(aes(x = year, weight = n_freq, fill = vic_sex)) + geom_bar(position = "stack", aes(order = desc(vic_sex)), alpha = 0.5) +
+  scale_x_continuous(breaks = 2016:2021) + 
+  labs(
+    title = "Victim's gender",
+    x = "occurrence year of case",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.00125)
+```
+
+
+
+## Gender and Race Distributions
+
+From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, Male victims outweigh Female victims in all races.
+
+The bar chart of sex and race distribution of Perpetrators is similar to that of Victims. We can see most Perpetrators in NYC shooting cases from 2006 until now are male in Black. Broadly, Male Perpetrators outweigh Female Perpetrators in all races.
+
+```{r race_and_gender}
+race_sex_vicdf = Shooting_df %>%
+  subset(vic_sex == "M" | vic_sex == "F") %>% 
+  group_by(vic_sex,vic_race) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = vic_sex, values_from = count) %>% 
+  subset(vic_race != 'UNKNOWN')
+
+race_sex_perpdf = Shooting_df %>%
+  subset(perp_sex == "M" | perp_sex == "F") %>% 
+  group_by(perp_sex,perp_race) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = perp_sex, values_from = count) %>% 
+  subset(perp_race != 'UNKNOWN')
+
+
+fig1 <-  plot_ly(race_sex_vicdf, x = ~vic_race, y = ~F, type = 'bar', name = 'Female Victim', alpha = 0.7) %>% 
+  add_trace(y = ~M, name = 'Male Victim') %>% 
+  layout(yaxis = list(title = 'Count'), barmode = 'stack') %>% 
+  layout(
+         xaxis = list(title = ""))
+
+fig2 <- plot_ly(race_sex_perpdf, x = ~perp_race, y = ~F, type = 'bar', name = 'Female Perpetrator', alpha = 0.7) %>% 
+  add_trace(y = ~M, name = 'Male Perpetrator') %>% 
+  layout(yaxis = list(title = 'Count'), barmode = 'stack') %>% 
+  layout(
+         xaxis = list(title = ""))
+
+
+fig <- subplot(fig1, fig2, shareY = TRUE) %>% 
+  layout(title = 'Race and Sex Distribution') %>% 
+  layout(showlegend = TRUE, legend = list(font = list(size = 8))) %>% 
+  layout(annotations = list(
+    list(x = 0.2 , y = 1.02, text = "Victims", showarrow = F, xref = 'paper', yref = 'paper'),
+     list(x = 0.85 , y = 1.02, text = "Perpetrators", showarrow = F, xref = 'paper', yref = 'paper'))
+)
+fig
+
+```
+
+## Age and Race Distributions
+
+Age group is also a factor in interest. Most perpetrators are between 18-44 years old. And we can also see that there is difference of frequency of shooting cases in different races.
+
+Similar to the age distribution of perpetrators, most victims are between 18-44 years old. And 3 most vulnerable races are black, white Hispanic and black Hispanic. For different races, the age distributions of victims are similar.
+
+```{r perp_age_race, message=FALSE, warning=FALSE}
+perp_age_df = lr_df %>% 
+  filter(!is.na(perp_age_group)) %>% 
+  group_by(perp_age_group, perp_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    perp_age_group = as.factor(perp_age_group)
+  )
+
+perp_age_df %>% 
+  ggplot(aes(fill = perp_race, x = perp_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity') +
+  labs(
+    title = "Perpetrator's age and race",
+    x = "age group",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.0025)
+```
+
+```{r vic_age_race, message=FALSE, warning=FALSE}
+vic_age_df = lr_df %>% 
+  filter(!is.na(vic_age_group)) %>% 
+  group_by(vic_age_group, vic_race) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    vic_age_group = as.factor(vic_age_group)
+  )
+
+vic_age_df %>% 
+  ggplot(aes(fill = vic_race, x = vic_age_group, y = n_freq)) +
+  geom_bar(position = "dodge", stat = 'identity') +
+  labs(
+    title = "Victim's age and race",
+    x = "age group",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.00125)
+```
+
+
+# Trend of Shooting Cases and Covid-19
+
+## Shooting Cases in Each Hour for Each Month
+
+From the Shooting Cases in Each Hour in NYC, we can see that shooting cases are more likely to happen in the dark than daytime, especially at midnight. And then the level decreases after 0:00 and reaches the lowest point in the morning. After 9 o'clock, it starts to increase again.
+
+As for differences among months, cases are more likely to happen during summer than winter, which is already observed in the line plot Monthly Shooting Cases in NYC. Based on this fact, temperature are considered as one of the potential factors that may influence the frequency of shooting cases.
+
+```{r month_hour, message=FALSE, warning=FALSE}
+month_hour_df = lr_df %>% 
+  separate(occur_time, into = c("hour", "min", "sec"), sep = ":") %>% 
+  group_by(month, hour) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    hour = as.numeric(hour),
+    month = as.factor(month)
+    )
+month_hour_df %>% 
+  ggplot(aes(x = hour, y = n_freq, color = month, group = month)) +
+  geom_line() + scale_x_continuous(breaks = 0:23) +
+  geom_point(size = 1.5) +
+  labs(
+    title = "Shooting cases in each hour in NYC",
+    x = "hour",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.1) +
+  transition_reveal(hour) +
+  theme(plot.title = element_text(hjust = 0.5, size = 12)) 
+```
+
+
+## Monthly Shooting Cases in NYC from 2016 to 2021
+
+The Monthly Shooting Cases in NYC shows the trend of shooting cases each year from January 2016 to September 2021 in New York City. It's obvious that shooting cases in summer are more than in winter, which we'll talk about later at the end of visualization part.
+
+The line plot also shows that the number of shooting cases increased rapidly from May 2020 which is right during the period of the first COVID-19 outbreak in NYC. As the pandemic persists, the number of shooting cases remained at a high level after April 2020. 
+
+```{r year_month, message=FALSE, warning=FALSE}
+year_month_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    month = as.numeric(month),
+    year = as.factor(year)
+    )
+year_month_df %>% 
+  ggplot(aes(x = month, y = n_freq, color = year, group = year)) +
+  geom_line() + scale_x_continuous(breaks = 1:12) +
+  geom_point(size = 1.5) +
+  labs(
+    title = "Monthly Shooting Cases in NYC",
+    x = "month",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 0.02) +
+  transition_reveal(month) +
+  theme(plot.title = element_text(hjust = 0.5, size = 12))
+```
+
+## Year over Year Case Growth Rate
+
+To confirm that number of shooting cases is affected by COVID-19, a YoY+% line plot is drawn to show the growth rate of # of cases year over year for each 12 months. Without great influence of major events, the growth rate is expected to be around 1. However, as the plot suggests, there is significant growths of shooting cases in 2020 compared with 2019 for months from May to December, while the growth rates remained around 1 for January to April due to the peace without COVID-19. 
+
+```{r YonYgrowth, message=FALSE, warning=FALSE}
+yoy_df = lr_df %>% 
+  group_by(year, month) %>% 
+  summarise(n_freq = n()) %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = "n_freq"
+  ) %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    x1 = x2017 / x2016,
+    x2 = x2018 / x2017,
+    x3 = x2019 / x2018,
+    x4 = x2020 / x2019,
+    x5 = x2021 / x2020
+  ) %>% 
+  select(-x2016, -x2017, -x2018, -x2019, -x2020, -x2021) %>% 
+  pivot_longer(
+    x1:x5,
+    names_to = "y_o_y",
+    values_to = "ratio"
+  )
+
+xlab = c("2017/2016", "2018/2017", "2019/2018", "2020/2019", "2021/2020")
+
+yoy_df %>% 
+  ggplot(aes(x = y_o_y, y = ratio, color = month, group = month)) +
+  geom_line() +
+  scale_x_discrete(labels = xlab) +
+  labs(
+    title = "Year over Year Case Growth Rate",
+    x = "year over year",
+    y = "growth rate"
+  )
+```
+
+
+# Temperature
+
+Based on the fact that shooting cases in summer are more than in winter, we are interested in the question whether the frequency of shooting cases is influenced by temperature. To observe the relationship between temperature and frequency of shooting, we collected weather data from rnoaa package and calculated the average temperature in New York Central Park as a substitute for temperature in NYC.
+
+As the Temperature Records in NYC and Daily Shooting Cases in NYC shows, the daily number of shooting cases fluctuates with the fluctuation of temperature. 
+
+```{r weather, message=FALSE, warning=FALSE}
+nyc_weather_df = 
+  rnoaa::meteo_pull_monitors(
+    c("USW00094728"),
+    var = "all", 
+    date_min = "2016-01-01",
+    date_max = "2021-09-30") %>%
+  mutate(
+    tmin = tmin / 10,
+    tmax = tmax / 10,
+    tavg = (tmin + tmax) / 2,
+    ymd = date
+    ) %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-") %>% 
+  mutate(month_date = str_c(month, "-", day)) %>% 
+  select(ymd, year, month_date, tavg)
+
+nyc_weather_df %>% 
+  ggplot(aes(x = ymd, y = tavg)) +
+  geom_point() +
+  labs(
+    title = "Temperature Records in NYC",
+    x = "date",
+    y = "temperature average"
+  ) + coord_fixed(ratio = 8)
+```
+
+```{r daily_shooting, message=FALSE, warning=FALSE}
+lr_w_df = lr_df %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_freq = n()) %>% 
+  mutate(
+    ymd = as.Date(str_c(year, "-", month, "-", day))
+  )
+lr_w_df %>% 
+  ggplot(aes(x = ymd, y = n_freq)) +
+  geom_point() +
+  labs(
+    title = "Daily shooting cases in NYC",
+    x = "date",
+    y = "number of shooting cases"
+  ) + coord_fixed(ratio = 15)
+```
+
+
