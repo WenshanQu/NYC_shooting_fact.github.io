@@ -28,6 +28,9 @@ The proliferation of guns and gun violence in the United States have serious con
 * How are the shooting incidents distributed in NYC?
 * How does COVID-19 influence the shooting incidents rate?
 * Is there any way to control the number of shooting incidents in NYC?
+* How does the victim's age group, race, and sex associated with the number of shooting in NYC?
+* How does the perpetrator's age group, race, and sex associated with the number of shooting in NYC?
+* Does year, month, borough associated with the number of shooting in NYC?
 
 ***
 
