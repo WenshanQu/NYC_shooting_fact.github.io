@@ -253,9 +253,6 @@ Examples on how we get and merge resulting csv files in `comp_data` folder could
 
 Also, `highcharter` is a wonderful but difficult task for us. The first thing we confronted with is: how to bind our data with a NYC map by zip-code. Unlike `shooting finder` above, what were trying to bind this time is not `GPS point` vs. `marker`, actually it is dataframe vs. map properties. To achieve this task, we find a NYC open-sourced map (that could be extracted as a JSON file) with properties of zip-code (there were several failures before we finally success, and the reasons for the failures is the maps we found do not contain `zipcode`), and combined the `zipcode` with the map. And here came a second problem which we have not tackled yet: how to show the names (eg. 10032) within series. Now we can just find way to rename the series name as `Number of Shooting Cases:`, but can not find solution of displaying the row names within this series. Due to the limitation of time, we will keep trying to make this plot as perfect as we can.  
 
-***
-
-## Conclusion
 
 ***
 
