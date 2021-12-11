@@ -21,7 +21,7 @@ The proliferation of guns and gun violence in the United States have serious con
 
 ***
 
-## Questions
+## Initial Questions
 
 * What is a relatively safe time to go outside in a day?
 * How many shooting incidents have occurred in the past few years in the nearby area?
@@ -31,6 +31,11 @@ The proliferation of guns and gun violence in the United States have serious con
 * Is there any way to control the number of shooting incidents in NYC?
 
 ***
+
+## Related Work
+
+A Chinese student's murder on a street near the University of Chicago campus has resonated the city and even the country of facing the rising violence. Our group want to show our concern and to call for attention for the gun violence issue through this project. 
+
 
 ## Data
 
@@ -197,25 +202,25 @@ The cross validation section, the root mean square deviations were calculated fo
 We used the `Shiny App` and `leaflet` package to build an interactive map that allows users to find the shooting incidents near them by inputting their zip code (in New York City), and our database includes over 25,000 data points on shooting incidents in NYC from 2006 ~ 2021 (data source: NYPD). The tool performs visualization of the geographic distribution of shooting incidents in the area defined by zip-code.
 
 ![](photo/example_shiny.png)
-Here is an example on how our app works. After typing in the zip-code `10032` that I am interested in (where Mailman School of Public Health belongs to), the `NYC Shooting Incidents Map` will show all the shooting cases between Jan. 2006 and Sept. 2021 in 10032, and by zooming in and out the map, you can get more accurate and intuitive information on which street or neighborhood clusters more shooting cases than others. The geographical scatter plots combined with the realistic NYC map will definitely provide our users with helpful guide on their safe trip.
+Here is an example of how our app works. After typing in the zip-code `10032` that I am interested in (where Mailman School of Public Health located in), the `NYC Shooting Incidents Map` will show all the shooting cases between Jan. 2006 and Sept. 2021 in 10032. And by zooming in and out, you can get more accurate and intuitive information about which street or neighborhood clusters have more shooting cases than others. The geographical scatter plots combined with the realistic NYC map will provide our users helpful guide for their safe trip.
 
-Also, to achieve our initial goal of making this app a handy tool to provide as comprehensive information as we can, we create bar plots to show the number of shooting cases across `month` in a year as well as `hour` in a day in the area with given zip-code. At the beginning of our design, we just intend to provide the most "dangerous" month and hour to our users with a chart. While during our working process, as a newcomer of New York and a faithful user (even we are the creator) of this tool, we realized that instead of getting the "most" information, we prefer to get the trend and comparative data as a tour guide, and that's the reason why we make such bar plots. As a user who lives in 10032, this resulting charts will help me to make decisions of "stay at home after 18:00" and "better hang out between 7:00 am to 4:00 pm".
+In addition, to achieve our initial goal of making this app a handy tool to provide as comprehensive information as we can, we create two bar plots to show the number of shooting cases across `month` in a year as well as `hour` in a day in the area with given zip-code. At the beginning of our design, we just intend to provide the most "dangerous" month and hour to our users by showing a chart. While during our working process, as a newcomer of New York and a faithful user (even we are the creator) of this tool, we realized that instead of getting the "most" information, users may prefer to get the trend and comparative data as a tour guide, and that's the reason why we make such bar plots. As the users living in 10032, this resulting charts will guide us to stay at home after 18:00 and to hang out between 7:00 am and 4:00 pm. 
 
-After getting the above products, a fantastic idea came into my mind immediately: If I am planning my Thanksgiving holiday trip, I really want to know the hotels in which district would be the safest one to be chosen! Then, an out-of-plan map showing the shooting density of each area in NYC (defined by zip-code) was created. We use `highcharter` package to realize our goal, combining with an open-sourced nyc map provided by https://data.beta.nyc/dataset. We also stratified the data set by year to make the plot more meaningful. 
+After getting the above products, a fantastic idea came into our mind: If we are planning our Thanksgiving holiday trip, we really want to know the hotels in which district would be the safest one to be chosen! Then, an out-of-plan map showing the shooting density of each area in NYC (defined by zip-code) was created. We use `highcharter` package to realize our goal, combining with an open-sourced nyc map provided by https://data.beta.nyc/dataset. We also stratified the data set by year to make the plot more meaningful. 
 
 **_How We Achieve and Difficulties We Met_**
 
-At the very beginning of our design, we intended to make a interactive map (Shiny App) which could provide information for travelers and residents in New York City about the risky areas and dangerous time on shooting incidents, which could give them helpful instructions on planning their trips. To make this tool as handy as we hope, we should find a "connector" between users and our database. This connector should be: 
+At the beginning of our design, we intended to make an interactive map (Shiny App) which provide information for travelers and residents in New York City about the risky areas and dangerous time on shooting incidents, which could give them helpful instructions on planning their trips. To make this tool as handy as we hope, we should find a connection between users and our database which should satisfied the following requirements: 
 
-1) easy for users to enter in the sidebar (counter-example: longitude and latitude data); 
+1) Easy to search (counter-example longitude and latitude); 
 
-2) well-known and intuitive (counter-example: precinct divided for NYPD, included in our database); 
+2) Well-known and intuitive (counter-example: precinct divided for NYPD, included in our database); 
 
-3) a area (instead of a point) that contains enough data points to display (counter-example: an accurate apartment address).
+3) A clearly defined area with enough data points to display (counter-example: a block).
 
-Then, zip-code will be an ideal candidate, and our task turns to how to generate zip-code from the GPS point provided in the data set.
+Therefore, zip-code will be an ideal candidate, and our task change to how to generate zip-code from the GPS point provided in the data set. 
 
-Here we create a function called `latlon2zip`. To create function `latlon2zip`, firstly, we embedded the parameters of longitude and latitude into the pre-specified url string, and then using the combined url to get the response from the website with the geographical data of JSON format. In this way, we can extract the zip-code information from JSON data. Then we iterated these steps into the whole dataframe.
+Here we created a function called `latlon2zip`. Firstly, we embedded the parameters of longitude and latitude into the pre-specified url string, and then using the combined url to get the response from the website with the geographical data of JSON format. In this way, we can extract the zip-code information from JSON data. Then we iterated these steps into the whole dataframe.
 
 ```{r eval=FALSE}
 latlon2zip = function(lat, lon) {
@@ -235,14 +240,14 @@ latlon2zip = function(lat, lon) {
 ```
 
 
-A tough problem we are going to solve in the next part is the running time, because generating one zip-code will take 1s, thus making the process of generating the zip-codes for the whole data set to be quite time-consuming. To optimize the running time, I try to use different packages: `jsonlite::fromJSON()` to replace the `rjson::fromJSON()`, and the running time for one zip-code shrink to 0.5s, which is more acceptable than before. 
+A problem need to be solved in the next part is the running time. Because generating one zip-code takes 1s, generating the zip-codes for the whole data set can be quite time-consuming. To minimize the running time, we tried to replace the `rjson::fromJSON()` by `jsonlite::fromJSON()`. Therefore, the running time for one zip-code shrink to 0.5s which is better. 
 
-The most ideal generating process of new datafram with zipcode is using the `latlon2zip` function to get all zip-codes for 20,000 data points from 2016 to 2021 at once, while it is unfeasible. The problem we confronted with is that the time R uses to generate one zip-code from one (lat, lon) is 0.5s, and for  20,000 records, running time will be 3h (actually we tried, but R told us "time run out" and collapse...). 
+The most ideal generating process of new dataframe with zipcode is using the `latlon2zip` function to get all zip-codes for 20,000 data points from 2016 to 2021 at once, while it is unfeasible. The problem we confronted was that the time to generate one zip-code from one (lat, lon) in R is 0.5s. And then for  20,000 records, running time will be 3h (actually we tried, but R told us "time run out" and collapse...). 
 
 Then, we decided to generate the zip-code year-by-year, and merge these data set together. 
-Examples on how we get and merge resulting csv files in `comp_data` folder could be found in our website, but a "miserable truth" we found here is that we can not at this time realize the most exciting idea to optimize this interactive tool: adding labels with accurate street address and other accurate case information on each scatter point. The formal one (which is street address) could not be realized because technically the preferred way to do this is by connecting the `Open Street Map` to get more complex geographical information, and this process is highly similar with how we get zip-code, but we can not simply do this because the connecting and extracting process took 0.5 s for each data point, which will highly decrease the fluency of our tool. And if we do this reversely, which means we will import all the address information to our local database, and provide them from existed local file when users asking, then complex string modification need to be taken for the address information recorded in `Open Street Map` is not as ideal as we hope. Consequently, we didn't create labels for our data points, but fortunately, the map embedded is clear enough and users could simply get the address info by zooming in the map.
+Examples on how we get and merge resulting csv files in `comp_data` folder could be found in our website. We have tried to add labels of street address and other accurate information on each scatter point. However, adding address could not be realized since the way to do this is connecting the `Open Street Map` for more geographical information, and this process is similar to how we get zip-code. But we can not simply do this because the connecting and extracting process takes 0.5 s for each data point which highly decrease the fluency of our tool. And if we reversely importing all the address information to our local database, and provide them from existed local file when users asking, then complex string modification need to be taken for the address information recorded in `Open Street Map` is not ideal. Consequently, we didn't create labels for our data points since the map embedded is clear and users can get the address info easily  by zooming in.
 
-Also, `highcharter` is a wonderful but difficult task for us. The first thing we confronted with is: how to bind our data with a NYC map by zip-code. Unlike `shooting finder` above, what were trying to bind this time is not `GPS point` vs. `marker`, actually it is dataframe vs. map properties. To achieve this task, we find a NYC open-sourced map (that could be extracted as a JSON file) with properties of zip-code (there were several failures before we finally success, and the reasons for the failures is the maps we found do not contain `zipcode`), and combined the `zipcode` with the map. And here came a second problem which we have not tackled yet: how to show the names (eg. 10032) within series. Now we can just find way to rename the series name as `Number of Shooting Cases:`, but can not find solution of displaying the row names within this series. Due to the limitation of time, we will keep trying to make this plot as perfect as we can.  
+Also, `highcharter` is a wonderful but difficult task for us. The first thing we confronted is: how to bind our data with a NYC map by zip-code. Unlike `shooting finder` above, what were trying to bind this time is not `GPS point` vs. `marker`, actually it is dataframe vs. map properties. To achieve this task, we find a NYC open-sourced map (that could be extracted as a JSON file) with properties of zip-code (there were several failures before we finally success, and the reasons for the failures is the maps we found do not contain `zipcode`), and combined the `zipcode` with the map. And here came a second problem which we have not tackled yet: how to show the names (eg. 10032) within series. Finally, we renamed the series name as `Number of Shooting Cases:`, but can not figured out how to display the row names within this series. Due to the limitation of time, we will keep trying to make this plot better. 
 
 ***
 
