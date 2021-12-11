@@ -640,6 +640,23 @@ div.tocify {
 </div>
 <div id="regression" class="section level2">
 <h2>Regression</h2>
+<div id="box_cox-transformation" class="section level3">
+<h3>Box_Cox transformation</h3>
+<p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable <code>location_desc</code> includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y^2 transformation is applied. <img src="photo/boxcox.png" /> ### Regression Results After the transformation, we fit the multiple linear regrssion model and apply the backward stepwise method to select the best predictors. Below is the regression resuls <img src="photo/regression_results.png" /> <img src="photo/regression_results2.png" /> The regression analysis identified <code>year</code>, <code>borough</code>, <code>statistical murder flag</code>, <code>victim’s age group, and sex</code>, and <code>perpetrator’s sex</code> are significant predictors for the number of shooting cases in NYC. However, our predictors only explain 17 % of the outcome, which indicates that there are more factors influencing the booming case of shooting in NYC. The year 2019, 2020, and 2021 show an increased number of shootings when compared with 2006 while controlling other variables. In addition, we found race is not a strong and significant factor in predicting shooting numbers in NYC. And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.Among perpetrators, age under 18 have more number of shooting than other age groups. Among victims, 45-64 years old and 65+ years old have more number of shooting that age under 18 group.</p>
+</div>
+<div id="correlation-matrix" class="section level3">
+<h3>Correlation Matrix</h3>
+<p><img src="photo/correlation_matrix.png" /> The correlation analysis of NYC shooting data shows that the unknown sex and race of perpetrator is highly collinearited. And most of other variables are acceptable.</p>
+</div>
+<div id="multiple-linear-regression-disgnose" class="section level3">
+<h3>Multiple Linear Regression disgnose</h3>
+<p><img src="photo/resid_year.png" /> <img src="photo/resid_boro.png" /> <img src="photo/resid_plot.png" /> The residuals plot of year and borough did not show any distribution pattern which indicated the good fit of model. However, the residual density plot indicated some outliers.</p>
+</div>
+<div id="cross-validation" class="section level3">
+<h3>Cross Validation</h3>
+<p><img src="photo/cv.png" /> Our cross validation include three different models. The first model includes all the predictors. The second model includes only the significant predictors. the third model includes interaction of borough and sex.</p>
+<p>The cross validation section, the root mean square deviations were calculated for all the three models. the RMSE plot shows that RMSE of all model are similar. And the first model have the lowest RMSE, which indicates the first model may be the best model to explain the outcome - number of shooting in NYC.</p>
+</div>
 </div>
 <div id="shiny-app" class="section level2">
 <h2>Shiny App</h2>
@@ -650,6 +667,7 @@ div.tocify {
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
+<p>(regression part)The raw data included many categorical variables, which amplified the difficulty in fitting a regression model. To ensure the accuracy of our regression model, we utilized the backward stepwise method and correlation matrix to select the appropriate variables to fit our regression model. We also conducted a regression model diagnosis and cross-validation to inspect the validity of our regression model. However, our predictors only explain 17 % of the outcome, which indicates that there are more factors influencing the booming case of shooting in NYC. The regression model indicates that race is not a valuable and significant predictor of shooting number, which means the comprehensive impact of the Covid-19 pandemic on everyone everywhere. Borough is identified as a strong and significant predictor of shooting numbers in NYC by our regression model and data visualization. We can observe the different densities of shooting numbers in different boroughs of NYC, which implies the inequalities and disparities of different boroughs.</p>
 </div>
 
 
