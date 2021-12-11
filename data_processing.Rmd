@@ -66,7 +66,7 @@ A tough problem we are going to solve in the next part is the running time, beca
 
 The most ideal generating process is using the `latlon2zip` function to get all zip-codes for 20,000 data points from 2016 to 2021 at once, while it is unfeasible. The problem we confronted with is that the time R uses to generate one zip-code from one (lat, lon) is 0.5s, and for 20,000 records, running time will be 3h (actually we tried, but R told us "time run out" and collapse...). 
 Then, we decided to generate the zip-code year-by-year, and merge these data set together. 
-Here we just show an example code on how do we generate zip-code for a single year and how do we get the resulting data set. The entire code is too trivial to show here, and could be found in `data_processing.Rmd` file in our [GitHub repo](https://github.com/WenshanQu/NYC_shooting_fact.github.io).
+Here we just show an example code on how do we generate zip-code for a single year and how do we get the resulting data set. The entire code is too trivial to show here, and could be found in `data_processing.Rmd` file in our [GitHub repo](https://github.com/WenshanQu/Final_Project_NYC_Shooting).
 
 Here is a simply example on how we generating resulting csv file with zipcode:
 

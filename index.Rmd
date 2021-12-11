@@ -5,6 +5,19 @@ output:
     toc: true
     toc_float: true
 ---
+
+Yu He (yh3430), Wenshan Qu (wq2160), Jiayao Sun (js5962), Yimiao Pang (yp2608), Yunxi Zhang (yz4186)
+
+<br>
+
+## Screencast
+
+<center><div class="container_video">
+<iframe width="850" height="580" src="https://www.youtube.com/embed/m8srVzA9iqA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></center>
+
+<br>
+
 ## Motivation
 
 ### Covid 19 Pandemic impact
@@ -23,6 +36,16 @@ During the COVID-19 pandemic, with global public health crisis, hundreds of thou
 According to the New York Post, data from the New York City Police Department shows that as of December 7, 2020, there have been 1,433 shootings in New York City, with a total of 1,756 victims of gun violence, almost twice the number in the same period in 2019. The surge in shootings is jeopardizing the rights of the public. We need immediate action to ensure a safe living environment for our community.
 
 If you want to know more about the gun violence in NYC before and during the Covid-19 pandemic, our website can provide useful information.
+
+## Links
+
+Here are useful links for you to further explore our project:
+
+* Our GitHub repo for this website could be found [here](https://github.com/WenshanQu/NYC_shooting_fact.github.io).
+
+* Here is [another GitHub repo](https://github.com/WenshanQu/Final_Project_NYC_Shooting) including files and codes that could not be included in our web-repo, such as codes for generating zip-code.
+
+* Our Shiny repo could be found [here](https://wenshanqu.shinyapps.io/nyc_shooting_fact/).
 
 
 
