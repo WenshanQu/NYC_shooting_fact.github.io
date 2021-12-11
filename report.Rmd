@@ -154,11 +154,14 @@ As the Temperature Records in NYC and Daily Shooting Cases in NYC shows, the dai
 ![](Visualization_Combined_files/figure-html/daily_shooting-1.png)
 
 ## Regression
+
 ### Box_Cox transformation
+
 The box-cox method is applied in the model to determine the transformation of outcome variable. The variable `location_desc` includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y^2 transformation is applied.
 ![](photo/boxcox.png)
 ### Regression Results
-After the transformation, we fit the multiple linear regrssion model and apply the backward stepwise method to select the best predictors. Below is the regression resuls
+
+After the transformation, we fit the multiple linear regression model and apply the backward stepwise method to select the best predictors. Below is the regression results
 ![](photo/regression_results.png)
 ![](photo/regression_results2.png)
 The regression analysis identified `year`, `borough`, `statistical murder flag`, `victim’s age group, and sex`, and `perpetrator’s sex` are significant predictors for the number of shooting cases in NYC. However, our predictors only explain 17 % of the outcome, which indicates that there are more factors influencing the booming case of shooting in NYC. The year 2019, 2020, and 2021 show an increased number of shootings when compared with 2006 while controlling other variables. In addition, we found race is not a strong and significant factor in predicting shooting numbers in NYC. And among the borough, compared with Bronx, Brooklyn have less number of shooting, and Manhattan, Queens, and Staten Island have more number of shooting.Among perpetrators, age under 18 have more number of shooting than other age groups. Among victims, 45-64 years old and 65+ years old have more number of shooting that age under 18 group.
@@ -166,6 +169,7 @@ The regression analysis identified `year`, `borough`, `statistical murder flag`,
 ### Correlation Matrix
 
 ![](photo/correlation_matrix.png)
+
 The correlation analysis of NYC shooting data shows that the unknown sex and race of perpetrator is highly collinearited. And most of other variables are acceptable.
 
 ### Multiple Linear Regression disgnose
