@@ -639,6 +639,11 @@ div.tocify {
 </div>
 <div id="regression" class="section level2">
 <h2>Regression</h2>
+<div id="anticipate-challenges-and-solutions" class="section level3">
+<h3>Anticipate challenges and solutions</h3>
+<p>Our data includes more categorical variables, which need a different way of fitting the regression model from the continuous predictors. In addition, how to select the appropriate variables to fit the regression model is still a challenge Based on the literature review, we understand that the shooting number in NYC may be explained by many factors including, social and economic determinants, education, living community, family condition, personal issues. And it is a great challenge to include all the factors in one regression model. Moreover, a linear regression model may be appropriate in such a complex situation.</p>
+<p>Our solution to the above challenge is to narrow the potential risk factors by focusing on our primary project question, and data availability. In the regression model fitting part, we used the backward stepwise method, correlation matrix, diagnosed method, and cross-validation to ensure the accuracy of our model.</p>
+</div>
 <div id="box_cox-transformation" class="section level3">
 <h3>Box_Cox transformation</h3>
 <p>The box-cox method is applied in the model to determine the transformation of outcome variable. The variable <code>location_desc</code> includes too many missing value. It was not included in the multiple linear regression analysis. All the missing values from our dataset was omitted. The λ is close to - 2, 1 / Y^2 transformation is applied. <img src="photo/boxcox.png" /> ### Regression Results</p>
