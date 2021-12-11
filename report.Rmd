@@ -54,7 +54,7 @@ A Chinese student's murder on a street near the University of Chicago campus has
 
 ### Data Cleaning and Processing
 
-The first step of raw data cleaning combines each year’s data into one file. Then the date variable was separated into year, month, and day variables for later analysis. The missing value and unexpected values were omitted from the dataset.
+The first step of raw data cleaning combines each year’s data into one file. Then the date variable was separated into year, month, and day variables for later analysis. The missing value and unexpected values were omitted from the dataset. The zip-code generating process will be illustrated in the "Shiny" part of this report.
 
 ### Data Description
 
