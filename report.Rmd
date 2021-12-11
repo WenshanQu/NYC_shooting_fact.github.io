@@ -23,8 +23,8 @@ The proliferation of guns and gun violence in the United States have serious con
 ## Questions
 
 * What is a relatively safe time to go outside in a day?
-* How many shooting incidents have occurred in the past few years in the nearby  area?
-* Does the month affect the possibility of shooting incidents?
+* How many shooting incidents have occurred in the past few years in the nearby area?
+* Does the month affect the possibility of shooting incidents? Are shootings fluctuating like a seasonal flu?
 * How are the shooting incidents distributed in NYC?
 * How does COVID-19 influence the shooting incidents rate?
 * Is there any way to control the number of shooting incidents in NYC?
