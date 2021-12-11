@@ -153,6 +153,7 @@ As the Temperature Records in NYC and Daily Shooting Cases in NYC shows, the dai
 ![](Visualization_Combined_files/figure-html/weather-1.png)
 
 ![](Visualization_Combined_files/figure-html/daily_shooting-1.png)
+
 ***
 
 ## Regression
