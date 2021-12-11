@@ -3,6 +3,7 @@ title: "New York City Shooting Fact"
 output:
   html_document:
     toc: true
+    theme: paper
     toc_float: true
     df_print: paged
     code_folding: hide
@@ -153,6 +154,8 @@ As the Temperature Records in NYC and Daily Shooting Cases in NYC shows, the dai
 
 ![](Visualization_Combined_files/figure-html/daily_shooting-1.png)
 
+***
+
 ## Regression
 
 ### Box_Cox transformation
@@ -185,10 +188,16 @@ Our cross validation include three different models. The first model includes al
 
 The cross validation section, the root mean square deviations were calculated for all the three models. the RMSE plot shows that RMSE of all model are similar. And the first model have the lowest RMSE, which indicates the first model may be the best model to explain the outcome - number of shooting in NYC.
 
+***
+
 ## Shiny App
 We used the _ShinyApp_ and _leaflet_ package to build an interactive map that allows users to find the shooting incidents near them by inputting their zip code (New York City). The program performs visualization of the geographic distribution of shooting incidents in the area. Users can also view the plot of each month and day time of that area to get a relatively safe time to go out. There is also a density map showing the shooting incidents density in NYC in different years.
 
+***
+
 ## Conclusion
+
+***
 
 ## Discussion
 (regression part)The raw data included many categorical variables, which amplified the difficulty in fitting a regression model. To ensure the accuracy of our regression model, we utilized the backward stepwise method and correlation matrix to select the appropriate variables to fit our regression model. We also conducted a regression model diagnosis and cross-validation to inspect the validity of our regression model. However, our predictors only explain 17 % of the outcome, which indicates that there are more factors influencing the booming case of shooting in NYC. The regression model indicates that race is not a valuable and significant predictor of shooting number, which means the comprehensive impact of the Covid-19 pandemic on everyone everywhere. Borough is identified as a strong and significant predictor of shooting numbers in NYC by our regression model and data visualization. We can observe the different densities of shooting numbers in different boroughs of NYC, which implies the inequalities and disparities of different boroughs.
