@@ -354,7 +354,7 @@ vic_age_df %>%
 
 From the Shooting Cases in Each Hour in NYC, we can see that shooting cases are more likely to happen in the dark than daytime, especially at midnight. And then the level decreases after 0:00 and reaches the lowest point in the morning. After 9 o'clock, it starts to increase again.
 
-As for differences among months, cases are more likely to happen during summer than winter, which is already observed in the line plot Monthly Shooting Cases in NYC. Based on this fact, temperature are considered as one of the potential factors that may influence the frequency of shooting cases.
+As for differences among months, cases are more likely to happen during summer than winter, which is also observed in the line plot Monthly Shooting Cases in NYC. Based on this fact, temperature are considered as one of the potential factors that may influence the frequency of shooting cases.
 
 ```{r month_hour, message=FALSE, warning=FALSE}
 month_hour_df = lr_df %>% 
