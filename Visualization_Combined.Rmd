@@ -149,7 +149,7 @@ location_bar = location_df %>%
 location_bar
 ```
 
-## Shooting density map over hours 
+## Shooting Density Map over Hours 
 
 The map shows the distribution in Borough and density by hours of all shooting cases from 2006 until now. From the animation, we can see shooting case are usually frequent in late night, decrease during daytime and gradually rise after sunset.
 
@@ -350,7 +350,7 @@ vic_age_df %>%
 
 # Trend of Shooting Cases and Covid-19
 
-## Shooting Cases in Each Hour for Each Month
+## Shooting Cases by Hour for Each Month
 
 From the Shooting Cases in Each Hour in NYC, we can see that shooting cases are more likely to happen in the dark than daytime, especially at midnight. And then the level decreases after 0:00 and reaches the lowest point in the morning. After 9 o'clock, it starts to increase again.
 
@@ -541,7 +541,7 @@ shooting_covid %>%
     yaxis = list(title = "Cumulative shooting cases"))
 ```
 
-# Temperature
+# Temperature and Shootings
 
 Based on the fact that shooting cases in summer are more than in winter, we are interested in the question whether the frequency of shooting cases is influenced by temperature. To observe the relationship between temperature and frequency of shooting, we collected weather data from rnoaa package and calculated the average temperature in New York Central Park as a substitute for temperature in NYC.
 
