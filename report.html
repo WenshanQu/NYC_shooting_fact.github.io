@@ -344,7 +344,7 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="https://wenshanqu.shinyapps.io/nyc_shooting_fact/">Shooting Facts in NYC</a>
+  <a href="https://wenshanqu.shinyapps.io/nyc_shooting_fact/">NYC Shooting Finder</a>
 </li>
 <li>
   <a href="data_processing.html">Data</a>
@@ -581,6 +581,62 @@ div.tocify {
 </div>
 <div id="data-visualization" class="section level2">
 <h2>Data Visualization</h2>
+<div id="borough-and-location" class="section level3">
+<h3>Borough and Location</h3>
+<div id="shooting-cases-trend-before-2021-by-borough" class="section level4">
+<h4>Shooting Cases Trend before 2021 by Borough</h4>
+<p>The line plot below shows the trend of shooting cases in NYC by borough before 2021, because data in 2021 is only until the end of September. Obviously, the shooting cases’ distribution among boroughs does not change over year. For example, the number of cases in Brooklyn remained 1st among 5 boroughs in NYC from 2006 to 2021. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.</p>
+<p><img src="Visualization_Combined_files/figure-html/Shooting%20Cases%20Trend%20before%202020-1.gif" /></p>
+</div>
+<div id="shooting-cases-by-location" class="section level4">
+<h4>Shooting Cases by Location</h4>
+<p>Cases with unrecorded locations are dropped, and locations where shootings happened less than 10 times from 2006 until now are also dropped.We can see from the chart that public houses, apartment buildings and private houses are top 3 locations where shooting cases happened.</p>
+<p><img src="Visualization_figure_files/shooting_cases_by_location_common.png" /></p>
+</div>
+</div>
+<div id="gender-race-and-age" class="section level3">
+<h3>Gender, Race and Age</h3>
+<div id="gender-proportions-from-2016-to-2021" class="section level4">
+<h4>Gender Proportions from 2016 to 2021</h4>
+<p>For both perpetrator and victim group, men are more likely to be involved in a shooting case than women. However, this proportion is more significant in the perpetrator group than the victim group. From 2016 to 2021, there is no significant change in the proportion of gender.</p>
+<p><img src="Visualization_Combined_files/figure-html/perp_sex_year-1.png" /></p>
+<p><img src="Visualization_Combined_files/figure-html/vic_sex_year-1.png" /></p>
+</div>
+<div id="gender-and-race-distributions" class="section level4">
+<h4>Gender and Race Distributions</h4>
+<p>From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, male victims outweigh female victims in all races.</p>
+<p>The bar chart of sex and race distribution of perpetrators is similar to that of victims. Broadly, male perpetrators outweigh female in all races.</p>
+<p><img src="Visualization_figure_files/race_and_sex_distribution.png" /></p>
+</div>
+<div id="age-and-race-distributions" class="section level4">
+<h4>Age and Race Distributions</h4>
+<p>Age group is also a factor in interest. Most perpetrators are between 18-44 years old.</p>
+<p>Similar to the age distribution of perpetrators, most victims are also between 18-44 years old. And the 3 most vulnerable races are black, white Hispanic and black Hispanic. For different races, the age distributions of victims are similar.</p>
+<p><img src="Visualization_Combined_files/figure-html/perp_age_race-1.png" /></p>
+<p><img src="Visualization_Combined_files/figure-html/vic_age_race-1.png" /></p>
+</div>
+</div>
+<div id="trend-of-shooting-cases-and-covid-19" class="section level3">
+<h3>Trend of Shooting Cases and Covid-19</h3>
+<div id="shooting-cases-by-hour-for-each-month" class="section level4">
+<h4>Shooting Cases by Hour for Each Month</h4>
+<p>From the Shooting Cases in Each Hour in NYC, we can see that shooting cases are more likely to happen in the dark than daytime, especially at midnight. And then the level decreases after 0:00 and reaches the lowest point in the morning. After 9 o’clock, it starts to increase again.</p>
+<p>As for differences among months, cases are more likely to happen during summer than winter. Based on this fact, temperature are considered as one of the potential factors that may influence the frequency of shooting cases.</p>
+<p><img src="Visualization_Combined_files/figure-html/month_hour-1.gif" /></p>
+</div>
+<div id="yoy-and-covid-19" class="section level4">
+<h4>YoY+% and COVID-19</h4>
+<p>To confirm the hypothesis that number of shooting cases is affected by COVID-19, a YoY+% line plot is drawn to show the growth rate of # of cases year over year for each 12 months. Without great influence of major events, the growth rate is expected to be around 1. However, as the plot below suggests, there is significant growths of shooting cases in 2020 compared with 2019 for months from May to December, while the growth rates remained around 1 for January to April due to the precious peace without COVID-19.</p>
+<p><img src="Visualization_Combined_files/figure-html/YonYgrowth-1.png" /></p>
+</div>
+</div>
+<div id="temperature" class="section level3">
+<h3>Temperature</h3>
+<p>Based on the fact that shooting cases in summer are more than in winter, we are interested in the question whether the frequency of shooting cases is influenced by temperature. To observe the relationship between temperature and frequency of shooting, we collected weather data from rnoaa package and calculated the average temperature in New York Central Park as a substitute for temperature in NYC.</p>
+<p>As the Temperature Records in NYC and Daily Shooting Cases in NYC shows, the daily number of shooting cases fluctuates with the fluctuation of temperature. We can conclude that shootings fluctuate like a seasonal flu every year.</p>
+<p><img src="Visualization_Combined_files/figure-html/weather-1.png" /></p>
+<p><img src="Visualization_Combined_files/figure-html/daily_shooting-1.png" /></p>
+</div>
 </div>
 <div id="regression" class="section level2">
 <h2>Regression</h2>

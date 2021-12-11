@@ -83,7 +83,7 @@ lr_df = nyc_shooting %>%
 
 ## Shooting Cases Trend before 2021 by Borough
 
-The line plot shows the trend of shooting cases in NYC by Borough before 2021, because data in 2021 is only until the end of september. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
+The line plot shows the trend of shooting cases in NYC by borough before 2021, because data in 2021 is only until the end of September. Obviously, the change of year did not affect the shooting cases' distribution among boroughs. Even though shooting rate decreased dramatically since 2014, there was a steep rise in 2020, which probably was resulted from the emergence of COVID-19.
 
 ```{r Shooting Cases Trend before 2020, fig.align='center'}
 year_trend_df_2020 = Shooting_df %>%
@@ -127,7 +127,7 @@ boro_bar = boro_df %>%
 boro_bar
 ```
 
-## Shooting Cases by location (Common)
+## Shooting Cases by Location (Common)
 
 Cases with unrecorded location are dropped. Locations where shootings happened less than 10 times from 2006 until now are dropped.The bar chart only analyzes common locations that exist shooting cases those years. We can see from the chart that public houses, apartment buildings and private houses are top 3 locations that shooting cases may happen.
 
@@ -215,7 +215,7 @@ map_hour
 
 ## Gender Proportions from 2016 to 2021
 
-For both perpetrators and victims, man are more likely to be involved in a shooting case than women. However, this proportion is more significant in the perpetrator group than the victim group. From 2016 to 2021, there is no significant change in the proportion of gender.
+For both perpetrators and victims, men are more likely to be involved in a shooting case than women. However, this proportion is more significant in the perpetrator group than the victim group. From 2016 to 2021, there is no significant change in the proportion of gender.
 
 ```{r perp_sex_year, message=FALSE, warning=FALSE}
 perp_sex_df = lr_df %>% 
@@ -259,9 +259,9 @@ vic_sex_df %>%
 
 ## Gender and Race Distributions
 
-From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, Male victims outweigh Female victims in all races.
+From the bar chart we can see most victims in NYC shooting cases from 2006 until now are male in Black. Broadly, male victims outweigh female victims in all races.
 
-The bar chart of sex and race distribution of Perpetrators is similar to that of Victims. We can see most Perpetrators in NYC shooting cases from 2006 until now are male in Black. Broadly, Male Perpetrators outweigh Female Perpetrators in all races.
+The bar chart of sex and race distribution of perpetrators is similar to that of victims. Broadly, male perpetrators outweigh female in all races.
 
 ```{r race_and_gender}
 race_sex_vicdf = Shooting_df %>%
@@ -305,7 +305,7 @@ fig
 
 ## Age and Race Distributions
 
-Age group is also a factor in interest. Most perpetrators are between 18-44 years old. And we can also see that there is difference of frequency of shooting cases in different races.
+Age group is also a factor in interest. Most perpetrators are between 18-44 years old.
 
 Similar to the age distribution of perpetrators, most victims are between 18-44 years old. And 3 most vulnerable races are black, white Hispanic and black Hispanic. For different races, the age distributions of victims are similar.
 
@@ -527,7 +527,7 @@ plot_ly(shooting_covid, x = ~date, y = ~covid_cum_per1000 , type = "bar", alpha 
   layout(showlegend = TRUE, legend = list(font = list(size = 8)))
 ```
 
-## Linear relation between accumulations
+## Linear Relation between Accumulations
 
 The linear plot clearly shows a steep rise in shooting cases when COVID-19 case accumulated to 200,000 on 2020-05-15 around in NYC. The growth rate becomes slower for nearly half a year from 2020-11-15 around, and then increases again since 2021-05, but not as rapid as in 2020. Combined with the month and shooting cases analysis before, increment in shooting cases during May is common, but the extremely high growth rate at the beginning of epidemic is unusual. What's more, it is noteworthy that the spread of Delta virus also begins at the end of April, 2021.
 
