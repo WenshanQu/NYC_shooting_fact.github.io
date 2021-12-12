@@ -17,6 +17,8 @@ navbar:
       href: data_processing.html  
       
   right:
+    - text: "Report"
+      href: https://github.com/WenshanQu/NYC_shooting_fact.github.io/blob/main/P8105_Final_Proj_Report_NYC_Shooting.pdf
     - icon: fa-youtube fa-lg
       href: https://www.youtube.com/watch?v=3i44KAoMuCw
     - icon: fa-envelope fa-lg
